@@ -1,0 +1,380 @@
+/*
+ * Copyright 2017-2019 Univention GmbH
+ *
+ * https://www.univention.de/
+ *
+ * All rights reserved.
+ *
+ * The source code of this program is made available
+ * under the terms of the GNU Affero General Public License version 3
+ * (GNU AGPL V3) as published by the Free Software Foundation.
+ *
+ * Binary versions of this program provided by Univention to you as
+ * well as other copyrighted, protected or trademarked materials like
+ * Logos, graphics, fonts, specific documentations and configurations,
+ * cryptographic keys etc. are subject to a license agreement between
+ * you and Univention and not subject to the GNU AGPL V3
+ *
+ * In the case you use this program under the terms of the GNU AGPL V3,
+ * the program is provided in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Publi
+ * License with the Debian GNU/Linux or Univention distribution in file
+ * /usr/share/common-licenses/AGPL-3 if not, see
+ * <https://www.gnu.org/licenses/>.
+ */
+
+$ucs-green ?= #7ab51d
+$text-color ?= #282828
+$header-color ?= #787878
+$header-height = 48px
+
+.umc
+	min-height: 100%
+
+	@media (min-width: 768px)
+		.container:not(.umcInlineDialog)
+			width: 100%;
+
+	/* standby animation */
+	#content
+		opacity: 1
+		transition: opacity 0.75s
+
+	&.standby
+		background: no-repeat center url('/univention/js/dijit/themes/umc/images/standbyAnimation.svg')
+
+		#content
+			opacity: 0
+
+	/* styling of headers and page */
+	.umcHeader,
+	.umcHeader .umcHeaderLeft
+		height: $header-height
+
+	.umcHeader
+		background-color: $header-color
+
+		.umcHeaderRight
+			left: 0
+
+			.univentionLogo
+				background: url(/univention/js/dijit/themes/umc/images/univention-white.svg) left center no-repeat
+				margin-left: 12px
+				width: 100%
+
+	.umcWizard
+		.umcPage
+			margin-top: 61px
+			^[-1].umcInlineDialog ^[-1..-1]
+				margin-top: 41px
+
+			.umcPageNav .umcPageHeader
+				position: absolute
+				top: -45px
+
+				h1
+					font-size: 24px
+					font-weight: normal
+					width: 600px
+
+	.umcInlineDialog
+		/* the content is displayed as a Google Material Card in an external browser */
+		max-width: 970px
+
+		.dijitDefaultButton .dijitButtonText
+			color: $ucs-green
+
+	/* stylings of live citz search */
+	.umc-ucssetup-wizard-livesearch
+		margin-top: 0.75em
+
+	.umc-ucssetup-wizard-city-details
+		min-width: 50%
+
+	.umc-ucssetup-wizard-change-locale-button
+		margin-top: 0.5em
+		float: right
+
+
+	/* generic stylings for all setup pages */
+	.umc-setup-page
+		.umcLiveSearch
+			.dijitArrowButtonInner
+				background-position: -260px -40px
+
+			.umcLiveSearching .dijitArrowButtonInner
+				background-position: center
+				background-image: url('../../dijit/themes/umc/form/images/loading.gif')
+
+		.city-match td
+			padding-right: 0.5em
+			padding-bottom: 0.25em
+
+		.umcPageIcon
+			background-repeat: no-repeat
+			height: 120px
+			background-size: contain
+			background-position: center bottom
+
+		.umcPageHelpText
+			min-height: 50px
+
+		@media (max-width: 767px)
+			.umcPageIcon
+				height: 100px
+
+			.umcPageHelpText
+				min-height: 1px
+
+			.umcPageMain
+				/* overwrite autoHeight property for small devices */
+				min-height: 0px !important
+
+
+	/* specific stylings for various setup pages */
+	.umc-setup-page-validation li,
+	.umc-setup-page-error li
+		padding-bottom: 0.75em
+
+	.umc-setup-page-summary
+		ul
+			margin-top: 0
+
+		p
+			margin-top: 0.75em
+
+		.umcPageIcon
+			background-image: url(summary.svg)
+
+	.umc-setup-page-software
+		th .dojoxGridRowSelector
+			display: none
+
+		.umcPageIcon
+			height: 180px
+			background-image: url(software.svg)
+			@media (max-height: 799px)
+				height: 120px
+
+		.umcGrid.umcUCSSetupSoftwareGrid
+			.dgrid
+				max-height: 35em
+			@media (max-height: 799px) and (min-width: 768px)
+				.dgrid
+					height: calc(100vh - 250px)
+					max-height: none
+
+			.umcGridHeader
+				display: flex !important
+
+			.umcGrid__toolbar,
+			.umcGrid__contextActionsToolbar
+				display: none !important
+
+			.dgrid
+				.dgrid-row
+					height: auto
+					line-height: 1.5em
+
+				.dgrid-cell
+					// make sure that lines can wrap inside the grid
+					white-space: normal
+
+					.umcAppEntry,
+					.umcAppName,
+					.umcAppDescription,
+					.umcInfoIcon
+						display: block
+
+				.umcAppEntry
+					position: relative
+					padding: 5px 0
+					padding: 5px 0
+
+				.umcAppDescription
+					color: #818181
+
+				.umcAppDescription,
+				.umcAppName
+					margin-right: 40px
+
+				.umcInfoIcon
+					background: url(info-icon.png) no-repeat center
+					width: 40px
+					height: 40px
+					position: absolute
+					right: 0
+					top: 50%
+					margin-top: -20px
+					cursor: pointer
+
+
+	.umc-setup-page-role,
+	.umc-setup-page-role-nonmaster-ad,
+	.umc-setup-page-schooldomain-slave
+		.umcLabelPane
+			padding-bottom: 0.75em
+
+			.umcLabelPaneLabelNode label
+				font-size: 14px
+				font-weight: 500
+				margin-bottom: 0.25em
+
+	//.umc-setup-page-role-nonmaster-ad .umcLabelPane,
+	//.umc-setup-page-summary .umcLabelPane
+	//	padding-bottom: 0
+
+	.umc-setup-page-welcome .umcPageIcon
+		background-image: url(welcome.svg)
+
+	.umc-setup-page-locale .umcPageIcon
+		background-image: url(locale.svg)
+
+	.umc-setup-page-required_ram .umcPageIcon
+		background-image: url(warning.svg)
+		background-size: 140px
+
+	.umc-setup-page-license .umcPageIcon
+		background-image: url(license.svg)
+
+	.umc-setup-page-role .umcPageIcon,
+	.umc-setup-page-role-nonmaster-ad .umcPageIcon,
+	.umc-setup-page-warning-basesystem .umcPageIcon
+		background-image: url(domain.svg)
+
+	.umc-setup-page-network
+		.umcPageIcon
+			background-image: url(network.svg)
+
+		@media (min-width: 768px) and (max-width: 991px)
+			.umcSize-One
+				width: 50%
+
+	.umc-setup-page-credentials-master
+		.umcAccountInfoText
+			margin-top: 1em
+
+		.umcPageIcon
+			background-image: url(account.svg)
+
+	.umc-setup-page-credentials-nonmaster .umcPageIcon,
+	.umc-setup-page-credentials-ad .umcPageIcon
+		background-image: url(credentials.svg)
+
+	.umc-setup-page-fqdn-master .umcPageIcon,
+	.umc-setup-page-fqdn-nonmaster-all .umcPageIcon
+		background-image: url(fqdn.svg)
+
+	.umc-setup-page-validation .umcPageIcon,
+	.umc-setup-page-error .umcPageIcon
+		background-image: url(error.svg)
+
+	.umc-setup-page-done .umcPageIcon
+		background-image: url(done.svg)
+
+
+	/* Virtual keyboard */
+	.umcKeyboardIcon
+		background-image: url(keyboard.svg)
+		background-repeat: no-repeat
+		background-size: contain
+		width: 24px
+		height: 24px
+		float: right
+		margin: 2px 5px
+
+	.umcKeyContainer
+		text-align: center
+
+	.umcKeyboardKey
+		margin: 5px
+		height: 40px
+		width: 40px
+
+		&.dijitButton .dijitButtonNode
+			-webkit-border-radius: 5px
+			-moz-border-radius: 5px
+			border-radius: 5px
+			height: 33px
+			width: 33px
+			max-width: 33px
+			max-height: 33px
+
+	.umcKeyboardRow .umcKeyboardKey .dijitReset.dijitInline.dijitButtonText
+		-webkit-user-select: none
+		-moz-user-select: none
+		-ms-user-select: none
+		user-select: none
+		text-decoration: none
+		padding: 0
+
+
+	/* other stylings */
+	.dijitTooltipContainer
+		width: 100%
+		max-width: 800px
+
+	.umcLayoutRow .umcLabelPane.umc-ucssetup-wizard-radio-button-label
+		padding-bottom: 0
+		margin-bottom: 0
+
+	.umcContainerWidget:first-child > .umc-ucssetup-wizard-radio-button-label
+		margin-top: 0
+
+	
+
+	.umc-ucssetup-wizard-indent
+		margin-left: 16px
+
+	.umcUCSSetupLicenseAgreement
+		overflow: auto
+		height: 350px !important
+
+	.privacyStatementOverlay
+		position: absolute
+		top: 0
+		left: 0
+		height: 100%
+		width: 100%
+		background: white
+		z-index: 1
+		display: flex
+		flex-flow: column
+		transition: opacity 0.25s, visibility 0s
+		opacity: 1
+
+		&.privacyStatementOverlayHidden
+			opacity: 0
+			visibility: hidden
+			transition: opacity 0.25s, visibility 0s 0.3s
+			pointer-events: none
+
+		&.privacyStatementOverlayLocalMode
+			top: $header-height
+			height: "calc(100% - %s)" % @top
+
+		.privacyStatementOverlayTitle
+			padding: 24px 24px 19px 24px
+			font-size: 20px
+			font-weight: 500
+
+		.privacyStatementOverlayContent
+			flex-grow: 1
+			overflow: auto
+			padding: 0 24px
+
+			.privacyStatementOverlayTextWrapper
+				column-width: 35em
+
+		.privacyStatementOverlayFooter
+			text-align: right
+
+			.privacyStatementOverlayFooterButton
+				margin: 24px 8px 8px 8px
+
+				.dijitButtonText
+					color: $ucs-green

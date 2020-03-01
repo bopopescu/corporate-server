@@ -1,0 +1,495 @@
+#!/usr/bin/python2.7
+#
+# Univention Portal
+#
+# Copyright 2019 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+import json
+import grp
+import sys
+import os
+import os.path
+import shutil
+from imghdr import what
+from StringIO import StringIO
+from copy import deepcopy
+import tempfile
+import logging
+import signal
+from urllib import quote
+
+import requests
+import tornado.ioloop
+import tornado.web
+import ldap
+from ldap.filter import filter_format
+
+from univention.udm import UDM
+from univention.config_registry import ConfigRegistry
+from univention.config_registry.handler import run_filter
+
+ucr = ConfigRegistry()
+ucr.load()
+
+LOG_FILE = '/var/log/univention/portal.log'
+_umc_interface = ucr.get('umc/http/interface', '127.0.0.1')
+_umc_port = int(ucr.get('umc/http/port', 8090))
+UMC_SESSION_URL = 'http://%s:%s/get/session-info' % (_umc_interface, _umc_port)
+
+
+class ShortNameFormatter(logging.Formatter):
+	shorten = 'univention.portal'
+
+	def format(self, record):
+		record.short_name = record.name
+		if record.short_name.startswith('%s.' % self.shorten):
+			record.short_name = record.short_name[len(self.shorten) + 1:]
+		return super(ShortNameFormatter, self).format(record)
+
+
+def setup_logger():
+	logger = logging.getLogger('univention.portal')
+	log_format = '%(process)6d %(short_name)-12s %(asctime)s [%(levelname)8s]: ' \
+		'%(message)s'
+	log_format_time = '%y-%m-%d %H:%M:%S'
+	formatter = ShortNameFormatter(log_format, log_format_time)
+	handler = logging.FileHandler(LOG_FILE)
+	handler.setFormatter(formatter)
+	logger.addHandler(handler)
+	handler = logging.StreamHandler(sys.stdout)
+	logger.addHandler(handler)
+	logger.setLevel(logging.DEBUG)
+
+
+def get_logger(name):
+	logger = logging.getLogger('univention.portal')
+	logger = logger.getChild(name)
+	return logger
+
+
+def flatten(list_of_lists):
+	# return [item for sublist in list_of_lists for item in sublist]
+	# => does not work well for strings in list
+	ret = []
+	for sublist in list_of_lists:
+		if isinstance(sublist, (list, tuple)):
+			ret.extend(flatten(sublist))
+		else:
+			ret.append(sublist)
+	return ret
+
+
+class ReloadExtendedAttributes(Exception):
+	pass
+
+
+class LDAPCache(object):
+	PORTAL_CACHE = '/var/cache/univention-portal/portal.json'
+	FALLBACK_PORTAL_CACHE = '/usr/share/univention-portal/portal-unjoined.json'
+	GROUP_CACHE = '/var/cache/univention-portal/groups.json'
+	REFRESH_PORTAL_FILE = '/var/cache/univention-portal/refresh_portal'
+	REFRESH_GROUP_FILE = '/var/cache/univention-portal/refresh_groups'
+
+	def __init__(self):
+		self._cache = None
+		self._groups = None
+		self._udm = None
+
+	@property
+	def udm(self):
+		if self._udm is None:
+			self._udm = UDM.machine().version(2)
+		return self._udm
+
+	def _get_groups(self):
+		if self._groups is None or os.path.exists(self.REFRESH_GROUP_FILE):
+			get_logger('cache').info('loading group cache file')
+			try:
+				with open(self.GROUP_CACHE) as fd:
+					self._groups = json.load(fd)
+			except EnvironmentError:
+				get_logger('cache').warn('unable to read group cache file')
+				self._groups = None
+			if os.path.exists(self.REFRESH_GROUP_FILE):
+				os.unlink(self.REFRESH_GROUP_FILE)
+		return self._groups
+
+	def load(self, fallback=False):
+		get_logger('cache').info('loading cache file')
+		try:
+			with open(self.PORTAL_CACHE) as fd:
+				self._cache = json.load(fd)
+		except EnvironmentError:
+			if fallback:
+				get_logger('cache').warn('falling back to %s!' % self.FALLBACK_PORTAL_CACHE)
+				with open(self.FALLBACK_PORTAL_CACHE) as fd:
+					content = fd.read()
+					content = run_filter(content, ucr)
+					self._cache = json.loads(content)
+			else:
+				raise
+
+	def get(self, name):
+		if name == 'groups':
+			return self._get_groups() or {}
+		else:
+			return self._get_portal(name)
+
+	def _get_portal(self, name):
+		if os.path.exists(self.REFRESH_PORTAL_FILE):
+			self.refresh()
+			try:
+				os.unlink(self.REFRESH_PORTAL_FILE)
+			except EnvironmentError:
+				pass
+			self._cache = None
+		if self._cache is None:
+			try:
+				self.load()
+			except EnvironmentError:
+				self.refresh()
+				self.load(fallback=True)
+		get_logger('cache').debug('getting %s from cache' % name)
+		return deepcopy(self._cache[name])
+
+	def refresh(self):
+		ucr.load()
+		get_logger('cache').info('refreshing cache')
+		fd = None
+		try:
+			try:
+				fd = self._refresh()
+			except (ldap.SERVER_DOWN, ldap.INSUFFICIENT_ACCESS, ldap.INVALID_CREDENTIALS):
+				get_logger('server').info('Reconnecting ldap connection')
+				self._udm = None
+				fd = self._refresh()
+			except ReloadExtendedAttributes:
+				get_logger('server').info('Portal extended attribute not found. Trying to reload.')
+				self._udm = None
+				try:
+					fd = self._refresh()
+				except ReloadExtendedAttributes:
+					get_logger('server').warn('Portal extended attribute does not exist.')
+		except Exception:
+			get_logger('cache').exception('Error during refresh')
+			# hopefully, we can still work with an older cache?
+		else:
+			if fd:
+				shutil.move(fd.name, self.PORTAL_CACHE)
+
+	def _refresh(self):
+		ldap_hostdn = ucr.get('ldap/hostdn')
+		localhost = self.udm.obj_by_dn(ldap_hostdn)
+		try:
+			portal_dn = localhost.props.portal
+		except AttributeError:
+			localhost._udm_module._udm_module_cache.clear()
+			raise ReloadExtendedAttributes()
+		portal = self.udm.get('settings/portal').get(portal_dn)
+		content = {}
+		content['portal'] = self._extract_portal(portal)
+		content['links'] = self._extract_links(portal)
+		content['categories'] = self._extract_categories()
+		content['entries'] = self._extract_entries(portal)
+		with tempfile.NamedTemporaryFile(delete=False) as fd:
+			json.dump(content, fd, sort_keys=True, indent=4)
+		return fd
+
+	def _extract_portal(self, portal):
+		self._write_css(portal)
+		ret = {}
+		ret['dn'] = portal.dn
+		ret['showMenu'] = portal.props.showMenu
+		ret['showLogin'] = portal.props.showLogin
+		ret['showSearch'] = portal.props.showSearch
+		ret['showApps'] = portal.props.showApps
+		ret['showServers'] = portal.props.showServers
+		ret['fontColor'] = portal.props.fontColor
+		if portal.props.logo:
+			ret['logo'] = self._write_image(portal.props.name, portal.props.logo.raw, 'logos')
+		else:
+			ret['logo'] = None
+		ret['name'] = portal.props.displayName
+		ret['content'] = portal.props.content
+		ret['ensureLogin'] = portal.props.ensureLogin
+		ret['anonymousEmpty'] = portal.props.anonymousEmpty
+		ret['autoLayoutCategories'] = portal.props.autoLayoutCategories
+		ret['defaultLinkTarget'] = portal.props.defaultLinkTarget
+		return ret
+
+	def _extract_links(self, portal):
+		ret = {}
+		for link in portal.props.links:
+			location, href, locale, name = link
+			location_list = ret.setdefault(location, [])
+			location_list.append({'name': name, 'locale': locale, 'href': href})
+		return ret
+
+	def _extract_categories(self):
+		ret = {}
+		for category in self.udm.get('settings/portal_category').search():
+			ret[category.dn] = {
+				'dn': category.dn,
+				'display_name': category.props.displayName,  # TODO: UDM encoder
+			}
+		return ret
+
+	def _extract_entries(self, portal):
+		ret = {}
+		for entry in self.udm.get('settings/portal_entry').search(filter_format('portal=%s', [portal.dn])):
+			ret[entry.dn] = {
+				'dn': entry.dn,
+				'name': entry.props.displayName,
+				'description': entry.props.description,
+				'logo_name': self._save_image(portal, entry),
+				'favorite': bool(entry.props.favorite),
+				'activated': entry.props.activated,
+				'allowedGroups': entry.props.allowedGroups,
+				'links': entry.props.link,
+				'linkTarget': entry.props.linkTarget,
+			}
+		return ret
+
+	def _write_css(self, portal):
+		# get CSS rule for body background
+		background = []
+		image = portal.props.background
+		bg_img = None
+		if image:
+			get_logger('css').info('Writing background image')
+			bg_img = self._write_image(portal.props.name, image.raw, 'backgrounds')
+		if bg_img:
+			background.append('url("%s") no-repeat top center / cover' % (bg_img, ))
+		css = portal.props.cssBackground
+		if css:
+			get_logger('css').info('Adding background CSS')
+			background.append(css)
+		background = ', '.join(background)
+
+		# get font color
+		font_color = portal.props.fontColor
+
+		# prepare CSS code
+		css_code = ''
+		if background:
+			css_code += '''
+	body.umc.portal {
+		background: %s;
+	}
+	''' % (background, )
+
+		if font_color == 'white':
+			get_logger('css').info('Adding White Header')
+			css_code += '''
+	body.umc.portal .umcHeader .umcHeaderLeft h1 {
+		color: white;
+	}
+
+	body.umc.portal .portalCategory h2 {
+		color: white;
+	}
+	'''
+
+		get_logger('css').info('No CSS code available')
+		if not css_code:
+			css_code = '/* no styling defined via UDM portal object */\n'
+
+		# write CSS file
+		fname = '/var/www/univention/portal/portal.css'
+		get_logger('css').info('Writing CSS file %s' % fname)
+		try:
+			with open(fname, 'wb') as fd:
+				fd.write(css_code)
+		except (EnvironmentError, IOError) as err:
+			get_logger('css').warn('Failed to write CSS file %s: %s' % (fname, err))
+
+	def _write_image(self, name, img, dirname):
+		try:
+			name = name.replace('/', '-')  # name must not contain / and must be a path which can be accessed via the web!
+			string_buffer = StringIO(img)
+			suffix = what(string_buffer) or 'svg'
+			fname = '/usr/share/univention-portal/icons/%s/%s.%s' % (dirname, name, suffix)
+			with open(fname, 'wb') as fd:
+				fd.write(img)
+		except (EnvironmentError, TypeError, IOError) as err:
+			get_logger('css').error(err)
+		else:
+			return '/univention/portal/icons/%s/%s.%s' % (quote(dirname), quote(name), quote(suffix))
+
+	def _save_image(self, portal, entry):
+		img = entry.props.icon
+		if img:
+			return self._write_image(entry.props.name, img.raw, 'entries')
+
+
+class JsonHandler(tornado.web.RequestHandler):
+	def _recursive_search_in_groups(self, username, group, groups, checked_groups):
+		if username in group['usernames']:
+			return True
+		for group_dn in group['groups']:
+			if group_dn in checked_groups:
+				continue
+			group = groups.get(group_dn)
+			if group is None:
+				continue
+			checked_groups.append(group_dn)
+			if self._recursive_search_in_groups(username, group, groups, checked_groups):
+				return True
+		return False
+
+	def _get_portal(self, username, admin_mode):
+		portal = cache.get('portal')
+		entries = cache.get('entries')
+		groups = cache.get('groups')
+		actual_content = portal.pop('content') or []
+		filtered_content = []
+		for category_dn, entry_dns in actual_content:
+			filter_entry_dns = []
+			for entry_dn in entry_dns:
+				entry = entries.get(entry_dn)
+				if entry is None:
+					continue
+				if not admin_mode:
+					if not entry['activated']:
+						continue
+					if entry['allowedGroups']:
+						checked_groups = []
+						for group_dn in entry['allowedGroups']:
+							group = groups.get(group_dn)
+							if group is None:
+								continue
+							if self._recursive_search_in_groups(username, group, groups, checked_groups):
+								break
+						else:
+							continue
+				filter_entry_dns.append(entry_dn)
+			if filter_entry_dns or admin_mode:
+				filtered_content.append([category_dn, filter_entry_dns])
+		portal['content'] = filtered_content
+		return portal
+
+	def _get_links(self):
+		return cache.get('links')
+
+	def _get_categories(self, content):
+		allowed_categories = [x[0] for x in content]
+		ret = cache.get('categories')
+		for dn in ret.keys():
+			if dn not in allowed_categories:
+				ret.pop(dn)
+		return ret
+
+	def _get_entries(self, content):
+		allowed_entries = flatten([x[1] for x in content])
+		ret = cache.get('entries')
+		for dn in ret.keys():
+			if dn not in allowed_entries:
+				ret.pop(dn)
+		return ret
+
+	def _ask_umc(self, session):
+		try:
+			response = requests.get(UMC_SESSION_URL, cookies={'UMCSessionId': session})
+			data = response.json()
+			username = data['result']['username']
+		except requests.ConnectionError as exc:
+			get_logger('user').error('connection failed: %s' % exc)
+		except ValueError:
+			get_logger('user').error('malformed answer!')
+		except KeyError:
+			get_logger('user').warn('session unknown!')
+		else:
+			return username
+
+	def _get_username(self, session):
+		if session is None:
+			get_logger('user').debug('no user given')
+			return None
+		get_logger('user').debug('searching user for %s' % session)
+		username = self._ask_umc(session)
+		if username is None:
+			get_logger('user').debug('no user found')
+		else:
+			get_logger('user').debug('found %s' % username)
+			return username.lower()
+
+	def write_error(self, status_code, **kwargs):
+		if 'exc_info' in kwargs:
+			get_logger('server').exception('Error during service')
+		return super(JsonHandler, self).write_error(status_code, **kwargs)
+
+	def log_exception(self, typ, value, tb):
+		if isinstance(value, (ldap.SERVER_DOWN, ldap.INSUFFICIENT_ACCESS, ldap.INVALID_CREDENTIALS)):
+			get_logger('server').info('Reconnecting ldap connection')
+			cache._udm = None
+		return super(JsonHandler, self).log_exception(typ, value, tb)
+
+	def get(self):
+		session = self.get_cookie('UMCSessionId')
+		username = self._get_username(session)
+		admin_mode = False
+		if self.request.headers.get('X-Univention-Portal-Admin-Mode', 'no') == 'yes':
+			get_logger('admin').info('Admin mode requested')
+			admin_group_name = ucr.get('groups/default/domainadmins', 'Domain Admins')
+			admins = [admin.lower() for admin in grp.getgrnam(admin_group_name)[3]]
+			admin_mode = username in admins
+			if admin_mode:
+				get_logger('admin').info('Admin mode granted')
+			else:
+				get_logger('admin').info('Admin mode rejected')
+		answer = {}
+		portal_content = answer['portal'] = self._get_portal(username, admin_mode)
+		answer['links'] = self._get_links()
+		answer['categories'] = self._get_categories(portal_content['content'])
+		answer['entries'] = self._get_entries(portal_content['content'])
+		answer['filtered'] = not admin_mode
+		self.write(answer)
+
+
+cache = LDAPCache()
+
+
+def signal_handler_reload(signo, frame):
+	io_loop = tornado.ioloop.IOLoop.instance()
+	io_loop.add_callback_from_signal(cache.refresh)
+
+
+def make_app():
+	return tornado.web.Application([
+		(r'/', JsonHandler),
+	])
+
+
+if __name__ == "__main__":
+	setup_logger()
+	app = make_app()
+	port = int(ucr.get('portal/port', 8095))
+	get_logger('server').info('firing up portal server at port %s' % port)
+	app.listen(port)
+	signal.signal(signal.SIGHUP, signal_handler_reload)
+	tornado.ioloop.IOLoop.current().start()

@@ -1,0 +1,108 @@
+#!/usr/bin/python2.7
+# -*- coding: utf-8 -*-
+#
+# Univention Updater
+#  read the maintenance settings
+#
+# Copyright 2004-2019 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+from __future__ import print_function
+import os
+import sys
+from pipes import quote
+import subprocess
+from univention.config_registry import ConfigRegistry
+
+# Name of the cron.d file
+CRON_D = '/etc/cron.d/univention-maintenance'
+
+
+def write_cron_job(configRegistry, cron, updateto, reboot, try_release_update):
+    with open(CRON_D, 'w') as file:
+        file.write('# cron job for update\n')
+        file.write('PATH=/sbin:/usr/sbin:/usr/bin:/bin\n')
+        if cron == '* * * * * ':
+            return
+        cmd = ['/usr/sbin/jitter 600 true']
+        if try_release_update:
+            cmd.append(
+                '/usr/share/univention-updater/univention-updater %s %s --silent --noninteractive' % (
+                    'local' if configRegistry.is_true('local/repository') else 'net',
+                    '--updateto=%s' % (quote(updateto),) if updateto else '',
+                ))
+        cmd.append('/usr/share/univention-updater/univention-actualise --dist-upgrade --silent')
+        if reboot:
+            cmd.append(
+                'if [ -f /run/univention-updater-reboot ];then '
+                'at -f /var/lib/univention-updater/reboot.at -- %s 2>/dev/null;'
+                'rm -f /run/univention-updater-reboot;'
+                'fi' % (
+                    quote(reboot),))
+        print('%s\troot\t%s' % (cron, ';'.join(cmd)), file=file)
+
+
+configRegistry = ConfigRegistry()
+configRegistry.load()
+
+if os.path.exists(CRON_D):
+    os.unlink(CRON_D)
+
+ldap_hostdn = configRegistry.get('ldap/hostdn')
+if ldap_hostdn:
+
+    p1 = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', '/etc/machine.secret', '-s', ldap_hostdn], stdout=subprocess.PIPE)
+
+    updateto = ''
+    cron_active = ''
+    reboot = ''
+    cron = None
+    try_release_update = False
+
+    for line in p1.stdout:
+        line = line.strip(' ').strip('\n')
+        key, value = line.split('=', 1)
+        if line.startswith('univentionCronActive='):
+            cron_active = line.replace('univentionCronActive=', '').replace('"', '')
+        elif line.startswith('univentionCron='):
+            cron = line.replace('univentionCron=', '').replace('"', '')
+        elif line.startswith('univentionUpdateVersion='):
+            updateto = line.replace('univentionUpdateVersion=', '').replace('"', '')
+        elif line.startswith('univentionInstallationReboot='):
+            reboot = line.replace('univentionInstallationReboot=', '').replace('"', '')
+        elif 'univentionUpdateActivate' == key:
+            try_release_update = value == '"TRUE"'
+
+    if p1.wait() != 0:
+        print('failed to execute univention_policy_result')
+        sys.exit(p1.returncode)
+
+    if cron_active and cron_active == '1':
+        if cron:
+            write_cron_job(configRegistry, cron, updateto, reboot, try_release_update)
+
+sys.exit(0)

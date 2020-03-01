@@ -1,0 +1,54 @@
+univention-mariadb (2.0.0-5) unstable; urgency=medium
+
+  * Bug #46901: Make system daemon reload after mariadb install
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 19 Mar 2019 15:43:50 +0100
+
+univention-mariadb (2.0.0-4) unstable; urgency=medium
+
+  * Bug #46901: Fix description
+
+ -- Julia Bremer <jbremer@brankis.knut.univention.de>  Wed, 13 Mar 2019 16:28:13 +0100
+
+univention-mariadb (2.0.0-2) unstable; urgency=medium
+
+  * Bug #46901: mariadb startup timeout is now configurable via ucr variable
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 13 Mar 2019 16:17:11 +0100
+
+univention-mariadb (2.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:44 +0100
+
+univention-mariadb (1.0.1-4) unstable; urgency=medium
+
+  * Bug #46537: Use mariadb default values for character-set-server and
+    collation-server
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 08 Mar 2018 10:59:23 +0100
+
+univention-mariadb (1.0.1-3) unstable; urgency=medium
+
+  * Bug #46434: Create a working debian.cnf file on initial setup
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 27 Feb 2018 13:43:20 +0100
+
+univention-mariadb (1.0.1-2) unstable; urgency=medium
+
+  * Bug #45876: Fix UCRv description
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 07 Feb 2018 16:14:05 +0100
+
+univention-mariadb (1.0.1-1) unstable; urgency=medium
+
+  * Bug #45876: Modify configfile to correct filename suffix '.cnf'
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 16 Jan 2018 10:39:53 +0100
+
+univention-mariadb (1.0.0-1) unstable; urgency=low
+
+  * Bug #45876: Initial package release
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 15 Dec 2017 14:32:52 +0100

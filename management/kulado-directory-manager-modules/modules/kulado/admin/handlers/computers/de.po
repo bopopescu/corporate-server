@@ -1,0 +1,745 @@
+# Copyright 2010-2019 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-directory-manager-modules\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2019-10-22 22:08+0200\n"
+"PO-Revision-Date: 2009-08-04 17:18+0200\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language-Team: German <packages@univention.de>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: unicode\n"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:204
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:204
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:204
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:204
+msgid "(Re-)install on next boot"
+msgstr "(Neu-)Installieren bei nächstem Systemstart"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:260
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:259
+#: modules/univention/admin/handlers/computers/ubuntu.py:232
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:259
+#: modules/univention/admin/handlers/computers/linux.py:232
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:259
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:246
+#: modules/univention/admin/handlers/computers/windows.py:244
+#: modules/univention/admin/handlers/computers/macos.py:233
+msgid "Account"
+msgstr "Konto"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:277
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:276
+#: modules/univention/admin/handlers/computers/ubuntu.py:242
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:172
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:276
+#: modules/univention/admin/handlers/computers/linux.py:242
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:276
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:259
+#: modules/univention/admin/handlers/computers/windows.py:255
+#: modules/univention/admin/handlers/computers/macos.py:243
+msgid "Alias DNS entry"
+msgstr "Alias DNS Eintrag"
+
+#: modules/univention/admin/handlers/computers/ubuntu.py:270
+#: modules/univention/admin/handlers/computers/linux.py:270
+msgid "At least posix or kerberos is required."
+msgstr "Mindestens Posix oder Kerberos wird benötigt."
+
+#: modules/univention/admin/handlers/computers/memberserver.py:242
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:241
+#: modules/univention/admin/handlers/computers/ubuntu.py:213
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:151
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:241
+#: modules/univention/admin/handlers/computers/linux.py:213
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:241
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:227
+#: modules/univention/admin/handlers/computers/windows.py:225
+#: modules/univention/admin/handlers/computers/macos.py:214
+msgid "Basic settings"
+msgstr "Rechnerkonto-Einstellungen"
+
+#: modules/univention/admin/handlers/computers/trustaccount.py:83
+msgid "Basic values"
+msgstr "Grundeinstellungen"
+
+#: modules/univention/admin/handlers/computers/macos.py:76
+msgid "Client name"
+msgstr "Rechnername"
+
+#: modules/univention/admin/handlers/computers/computer.py:48
+#: modules/univention/admin/handlers/computers/computer.py:49
+msgid "Computer"
+msgstr "Rechner"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:243
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:242
+#: modules/univention/admin/handlers/computers/ubuntu.py:214
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:152
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:242
+#: modules/univention/admin/handlers/computers/linux.py:214
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:242
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:228
+#: modules/univention/admin/handlers/computers/windows.py:226
+#: modules/univention/admin/handlers/computers/macos.py:215
+msgid "Computer account"
+msgstr "Rechnerkonto"
+
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:47
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:53
+msgid "Computer: Domain Controller Backup"
+msgstr "Rechner: Domänencontroller Backup"
+
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:47
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:53
+msgid "Computer: Domain Controller Master"
+msgstr "Rechner: Domänencontroller Master"
+
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:47
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:53
+msgid "Computer: Domain Controller Slave"
+msgstr "Rechner: Domänencontroller Slave"
+
+#: modules/univention/admin/handlers/computers/trustaccount.py:52
+msgid "Computer: Domain trust account"
+msgstr "Rechner: Domain Trust Account"
+
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:54
+msgid "Computer: IP managed client"
+msgstr "Rechner: IP-Managed-Client"
+
+#: modules/univention/admin/handlers/computers/linux.py:47
+#: modules/univention/admin/handlers/computers/linux.py:53
+msgid "Computer: Linux"
+msgstr "Rechner: Linux"
+
+#: modules/univention/admin/handlers/computers/macos.py:47
+#: modules/univention/admin/handlers/computers/macos.py:53
+msgid "Computer: Mac OS X Client"
+msgstr "Rechner: Mac OS X Client"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:47
+#: modules/univention/admin/handlers/computers/memberserver.py:53
+msgid "Computer: Member Server"
+msgstr "Rechner: Member-Server"
+
+#: modules/univention/admin/handlers/computers/ubuntu.py:47
+#: modules/univention/admin/handlers/computers/ubuntu.py:53
+msgid "Computer: Ubuntu"
+msgstr "Rechner: Ubuntu"
+
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:47
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:53
+msgid "Computer: Windows Domaincontroller"
+msgstr "Rechner: Windows Domänencontroller"
+
+#: modules/univention/admin/handlers/computers/windows.py:47
+#: modules/univention/admin/handlers/computers/windows.py:53
+msgid "Computer: Windows Workstation/Server"
+msgstr "Rechner: Windows Workstation/Server"
+
+#: modules/univention/admin/handlers/computers/computer.py:50
+msgid "Computers"
+msgstr "Rechner"
+
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:48
+msgid "DC Backup"
+msgstr "DC Backup"
+
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:49
+msgid "DC Backups"
+msgstr "DC Backups"
+
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:48
+msgid "DC Master"
+msgstr "DC Master"
+
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:49
+msgid "DC Masters"
+msgstr "DC Masters"
+
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:48
+msgid "DC Slave"
+msgstr "DC Slave"
+
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:49
+msgid "DC Slaves"
+msgstr "DC Slaves"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:256
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:255
+#: modules/univention/admin/handlers/computers/ubuntu.py:228
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:165
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:255
+#: modules/univention/admin/handlers/computers/linux.py:228
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:255
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:242
+#: modules/univention/admin/handlers/computers/windows.py:240
+#: modules/univention/admin/handlers/computers/macos.py:229
+msgid "DHCP"
+msgstr "DHCP"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:167
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:167
+#: modules/univention/admin/handlers/computers/ubuntu.py:153
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:122
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:167
+#: modules/univention/admin/handlers/computers/linux.py:153
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:167
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:166
+#: modules/univention/admin/handlers/computers/windows.py:157
+#: modules/univention/admin/handlers/computers/macos.py:153
+msgid "DHCP service"
+msgstr "Service für DHCP-Eintrag"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:252
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:251
+#: modules/univention/admin/handlers/computers/ubuntu.py:224
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:161
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:251
+#: modules/univention/admin/handlers/computers/linux.py:224
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:251
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:238
+#: modules/univention/admin/handlers/computers/windows.py:236
+#: modules/univention/admin/handlers/computers/macos.py:225
+msgid "DNS Forward and Reverse Lookup Zone"
+msgstr "DNS Forward und Reverse Lookup Zone"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:161
+#: modules/univention/admin/handlers/computers/memberserver.py:277
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:161
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:276
+#: modules/univention/admin/handlers/computers/ubuntu.py:147
+#: modules/univention/admin/handlers/computers/ubuntu.py:242
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:116
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:172
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:161
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:276
+#: modules/univention/admin/handlers/computers/linux.py:147
+#: modules/univention/admin/handlers/computers/linux.py:242
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:161
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:276
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:160
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:259
+#: modules/univention/admin/handlers/computers/windows.py:151
+#: modules/univention/admin/handlers/computers/windows.py:255
+#: modules/univention/admin/handlers/computers/macos.py:147
+#: modules/univention/admin/handlers/computers/macos.py:243
+#: modules/univention/admin/handlers/computers/computer.py:66
+msgid "DNS alias"
+msgstr "DNS-Alias"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:270
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:269
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:269
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:269
+msgid "Deployment"
+msgstr "(Re)installation"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:85
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:85
+#: modules/univention/admin/handlers/computers/ubuntu.py:84
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:70
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:85
+#: modules/univention/admin/handlers/computers/linux.py:84
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:85
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:84
+#: modules/univention/admin/handlers/computers/windows.py:85
+#: modules/univention/admin/handlers/computers/macos.py:84
+#: modules/univention/admin/handlers/computers/computer.py:72
+#: modules/univention/admin/handlers/computers/trustaccount.py:68
+msgid "Description"
+msgstr "Beschreibung"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:102
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:102
+#: modules/univention/admin/handlers/computers/ubuntu.py:101
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:143
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:102
+#: modules/univention/admin/handlers/computers/linux.py:101
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:102
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:101
+#: modules/univention/admin/handlers/computers/windows.py:105
+#: modules/univention/admin/handlers/computers/macos.py:101
+msgid "Domain"
+msgstr "Domäne"
+
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:76
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:76
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:76
+msgid "Domain controller name"
+msgstr "Domänencontroller Name"
+
+#: modules/univention/admin/handlers/computers/trustaccount.py:53
+msgid "Domain trust account"
+msgstr "Domain Trust Account"
+
+#: modules/univention/admin/handlers/computers/trustaccount.py:54
+msgid "Domain trust accounts"
+msgstr "Domain Trust Accounts"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:140
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:140
+#: modules/univention/admin/handlers/computers/ubuntu.py:126
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:95
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:140
+#: modules/univention/admin/handlers/computers/linux.py:126
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:140
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:139
+#: modules/univention/admin/handlers/computers/windows.py:130
+#: modules/univention/admin/handlers/computers/macos.py:126
+msgid "Forward zone for DNS entry"
+msgstr "Forward Zone für DNS-Eintrag"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:242
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:241
+#: modules/univention/admin/handlers/computers/ubuntu.py:213
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:151
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:241
+#: modules/univention/admin/handlers/computers/linux.py:213
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:241
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:227
+#: modules/univention/admin/handlers/computers/windows.py:225
+#: modules/univention/admin/handlers/computers/macos.py:214
+#: modules/univention/admin/handlers/computers/trustaccount.py:83
+msgid "General"
+msgstr "Allgemein"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:274
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:273
+#: modules/univention/admin/handlers/computers/ubuntu.py:239
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:169
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:273
+#: modules/univention/admin/handlers/computers/linux.py:239
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:273
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:256
+#: modules/univention/admin/handlers/computers/windows.py:252
+#: modules/univention/admin/handlers/computers/macos.py:240
+msgid "Group memberships"
+msgstr "Gruppenmitgliedschaften"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:226
+#: modules/univention/admin/handlers/computers/memberserver.py:274
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:225
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:273
+#: modules/univention/admin/handlers/computers/ubuntu.py:197
+#: modules/univention/admin/handlers/computers/ubuntu.py:239
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:136
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:169
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:225
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:273
+#: modules/univention/admin/handlers/computers/linux.py:197
+#: modules/univention/admin/handlers/computers/linux.py:239
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:225
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:273
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:211
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:256
+#: modules/univention/admin/handlers/computers/windows.py:209
+#: modules/univention/admin/handlers/computers/windows.py:252
+#: modules/univention/admin/handlers/computers/macos.py:198
+#: modules/univention/admin/handlers/computers/macos.py:240
+msgid "Groups"
+msgstr "Gruppen"
+
+#: modules/univention/admin/handlers/computers/ubuntu.py:76
+#: modules/univention/admin/handlers/computers/linux.py:76
+msgid "Hostname"
+msgstr "Rechnername"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:120
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:120
+#: modules/univention/admin/handlers/computers/ubuntu.py:119
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:88
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:120
+#: modules/univention/admin/handlers/computers/linux.py:119
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:120
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:119
+#: modules/univention/admin/handlers/computers/windows.py:123
+#: modules/univention/admin/handlers/computers/macos.py:119
+#: modules/univention/admin/handlers/computers/computer.py:85
+msgid "IP address"
+msgstr "IP-Adresse"
+
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:55
+msgid "IP managed client"
+msgstr "IP-Managed-Client"
+
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:62
+msgid "IP managed client name"
+msgstr "Name des IP-Managed-Client"
+
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:56
+msgid "IP managed clients"
+msgstr "IP-Managed-Clients"
+
+#: modules/univention/admin/handlers/computers/windows.py:172
+msgid "Initialize password with hostname"
+msgstr "Passwort mit dem Rechnernamen initialisieren"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:219
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:219
+#: modules/univention/admin/handlers/computers/ubuntu.py:190
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:129
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:219
+#: modules/univention/admin/handlers/computers/linux.py:190
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:219
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:204
+#: modules/univention/admin/handlers/computers/windows.py:202
+#: modules/univention/admin/handlers/computers/macos.py:191
+#: modules/univention/admin/handlers/computers/computer.py:92
+msgid "Inventory number"
+msgstr "Inventarnummer"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:63
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:63
+#: modules/univention/admin/handlers/computers/ubuntu.py:63
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:63
+#: modules/univention/admin/handlers/computers/linux.py:63
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:63
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:63
+#: modules/univention/admin/handlers/computers/windows.py:63
+#: modules/univention/admin/handlers/computers/macos.py:63
+msgid "Kerberos principal"
+msgstr "Kerberos Prinzipal"
+
+#: modules/univention/admin/handlers/computers/linux.py:48
+msgid "Linux Computer"
+msgstr "Linux-Rechner"
+
+#: modules/univention/admin/handlers/computers/linux.py:49
+msgid "Linux Computers"
+msgstr "Linux-Rechner"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:189
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:189
+#: modules/univention/admin/handlers/computers/ubuntu.py:175
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:189
+#: modules/univention/admin/handlers/computers/linux.py:175
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:189
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:188
+#: modules/univention/admin/handlers/computers/windows.py:186
+#: modules/univention/admin/handlers/computers/macos.py:175
+msgid "Login shell"
+msgstr "Anmelde-Shell"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:108
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:108
+#: modules/univention/admin/handlers/computers/ubuntu.py:107
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:76
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:108
+#: modules/univention/admin/handlers/computers/linux.py:107
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:108
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:107
+#: modules/univention/admin/handlers/computers/windows.py:111
+#: modules/univention/admin/handlers/computers/macos.py:107
+#: modules/univention/admin/handlers/computers/computer.py:78
+msgid "MAC address"
+msgstr "MAC-Adresse"
+
+#: modules/univention/admin/handlers/computers/macos.py:48
+msgid "Mac OS X Client"
+msgstr "Mac OS X Client"
+
+#: modules/univention/admin/handlers/computers/macos.py:49
+msgid "Mac OS X Clients"
+msgstr "Mac OS X Clients"
+
+#: modules/univention/admin/handlers/computers/trustaccount.py:74
+msgid "Machine Password"
+msgstr "Rechner Passwort"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:48
+msgid "Member Server"
+msgstr "Member-Server"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:49
+msgid "Member Servers"
+msgstr "Member-Server"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:76
+msgid "Member server name"
+msgstr "Name des Member-Servers"
+
+#: modules/univention/admin/handlers/computers/computer.py:58
+#: modules/univention/admin/handlers/computers/trustaccount.py:60
+msgid "Name"
+msgstr "Name"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:214
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:214
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:214
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:214
+msgid "Name of installation profile"
+msgstr "Eindeutiger Installationsprofilname"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:115
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:115
+#: modules/univention/admin/handlers/computers/ubuntu.py:114
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:83
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:115
+#: modules/univention/admin/handlers/computers/linux.py:114
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:115
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:114
+#: modules/univention/admin/handlers/computers/windows.py:118
+#: modules/univention/admin/handlers/computers/macos.py:114
+msgid "Network"
+msgstr "Netzwerk"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:247
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:246
+#: modules/univention/admin/handlers/computers/ubuntu.py:219
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:156
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:246
+#: modules/univention/admin/handlers/computers/linux.py:219
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:246
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:233
+#: modules/univention/admin/handlers/computers/windows.py:231
+#: modules/univention/admin/handlers/computers/macos.py:220
+msgid "Network settings "
+msgstr "Netzwerk-Einstellungen"
+
+#: modules/univention/admin/handlers/computers/__base.py:309
+msgid "Open Univention Management Console on this computer"
+msgstr "Univention Management Console auf diesem Rechner öffnen"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:91
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:91
+#: modules/univention/admin/handlers/computers/ubuntu.py:90
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:91
+#: modules/univention/admin/handlers/computers/linux.py:90
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:91
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:90
+#: modules/univention/admin/handlers/computers/windows.py:92
+#: modules/univention/admin/handlers/computers/macos.py:90
+msgid "Operating system"
+msgstr "Betriebssystem"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:97
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:97
+#: modules/univention/admin/handlers/computers/ubuntu.py:96
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:97
+#: modules/univention/admin/handlers/computers/linux.py:96
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:97
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:96
+#: modules/univention/admin/handlers/computers/windows.py:99
+#: modules/univention/admin/handlers/computers/macos.py:96
+msgid "Operating system version"
+msgstr "Betriebssystem-Version"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:174
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:174
+#: modules/univention/admin/handlers/computers/ubuntu.py:160
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:174
+#: modules/univention/admin/handlers/computers/linux.py:160
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:174
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:173
+#: modules/univention/admin/handlers/computers/windows.py:164
+#: modules/univention/admin/handlers/computers/macos.py:160
+msgid "Password"
+msgstr "Passwort"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:58
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:58
+#: modules/univention/admin/handlers/computers/ubuntu.py:58
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:58
+#: modules/univention/admin/handlers/computers/linux.py:58
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:58
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:58
+#: modules/univention/admin/handlers/computers/windows.py:58
+#: modules/univention/admin/handlers/computers/macos.py:58
+msgid "Posix account"
+msgstr "Posix-Konto"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:196
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:196
+#: modules/univention/admin/handlers/computers/ubuntu.py:182
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:196
+#: modules/univention/admin/handlers/computers/linux.py:182
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:196
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:195
+#: modules/univention/admin/handlers/computers/windows.py:193
+#: modules/univention/admin/handlers/computers/macos.py:182
+msgid "Primary group"
+msgstr "Primäre Gruppe"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:233
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:232
+#: modules/univention/admin/handlers/computers/ubuntu.py:204
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:232
+#: modules/univention/admin/handlers/computers/linux.py:204
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:232
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:218
+#: modules/univention/admin/handlers/computers/windows.py:216
+#: modules/univention/admin/handlers/computers/macos.py:205
+msgid "Relative ID"
+msgstr "Relative ID"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:147
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:147
+#: modules/univention/admin/handlers/computers/ubuntu.py:133
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:102
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:147
+#: modules/univention/admin/handlers/computers/linux.py:133
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:147
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:146
+#: modules/univention/admin/handlers/computers/windows.py:137
+#: modules/univention/admin/handlers/computers/macos.py:133
+msgid "Reverse zone for DNS entry"
+msgstr "Reverse Zone für DNS-Eintrag"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:68
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:68
+#: modules/univention/admin/handlers/computers/ubuntu.py:68
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:68
+#: modules/univention/admin/handlers/computers/linux.py:68
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:68
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:68
+#: modules/univention/admin/handlers/computers/windows.py:68
+#: modules/univention/admin/handlers/computers/macos.py:68
+msgid "Samba account"
+msgstr "Samba-Konto"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:134
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:134
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:134
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:134
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:133
+msgid "Service"
+msgstr "Dienst"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:267
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:266
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:266
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:266
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:253
+msgid "Services"
+msgstr "Dienste"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:127
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:127
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:127
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:127
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:126
+msgid "System role"
+msgstr "Systemrolle"
+
+#: modules/univention/admin/handlers/computers/trustaccount.py:84
+msgid "Trust account"
+msgstr "Trust Account"
+
+#: modules/univention/admin/handlers/computers/ubuntu.py:48
+msgid "Ubuntu Computer"
+msgstr "Ubuntu-Rechner"
+
+#: modules/univention/admin/handlers/computers/ubuntu.py:49
+msgid "Ubuntu Computers"
+msgstr "Ubuntu-Rechner"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:264
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:263
+#: modules/univention/admin/handlers/computers/ubuntu.py:236
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:263
+#: modules/univention/admin/handlers/computers/linux.py:236
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:263
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:250
+#: modules/univention/admin/handlers/computers/windows.py:249
+#: modules/univention/admin/handlers/computers/macos.py:237
+msgid "Unix account"
+msgstr "Unix-Konto"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:264
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:263
+#: modules/univention/admin/handlers/computers/ubuntu.py:236
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:263
+#: modules/univention/admin/handlers/computers/linux.py:236
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:263
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:250
+#: modules/univention/admin/handlers/computers/windows.py:249
+#: modules/univention/admin/handlers/computers/macos.py:237
+msgid "Unix account settings"
+msgstr "Unix-Konto-Einstellungen"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:181
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:181
+#: modules/univention/admin/handlers/computers/ubuntu.py:167
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:181
+#: modules/univention/admin/handlers/computers/linux.py:167
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:181
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:180
+#: modules/univention/admin/handlers/computers/windows.py:178
+#: modules/univention/admin/handlers/computers/macos.py:167
+msgid "Unix home directory"
+msgstr "Unix Heimatverzeichnis"
+
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:48
+msgid "Windows Domaincontroller"
+msgstr "Windows Domänencontroller"
+
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:49
+msgid "Windows Domaincontrollers"
+msgstr "Windows Domänencontroller"
+
+#: modules/univention/admin/handlers/computers/windows.py:48
+msgid "Windows Workstation/Server"
+msgstr "Windows Workstation/Server"
+
+#: modules/univention/admin/handlers/computers/windows.py:49
+msgid "Windows Workstations/Servers"
+msgstr "Windows Workstationen/Server"
+
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:76
+msgid "Windows domaincontroller name"
+msgstr "Windows Domänencontroller Name"
+
+#: modules/univention/admin/handlers/computers/windows.py:76
+msgid "Windows workstation/server name"
+msgstr "Windows Workstation/Server Name"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:154
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:154
+#: modules/univention/admin/handlers/computers/ubuntu.py:140
+#: modules/univention/admin/handlers/computers/ipmanagedclient.py:109
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:154
+#: modules/univention/admin/handlers/computers/linux.py:140
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:154
+#: modules/univention/admin/handlers/computers/windows_domaincontroller.py:153
+#: modules/univention/admin/handlers/computers/windows.py:144
+#: modules/univention/admin/handlers/computers/macos.py:140
+msgid "Zone for DNS alias"
+msgstr "Zone für DNS-Alias"
+
+#: modules/univention/admin/handlers/computers/memberserver.py:209
+#: modules/univention/admin/handlers/computers/domaincontroller_master.py:209
+#: modules/univention/admin/handlers/computers/domaincontroller_backup.py:209
+#: modules/univention/admin/handlers/computers/domaincontroller_slave.py:209
+msgid "additional start options"
+msgstr "Erweiterte Startoptionen"

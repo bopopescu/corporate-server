@@ -1,0 +1,15 @@
+[Unit]
+Description=BIND Domain Name Server with LDAP backend
+Documentation=man:named(8)
+After=network.target slapd.service bind9.service
+PartOf=bind9.service
+
+[Service]
+ExecStart=/usr/lib/univention-bind/ldap start
+ExecReload=/usr/lib/univention-bind/ldap reload
+ExecStop=/usr/lib/univention-bind/ldap stop
+ExecStartPost=/usr/lib/univention-bind/ldap wait-for-startup
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

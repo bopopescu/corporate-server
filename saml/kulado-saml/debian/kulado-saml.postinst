@@ -1,0 +1,98 @@
+#!/bin/sh
+#
+# Copyright 2013-2019 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+#DEBHELPER#
+
+. /usr/share/univention-lib/all.sh
+
+case "$1" in
+configure)
+
+	if [ -e /usr/lib/univention-install/24univention-saml-uninstall.uinst ]; then
+		rm /usr/lib/univention-install/24univention-saml-uninstall.uinst
+	fi
+
+	ucr set saml/idp/enableSAML20-IdP?true \
+		saml/idp/ldap/search_attributes?"'uid', 'mailPrimaryAddress'" \
+		saml/idp/lookandfeel/theme?"univentiontheme:univention" \
+		saml/idp/https?"true" \
+		saml/idp/show-errors?"true" \
+		saml/idp/session-duration?43200 \
+		ucs/server/sso/virtualhost?"true" \
+		saml/idp/negotiate?"true" \
+		kerberos/defaults/ignore_acceptor_hostname=true \
+		saml/idp/authsource?univention-ldap
+
+	for i in /var/www/saml /var/www/saml/php-cgi /var/lib/simplesamlphp/secrets.inc.php
+	do
+		# only do something when no setting exists
+		if ! dpkg-statoverride --list $i >/dev/null 2>&1; then
+			dpkg-statoverride --update --add samlcgi samlcgi 755 $i
+		fi
+	done
+
+	call_joinscript 91univention-saml.inst
+
+	for file in /etc/simplesamlphp/metadata/metadata_include.php /usr/share/simplesamlphp/modules/negotiate/enable; do
+		if [ ! -e "$file" ]; then
+			touch "$file"
+		fi
+	done
+
+	chown -R root:samlcgi /etc/simplesamlphp
+
+	if [ -x /etc/init.d/univention-directory-listener ]; then
+		invoke-rc.d univention-directory-listener restart
+	fi
+
+	for file in /var/log/apache2/suexec.log /var/log/memcached.log /var/log/memcached-saml.log; do
+		touch "$file"
+		chown root:adm "$file"
+		chmod 640 "$file"
+	done
+	chmod 640 /var/log/stunnel4/stunnel.log
+
+	deb-systemd-invoke restart stunnel4.service
+
+	a2ensite univention-saml
+	a2enmod headers
+	a2enmod actions
+	a2enmod suexec
+	a2enmod cgi
+	invoke-rc.d apache2 reload
+	;;
+abort-upgrade|abort-remove|abort-deconfigure)
+	;;
+*)
+	echo "postinst called with unknown argument \`$1'" >&2
+	exit 1
+	;;
+esac
+
+exit 0

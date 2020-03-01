@@ -1,0 +1,55 @@
+/* NumberSpinner - namespace "dijitSpinner"
+ *
+ * Styling NumberSpinner mainly includes:
+ *
+ * 1. Arrows
+ * 		Outer containers: .dijitSpinnerButtonContainer|.dijitSpinnerButtonInner  - for border, padding and position
+ * 		Arrows: .dijitArrowButton|.dijitUpArrowButton.|dijitDownArrowButton
+ * 		Inner container: .dijitArrowButtonInner - for border, padding, width|height and background image
+ *
+ * 2. Hover state
+ * 		.dijitUpArrowButtonHover|.dijitDownArrowButtonHover .*  - for background color|image
+ *
+ * 3. Active state
+ * 		.dijitUpArrowButtonActive|.dijitDownArrowButtonActive .*  - for border, padding, margin and background color|image
+ *
+ * 4. Focused state
+ * 		.dijitSpinnerFocused .* - for background color|image
+ *
+ * 5. Disabled state
+ * 		.dijitSpinnerDisabled .* - for background color|image
+ */
+
+@import "../variables"
+
+.umc .dijitSpinnerButtonContainer
+	height: 100%
+	width: $width-icon + material-grid(1)
+	box-sizing: content-box
+	border-color: inherit
+
+/* button */
+.umc .dijitSpinner .dijitArrowButton
+	border: none
+
+/* up & down button icons */
+.umc .dijitSpinner
+	.dijitUpArrowButton .dijitArrowButtonInner
+		icon-image(-180, -20, "../")
+	.dijitDownArrowButton .dijitArrowButtonInner
+		icon-image(-160, -20, "../")
+
+/* hovored state */
+.umc .dijitSpinner
+	.dijitUpArrowButtonHover,
+	.dijitDownArrowButtonHover
+		background-color: $button-hovered-background-color
+
+/* active state */
+.umc .dijitSpinner
+	.dijitUpArrowButtonActive,
+	.dijitDownArrowButtonActive
+		background-color: $button-pressed-background-color
+
+		.dijitArrowButtonInner
+			opacity: $material-text-disabled-alpha

@@ -1,0 +1,29 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check squid redirector written to config file
+## tags: [apptest]
+## exposure: safe
+## bugs: [32429]
+## packages: [univention-squid]
+
+from essential.simplesquid import SimpleSquid
+from univention.config_registry import handler_set
+import univention.testing.ucr as ucr_test
+
+
+def main():
+	squid_guard_config = '/etc/squid/squidGuard.conf'
+	squid_guard_path = '/usr/bin/squidGuard'
+	squid = SimpleSquid()
+
+	with ucr_test.UCSTestConfigRegistry() as ucr:
+		redirector = "pyredir"
+		handler_set(['squid/redirect=%s' % redirector])
+		squid.redirector_is(redirector)
+
+		redirector = "squidguard"
+		handler_set(['squid/redirect=%s' % redirector])
+		squid.redirector_is("%s -c %s" % (squid_guard_path, squid_guard_config))
+
+
+if __name__ == '__main__':
+	main()

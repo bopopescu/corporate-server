@@ -1,0 +1,74 @@
+Source: univention-s4-connector
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper (>> 7),
+ ucslint-univention,
+ dh-python,
+ python-all,
+ python3-all,
+ univention-config-dev,
+ univention-ucs-translation-template,
+
+Package: python-univention-connector-s4
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends},
+ python-univention (>=12.0.0-5),
+ python-univention-license,
+ python-setproctitle,
+ python-univention-heimdal (>= 4.0.2-2),
+ python-univention-directory-manager (>= 14.0.14-14),
+ python-pyasn1-modules,
+Provides: ${python:Provides}
+Description: UCS - Modules for connector synchronisation
+ This package contains the modules that implement the
+ features of UCS Samba4 Connector.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: python3-univention-connector-s4
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends},
+ python3-univention,
+ python3-univention-license,
+ python3-univention-heimdal,
+ python3-univention-directory-manager,
+ python3-pyasn1-modules,
+ python3-setproctitle,
+Provides: ${python3:Provides}
+Description: UCS - Modules for connector synchronisation
+ This package contains the modules that implement the
+ features of UCS Samba4 Connector.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-s4-connector
+Architecture: all
+Depends: ${misc:Depends},
+ python-univention-connector-s4 (= ${binary:Version}),
+ shell-univention-lib (>= 3.0.26-25),
+ python-univention-lib (>= 8.0.0-6),
+ samba-common-bin,
+ univention-samba4 (>= 6.0.10-3),
+ attr,
+ univention-directory-manager-tools (>= 13.0.21-21),
+ univention-join (>= 10.0.0-12),
+ univention-heimdal-common,
+ univention-ldap-server (>= 11.0.10-2)
+Recommends: sqlite3,
+ univention-nagios-s4-connector
+Description: UCS - Modules for sync UCS and Samba4 LDB directory
+ This package contains the modules that implement the
+ features of UCS Samba4 Connector for Samba4.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/

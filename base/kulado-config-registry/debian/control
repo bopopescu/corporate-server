@@ -1,0 +1,125 @@
+Source: univention-config-registry
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>= 9),
+ ucslint-univention,
+ dh-python,
+ autoconf,
+ automake,
+ locales,
+ libtool,
+ libunivention-debug-dev (>= 5.0.6-1),
+ python-ipaddr,
+ python-all,
+ python3-all,
+ python-six,
+ python3-six,
+Standards-Version: 3.5.2
+
+Package: univention-config-registry
+Architecture: all
+Pre-Depends: dpkg (>= 1.15.7.2)
+Depends: ${misc:Depends},
+ univention-base-files,
+ univention-base-packages
+Description: UCS transitional package - base configuration
+ This package can be safely removed, since all previously contained base
+ configuration files for UCS have been moved to the univention-base-files
+ package.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-config
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends},
+ python-univention-config-registry (= ${source:Version}),
+ ldap-utils,
+ python-debian,
+Replaces: univention-config-registry (<< 7.0.9~),
+ shell-univention-lib (<< 8.0.1-21),
+Breaks:
+ shell-univention-lib (<< 8.0.1-21),
+Description: UCS - configuration manager
+ This package contains the univention-config configuration
+ manager, primarily used by the UCS base configuration.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-config-dev
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends},
+ univention-config (= ${binary:Version})
+Description: UCS - configuration manager (development files)
+ This package contains the files needed to develop packages
+ that use univention-config.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: libunivention-config0
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: UCS - C library to configuration manager
+ The included library provides a C API to access the
+ UCS configuration manager.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: libunivention-config-dev
+Architecture: any
+Depends: ${misc:Depends},
+ libunivention-config0 (= ${binary:Version})
+Replaces: libunivention-config0 (<< 7)
+Description: UCS - C interface to configuration manager (development files)
+ This package includes the development files to access
+ the UCS configuration manager from C.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: python-univention-config-registry
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends},
+ python-univention-namespace,
+ python-ipaddr,
+ python-six,
+ ifupdown,
+Provides: ${python:Provides}
+Description: UCS - Python 2 interface to configuration registry
+ This package includes the Python interface to the
+ UCS configuration manager.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+
+Package: python3-univention-config-registry
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends},
+ python3-six,
+ ifupdown,
+Provides: ${python3:Provides}
+Description: UCS - Python 3 interface to configuration registry
+ This package includes the Python interface to the
+ UCS configuration manager.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/

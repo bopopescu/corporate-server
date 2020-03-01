@@ -1,0 +1,115 @@
+#!/usr/share/ucs-test/runner bash
+## desc: |
+##  Test the correct behavior of univention-updater-check
+## roles-not: [basesystem]
+## tags:
+##  - basic
+## packages:
+##  - apache2 | apache2-mpm-prefork
+## exposure: dangerous
+## bugs: [31773]
+
+RETVAL=110 # Test fehlgeschlagen
+. pool.sh || exit 137
+
+setup_apache "${repoprefix}"
+
+FIXED_31733=false
+BUG31733 () { # expected-value cmd...
+	local expected value
+	expected=$1
+	shift
+	"$@" || return $?
+	value="$(ucr get update/available)"
+	echo "update/available: $value" >&2
+
+	if ! "${FIXED_31733}" && [ "$expected" != "$value" ]
+	then
+		echo "BUG #31733: Force APT cache refresh" >&2
+		touch /var/lib/dpkg/status
+		"$@" || return $?
+		value="$(ucr get update/available)"
+		echo "update/available: $value" >&2
+	fi
+
+	ucr set update/available= # reset the UCR variable
+	[ "$expected" = "$value" ]
+}
+
+(
+	# break upon error
+	set -e
+
+	# initial version numbers
+	patchlevel=0
+	erratalevel=0
+	pkversion=1
+
+	# create first repository
+	echo "### Initiate the repository (patchlevel=$patchlevel erratalevel=$erratalevel) ###"
+	mkpdir "${_version_version}-${patchlevel}" maintained "${ARCH}"
+	mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR}"
+	mkpkg "${DIR}"
+
+	# reset to X.X-0 without errata patches
+	config_repo version/patchlevel=0 version/erratalevel=0
+
+	# install the first version of the test package
+	apt-get -qq update
+	apt-get -qq install "${pkgname}"
+	dpkg-query -W "${pkgname}" | grep -Fqx "${pkgname}	1"
+
+	# no update should be available
+	BUG31733 no /usr/share/univention-updater/univention-updater-check
+
+	# We need to test the behavior for normal and easy update process.
+	# In fact, there is only one difference: for the easy process, an update
+	# is also available in case there is any package with a new version.
+	for easy in false true
+	do
+		# set easy ins
+		ucr set update/umc/updateprocess/easy=$easy
+
+		# create new patchlevel release
+		let ++patchlevel
+		let ++pkversion
+		echo "### Create a new patchlevel release (easy=$easy patchlevel=$patchlevel erratalevel=$erratalevel) ###"
+		mkpdir "${_version_version}-${patchlevel}" maintained "${ARCH}"
+		mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR}"
+		mkpkg "${DIR}"
+		apt-get -qq update
+
+		# an update should be available
+		BUG31733 yes /usr/share/univention-updater/univention-updater-check
+
+		# do the update and make sure update/available has been updated
+		echo "### Update ###"
+		BUG31733 no /usr/share/univention-updater/univention-updater net
+
+
+		# create new package version in the same release
+		let ++pkversion
+		echo "### Create a new package version (easy=$easy patchlevel=$patchlevel erratalevel=$erratalevel) ###"
+		mkdeb "${pkgname}" ${pkversion} "${ARCH}" "${DIR}"
+		mkpkg "${DIR}"
+		apt-get -qq update
+
+		# an update should be available
+		BUG31733 yes /usr/share/univention-updater/univention-updater-check
+
+		# call univention-actualise and make sure update/available has been updated 
+		# without easy update process, the variable should not be modified
+		echo "### Updating packages (easy=$easy patchlevel=$patchlevel erratalevel=$erratalevel) ###"
+		if "$easy"
+		then
+			BUG31733 no /usr/share/univention-updater/univention-actualise
+		else
+			BUG31733 "" /usr/share/univention-updater/univention-actualise
+		fi
+	done
+)
+[ $? -eq 0 ] && RETVAL=100 # Test bestanden (Keine Fehler)
+dpkg -P --force-all "${pkgname}" >&3 2>&3
+
+exit ${RETVAL}
+# vim:set ft=sh:

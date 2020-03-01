@@ -1,0 +1,105 @@
+Source: univention-pkgdb
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>= 7.0.50~),
+ python-dev,
+ dh-python,
+ univention-config-dev,
+ univention-management-console-dev (>= 11.0.4-37),
+ python-all,
+ python3-all,
+ ucslint-univention
+Standards-Version: 3.8.2
+
+Package: univention-pkgdb
+Architecture: all
+Pre-Depends: univention-postgresql (>= 2.0.1-5)
+Depends: ${misc:Depends},
+ univention-directory-manager-tools (>> 7.0.147),
+ univention-config,
+ postgresql-client,
+ univention-pkgdb-tools,
+ shell-univention-lib (>= 3.0.1-1),
+ python-univention-lib (>= 1.0.25-1),
+ univention-management-console-module-pkgdb
+Description: UCS - PkgDB
+ This package contains server-side-components for the UCS package database.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: python-univention-pkgdb
+Architecture: all
+Depends:
+ ${misc:Depends}, ${python:Depends},
+ python-apt,
+ python-pygresql,
+ python-dns,
+ univention-config,
+Provides: ${python:Provides}
+Conflicts: univention-pkgdb-lib (<< 1.0.4)
+Description: UCS - PkgDB
+ This package contains python libraries needed for all UCS package database components.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: python3-univention-pkgdb
+Architecture: all
+Depends:
+ ${misc:Depends}, ${python3:Depends},
+ python3-apt,
+ python3-pygresql,
+ python3-dns,
+ univention-config,
+Provides: ${python3:Provides}
+Description: UCS - PkgDB
+ This package contains python 3 libraries needed for all UCS package database components.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-pkgdb-tools
+Architecture: all
+Depends: ${misc:Depends},
+ univention-config,
+ python-univention-pkgdb
+Recommends: postgresql-client
+Description: UCS - PkgDB-Tools
+ This package contains client-side-tools for the UCS package database.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-pkgdb-lib
+Architecture: all
+Depends: ${misc:Depends},
+ python-univention-pkgdb
+Description: Transition package
+ Package to ease upgrading from old package
+ python-univention-pkgdb to the new package.  This package
+ can be purged at anytime once the
+ python-univention-pkgdb package has been installed.
+
+Package: univention-management-console-module-pkgdb
+Architecture: all
+Depends: ${python:Depends}, ${python3:Depends},
+ univention-management-console-server (>= 11.0.4-37),
+ univention-directory-manager-tools (>> 7.0.147),
+ univention-pkgdb (= ${source:Version})
+Description: UMC module for software monitor
+ This package contains the UMC module for the software monitor.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/

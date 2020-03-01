@@ -1,0 +1,34 @@
+Source: univention-x-core
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper,
+ univention-config-dev,
+ ucslint-univention
+Standards-Version: 3.8.2
+
+Package: univention-x-core
+Architecture: all
+Pre-Depends: univention-config
+Depends: ${misc:Depends},
+ univention-policy-tools,
+ ldap-utils,
+ xserver-xorg (>> 1:7.3),
+ xbase-clients,
+ xserver-xorg-video-all,
+ x11-common,
+ xorg,
+ xserver-xorg-video-openchrome,
+ xserver-xorg-input-kbd,
+ xserver-xorg-input-mouse,
+ xserver-xorg-input-libinput
+Recommends: univention-kdm
+Conflicts: xserver-xfree86 (<< 6.8.2)
+Description: UCS - X Window System
+ This package contain a meta-package, that sets up a graphical login.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+

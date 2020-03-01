@@ -1,0 +1,60 @@
+Source: crudesaml
+Section: libs
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper,
+ dh-autoreconf,
+ quilt,
+ tar,
+ libpam0g-dev,
+ libsasl2-dev,
+ liblasso3-dev,
+Standards-Version: 3.7.2
+
+Package: pam-saml
+Architecture: any
+Depends: ${misc:Depends},
+ ${shlibs:Depends},
+Description: PAM module for SAML authentication
+ This package contains a PAM module that performs a crude
+ check on a SAML authentication assertion. The assertion signature and date
+ are verified, and access is granted on behalf to the user taken for a
+ configurable attribute.
+ .
+ The only protection against replay attacks is the assertion validity dates
+ checks, this authentication is therefore secure only if the SAML
+ authentication assertion remains secret. The assertion has the same role
+ as a web cookie used for authentication.
+
+Package: cy2-saml
+Architecture: any
+Depends: ${misc:Depends},
+ ${shlibs:Depends},
+Description: SASL plugin for SAML authentication
+ This package contains a SASL plugin that performs a crude
+ check on a SAML authentication assertion. The assertion signature and date
+ are verified, and access is granted on behalf to the user taken for a
+ configurable attribute.
+ .
+ The only protection against replay attacks is the assertion validity dates
+ checks, this authentication is therefore secure only if the SAML
+ authentication assertion remains secret. The assertion has the same role
+ as a web cookie used for authentication.
+
+Package: pam-saml-dbg
+Architecture: any
+Section: debug
+Priority: extra
+Depends: pam-saml (= ${binary:Version}),
+ ${misc:Depends},
+Description: debugging symbols for pam-saml
+ This package contains the debugging symbols for pam-saml.
+
+Package: cy2-saml-dbg
+Architecture: any
+Section: debug
+Priority: extra
+Depends: cy2-saml (= ${binary:Version}),
+ ${misc:Depends},
+Description: debugging symbols for cy2-saml
+ This package contains the debugging symbols for cy2-saml.

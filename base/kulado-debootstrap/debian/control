@@ -1,0 +1,34 @@
+Source: univention-debootstrap
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debootstrap,
+ debhelper,
+ ucslint-univention
+
+Package: univention-debootstrap
+Architecture: all
+Depends: ${misc:Depends}, ${shlibs:Depends},
+ debootstrap
+Replaces: univention-debootstrap-3 (<< 5.0.0-0)
+Breaks: univention-debootstrap-3 (<< 5.0.0-0)
+Description: UCS debootstrap scripts for UCS
+ This package contains the debootstrap configuration for UCS.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-debootstrap-3
+Architecture: all
+Depends: ${misc:Depends}, ${shlibs:Depends},
+ univention-debootstrap
+Description: transitional dummy package
+ This is a transitional dummy package. It can safely be removed.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/

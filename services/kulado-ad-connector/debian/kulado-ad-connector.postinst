@@ -1,0 +1,97 @@
+#!/bin/sh
+#
+# Univention AD Connector
+#  postinst script of the ad connector package
+#
+# Copyright 2004-2019 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+. /usr/share/univention-lib/all.sh
+
+dpkg-maintscript-helper rm_conffile "/etc/apache2/conf.d/univention-ad-connector/apache2.conf" 11.0.6-4~ -- "$@"
+
+create_logfile /var/log/univention/ad-connector-certificate.log "root:adm" 640
+create_logfile /var/log/univention/connector.log "root:adm" 640
+create_logfile /var/log/univention/connector-status.log "root:adm" 640
+
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.0-1; then
+	univention-config-registry set connector/ad/mapping/group/grouptype?false
+
+fi
+
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 8.0.17-7; then
+	# disable windowscomputer sync for existing installations
+	ucr connector/ad/mapping/computer/syncmode?none
+fi
+
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 12.0.0-32; then
+	# do not sync userPrincipalName's
+	ucr set connector/ad/mapping/sync/userPrincipalName='false'
+fi
+
+univention-config-registry set connector/ad/listener/dir?/var/lib/univention-connector/ad \
+			connector/ad/poll/sleep?5 \
+			connector/ad/retryrejected?10 \
+			connector/ad/ldap/port?389 \
+			connector/ad/ldap/ssl?yes \
+			connector/debug/function?0 \
+			connector/debug/level?2 \
+			connector/password/service/encoding?"iso8859-15" \
+			connector/ad/mapping/user/primarymail?false \
+			connector/ad/mapping/group/primarymail?false connector/ad/mapping/group/language?de \
+			connector/ad/mapping/syncmode?sync \
+			connector/ad/mapping/user/ignorelist?"Administrator,krbtgt,root,pcpatch" \
+			connector/ad/mapping/group/grouptype?true \
+			connector/ad/mapping/group/ignorelist?"Windows Hosts,DC Slave Hosts,DC Backup Hosts,Authenticated Users,World Authority,Everyone,Null Authority,Nobody,Enterprise Domain Controllers,Computers,Remote Interactive Logon,SChannel Authentication,Digest Authentication,Terminal Server User,NTLM Authentication,Other Organization,This Organization,Anonymous Logon,Network Service,Creator Group,Creator Owner,Local Service,Owner Rights,Interactive,Restricted,Network,Service,Dialup,System,Batch,Proxy,IUSR,Self" \
+			connector/ad/mapping/container/ignorelist?"mail,kerberos" \
+			connector/ad/autostart?yes \
+			directory/manager/web/modules/users/user/properties/username/syntax?"uid_umlauts"
+
+
+if [ ! -d /var/lib/univention-connector/ad ]; then
+	mkdir -p /var/lib/univention-connector/ad
+	chown 0.0 /var/lib/univention-connector/ad
+fi
+
+/etc/init.d/univention-ad-connector crestart || true
+/etc/init.d/univention-directory-listener crestart || true
+
+
+if [ "$1" = "configure" ]; then
+	uinst=/usr/lib/univention-install/19univention-ad-connector.uinst
+	[ -e "$uinst" ] && rm "$uinst"
+fi
+
+call_joinscript 81univention-ad-connector.inst
+
+#DEBHELPER#
+
+if [ -x /etc/init.d/univention-management-console-server ]; then
+	/etc/init.d/univention-management-console-server crestart
+fi
+
+exit 0

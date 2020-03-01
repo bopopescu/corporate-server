@@ -1,0 +1,2 @@
+univention-novnc.conf	/etc/apache2/conf-available
+websockify	/usr/lib/univention-novnc/

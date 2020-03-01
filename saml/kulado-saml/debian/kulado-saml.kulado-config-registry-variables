@@ -1,0 +1,197 @@
+[ucs/server/sso/fqdn]
+Description[de]=Definiert den FQDN des Identity Provider dieser UCS Domäne.
+Description[en]=Defines the fqdn of the identity provider of this UCS domain.
+Type=str
+Categories=management
+
+[ucs/server/sso/virtualhost]
+Description[de]=Wenn diese Variable auf 'true' gesetzt ist, wird ein Virtual Host Eintrag für den FQDN des Identity Provider erstellt. (default: true)
+Description[en]=If this variable is set to 'true', a virtual host entry for the fqdn of the identity provider is generated. (default: true)
+Type=bool
+Categories=management
+
+[ucs/server/sso/autoregistraton]
+Description[de]=Wenn diese Variable auf 'true' gesetzt ist, registriert dieses UCS System die eigene IP-Adresse am FQDN des Identity Provider (ucs/server/sso/fqdn). (default: true)
+Description[en]=If this variable is set to 'true', this UCS system tregisters its IP address at the fqdn of the identity provider (ucs/server/sso/fqdn). (default: true)
+Type=bool
+Categories=management
+
+[ucs/server/sso/certificate/generation]
+Description[de]=Wenn diese Variable auf 'true' gesetzt ist, wird das Zertifikat für den FQDN des Identity Provider (ucs/server/sso/fqdn) automatisch erstellt. (default: true)
+Description[en]=If this variable is set to 'true', the certificate for the fqdn of the identity provider (ucs/server/sso/fqdn) is created automatically. (default: true)
+Type=bool
+Categories=management
+
+[ucs/server/sso/certificate/download]
+Description[de]=Wenn diese Variable auf 'true' gesetzt ist, wird das Zertifikat für den FQDN des Identity Provider (ucs/server/sso/fqdn) automatisch heruntergeladen. (default: true)
+Description[en]=If this variable is set to 'true', the certificate for the fqdn of the identity provider (ucs/server/sso/fqdn) is downloaded automatically. (default: true)
+Type=bool
+Categories=management
+
+[saml/idp/entityID]
+Description[de]=Diese Variable konfiguriert die entityID des SAML 2.0 identity provider.
+Description[en]=This variable configures the entityID of the SAML 2.0 identity provider.
+Type=str
+Categories=saml
+
+[saml/idp/entityID/supplement/.*]
+Description[de]=Mit dieser Variablen lassen sich zusätzliche entityIDs für den saml Identity Provider festlegen (z.B.: saml/idp/entityID/supplement/o365=true).
+Description[en]=This variable can be used to define additional entityIDs for the saml identity provider (example: saml/idp/entityID/supplement/o365=true)
+Type=str
+Categories=saml
+
+[saml/idp/enableSAML20-IdP]
+Description[de]=Wenn diese Variable auf 'true' gesetzt ist, ist der saml 2.0 Identity Provider aktiviert. (default: true)
+Description[en]=If this variable is set to 'true', the saml 2.0 identity provider is activated. (default: true)
+Type=str
+Categories=saml
+
+[saml/idp/negotiate]
+Description[de]=Wenn diese Variable auf 'true' gesetzt ist, wird die Anmeldung per Kerberos / HTTP Negotiate ermöglicht.
+Description[en]=If this variable is set to 'true', the single sign on via kerberos / HTTP negotiate is possible.
+Type=bool
+Categories=saml
+
+[saml/idp/negotiate/filter-subnets]
+Description[de]=Beschränkt die Anmeldung per Kerberos / HTTP Negotiate auf Anfragen aus dem angegebenen Subnetz. Der Wert ist eine kommaseparierte Liste von Netzwerken (z.B.: 127.0.0.0/16,192.168.0.0/16).
+Description[en]=Restrict single sign on via Kerberos / HTTP negotiate only to clients requesting from the specified subnet. The value is a comma spearated list of networks (example: 127.0.0.0/16,192.168.0.0/16).
+Type=str
+Categories=saml
+
+[saml/idp/timezone]
+Description[de]=Zeitzone, in der der Identity Provider sich befindet. (default: Europe/Berlin)
+Description[en]=Timezone in which the identity provider operates. (default: Europe/Berlin)
+Type=str
+Categories=saml
+
+[saml/idp/log/debug/enabled]
+Description[de]=Aktivieren ("TRUE") oder deaktivieren ("FALSE") von Debugausgaben. default: FALSE
+Description[en]=Activation ("TRUE") or deactivation ("FALSE") of debug output. default: FALSE
+Type=str
+Categories=saml
+
+[saml/idp/log/level]
+Description[de]=Loglevel des Identity Providers (gültige Werte: ERR, WARNING, NOTICE, INFO, DEBUG). (default: NOTICE)
+Description[en]=Identity provider loglevel (valid values: ERR, WARNING, NOTICE, INFO, DEBUG). (default: NOTICE)
+Type=str
+Categories=saml
+
+[saml/idp/show-errors]
+Description[de]=Definiert, ob Fehler informationen wie Stack Traces dem Benutzer angezeigt werden.
+Description[en]=Defines if error information and stack traces allowed to be shown to the user.
+Type=bool
+Categories=saml
+
+[saml/idp/lookandfeel/theme]
+Description[de]=Das verwendete Theme der Webseiten des Identity Providers. (default: univentiontheme:univention)
+Description[en]=The theme used by the identity Provider webpages. (default: univentiontheme:univention)
+Type=str
+Categories=saml
+
+[saml/idp/technicalcontactname]
+Description[de]=Name des Kontaktes der bei Problemen Hilfestellung leistet. (default: Administrator)
+Description[en]=Name of the contact who offers help with problems. (default: Administrator)
+Type=str
+Categories=saml
+
+[saml/idp/technicalcontactemail]
+Description[de]=Kontakt E-Mailadresse um Probleme zu melden. (default: root@[domainname])
+Description[en]=Contact email address to report problems to. (default: root@[domainname])
+Type=str
+Categories=saml
+
+[saml/idp/password-change-url]
+Description[de]=Spezifiziert den Link, der bei einem abgelaufenem Passwort angezeigt wird.
+Description[en]=Specifies the link, which will be shown when the password is expired.
+Type=str
+Categories=saml
+
+[saml/idp/ldap/enable_tls]
+Description[de]=Ist diese Variable auf 'true' gesetzt, wird eine verschlüsselte Verbindung zum LDAP Server aufgebaut. (default: true)
+Description[en]=If this variable is set to 'true', the ldap connection will be encrypted. (default: true)
+Type=str
+Categories=saml
+
+[saml/idp/ldap/debug]
+Description[de]=Wenn diese Variable auf 'true' gesetzt ist, wird das Debugging für die LDAP Verbindung eingeschaltet. (default: false)
+Description[en]=If this variable is set to 'true', ldap server connection debugging is activated. (default: false)
+Type=str
+Categories=saml
+
+[saml/idp/ldap/search_attributes]
+Description[de]=Eine Liste von LDAP Attributen, die als Filter für den angegebenen Benutzernamen verwendet werden (z.B.: "'uid', 'mail'"). (default: 'uid', 'mailPrimaryAddress')
+Description[en]=A list of ldap attributes that are filtered for the provided username (i.e. "'uid', 'mail'"). (default: 'uid', 'mailPrimaryAddress')
+Type=str
+Categories=saml
+
+[saml/idp/ldap/get_attributes]
+Description[de]=Eine Liste von LDAP Benutzerattributen, die aus dem LDAP gelesen werden (z.B.: "'uid', 'mail'"). (default: 'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier'). Die Einstellungen dieser UCRv werden domänenweit von einem LDAP object verwaltet, standardmäßig id=default-saml-idp,cn=univention,LDAPBASE
+Description[en]=A list of ldap user attributes that are read from ldap after succesful user authentication (i.e.: "'uid', 'mail'"). (default: 'uid', 'mailPrimaryAddress', 'enabledServiceProviderIdentifier'). This settings for this UCRv are managed domain wide by an ldap object, the default is id=default-saml-idp,cn=univention,LDAPBASE
+Type=str
+Categories=saml
+
+[saml/idp/ldap/user]
+Description[de]=Der LDAP DN des Benutzers, mit dem der SAML IdP LDAP Abfragen durchführt. Das Passwort muss in der Datei /etc/idp-ldap-user.secret stehen.
+Description[en]=The LDAP DN of the user, with which the SAML IdP will execute queries. The password has to be placed in the file /etc/idp-ldap-user.secret
+Type=str
+Categories=saml
+
+[saml/idp/certificate/privatekey]
+Description[de]=Der Pfad zum Zertifikatsschlüssel, mit dem die SAML Assertion signiert an den Service Provider gesendet wird.
+Description[en]=The path of the certificate key which is used to sign the SAML assertion that is send to the service provider.
+Type=str
+Categories=saml
+
+[saml/idp/certificate/certificate]
+Description[de]=Der Pfad zum öffentlichen Zertifikat, mit dem die SAML Assertion signiert an den Service Provider gesendet wird.
+Description[en]=The path of the public certificate which is used to sign the SAML assertion that is send to the service provider.
+Type=str
+Categories=saml
+
+[saml/idp/https]
+Description[de]=Wenn diese Variable auf true gesetzt ist, werden HTTP Verbindungen zu /simplesamlphp automatisch auf HTTPS umgeleitet (default: true)
+Description[en]=If this variable is set to true, HTTP connections to /simplesamlphp will be automatically redirected to HTTPS (default: true)
+Type=str
+Categories=saml
+
+[saml/idp/authsource]
+Description[de]=Die Quellkonfiguration die zur Authentifizierung von Benutzern aktiviert ist. Es kann univention-negotiate und univention-ldap verwendet werden.
+Description[en]=The source configuration used to authenticate users. The values univention-negotiate and univention-ldap can be used.
+Type=str
+Categories=saml
+
+[stunnel/debuglevel]
+Description[de]=Der Debuglevel des stunnel daemons. Gültige Werte 0-7 (default: 4)
+Description[en]=Debug level of the stunnel daemon. Valid values are 0-7 (default: 4)
+Type=int
+Categories=stunnel
+
+[saml/apache2/ssl/certificate]
+Description[de]=Der absolute Pfad zur SSL-Zertifikatsdatei für mod_ssl des SAML VirtualHost. Das Zertifikat muss PEM-codiert sein. Ist die Variable nicht gesetzt, wird das Zertifikat aus der UCS-CA verwendet (/etc/univention/ssl/ucs-sso.$domainname/cert.pem).
+Description[en]=The absolute path to the SSL certificate file for mod_ssl of the SAML virtualhost. The certificate needs to be PEM-encoded. If the variable is unset, the certificate from the UCS CA is used (/etc/univention/ssl/ucs-sso.$domainname/cert.pem).
+Type=str
+Categories=saml
+
+[saml/apache2/ssl/key]
+Description[de]=Der absolute Pfad zum privaten RSA/DSA-Schlüssel der SSL-Zertifikatsdatei für mod_ssl des SAML VirtualHost. Der Schlüssel muss PEM-codiert sein. Ist die Variable nicht gesetzt, wird das Zertifikat aus der UCS-CA verwendet (/etc/univention/ssl/ucs-sso.$domainname/private.key).
+Description[en]=The absolute path to the private RSA/DSA key of the SSL certificate file for mod_ssl of the SAML virtualhost. The key needs to be PEM-encoded. If the variable is unset, the certificate from the UCS CA is used (/etc/univention/ssl/ucs-sso.$domainname/private.key).
+Type=str
+Categories=saml
+
+[saml/apache2/ssl/ca]
+Description[de]=Der absolute Pfad zum Zertifikat der Zertifizierungsstelle (CA) für mod_ssl. Das Zertifikat muss PEM-codiert sein. Ist die Variable nicht gesetzt, wird das Zertifikat aus der UCS-CA verwendet (/etc/univention/ssl/ucsCA/CAcert.pem).
+Description[en]=The absolute path to the certificate of the certificate authority (CA) for mod_ssl. The certificate needs to be PEM-encoded. If the variable is unset, the certificate from the UCS CA is used (/etc/univention/ssl/ucsCA/CAcert.pem).
+Type=str
+Categories=saml
+
+[saml/apache2/ssl/certificatechain]
+Description[de]=Der Pfad zu einer Datei mit den CA-Zerifikaten. Diese werden dem Clientbrowser eines Benutzers übermittelt, damit ein Zertifikat für die Authentifizierung des Benutzers ausgewählt werden kann, das von einer dieser CAs ausgestellt wurde.
+Description[en]=The path to a file containing CA certificates. They are sent to the client browser of a user, so that a certificate for authentication the user can be selected, which is issued by one of the CAs.
+Type=str
+Categories=saml
+
+[saml/idp/session-duration]
+Description[de]=Konfiguriert die vom SAML Identity Provider definierte Dauer einer Login Session, in Sekunden. Nach Ablauf dieser Zeit müssen sich Benutzer neu am UCS SAML Identity Provider authentifizieren. (Standard: '43200', das entspricht 12 Stunden)
+Description[en]=Configures the duration of a login session defined by the SAML Identity Provider, in seconds. After this time has elapsed, users must re-authenticate to the UCS SAML Identity Provider. (Default: '43200', this corresponds to 12 hours)
+Type=str
+Categories=saml

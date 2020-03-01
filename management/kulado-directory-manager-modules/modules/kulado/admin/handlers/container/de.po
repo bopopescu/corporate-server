@@ -1,0 +1,260 @@
+# Copyright 2010-2019 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-directory-manager-modules\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2019-10-22 22:08+0200\n"
+"PO-Revision-Date: 2004-04-02 16:24+0200\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language-Team: German <packages@univention.de>\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: unicode\n"
+
+#: modules/univention/admin/handlers/container/cn.py:75
+#: modules/univention/admin/handlers/container/ou.py:76
+msgid "Add to standard DHCP containers"
+msgstr "Zu Standard-DHCP-Container hinzufügen"
+
+#: modules/univention/admin/handlers/container/cn.py:81
+#: modules/univention/admin/handlers/container/ou.py:82
+msgid "Add to standard DNS containers"
+msgstr "Zu Standard-DNS-Container hinzufügen"
+
+#: modules/univention/admin/handlers/container/cn.py:99
+#: modules/univention/admin/handlers/container/ou.py:100
+msgid "Add to standard computer containers"
+msgstr "Zu Standard-Rechner-Containern hinzufügen"
+
+#: modules/univention/admin/handlers/container/cn.py:105
+#: modules/univention/admin/handlers/container/ou.py:106
+msgid "Add to standard domain controller computer containers"
+msgstr "Zu Standard-Domänencontroller-Rechner-Containern hinzufügen"
+
+#: modules/univention/admin/handlers/container/cn.py:93
+#: modules/univention/admin/handlers/container/ou.py:94
+msgid "Add to standard group containers"
+msgstr "Zu Standard-Gruppen-Container hinzufügen"
+
+#: modules/univention/admin/handlers/container/cn.py:135
+#: modules/univention/admin/handlers/container/ou.py:136
+msgid "Add to standard license containers"
+msgstr "Zu Standard-Lizenz-Containern hinzufügen"
+
+#: modules/univention/admin/handlers/container/cn.py:129
+#: modules/univention/admin/handlers/container/ou.py:130
+msgid "Add to standard mail containers"
+msgstr "Zu Standard-Mail-Container hinzufügen"
+
+#: modules/univention/admin/handlers/container/cn.py:111
+#: modules/univention/admin/handlers/container/ou.py:112
+msgid "Add to standard network containers"
+msgstr "Zu Standard-Netzwerk-Containern hinzufügen"
+
+#: modules/univention/admin/handlers/container/cn.py:69
+#: modules/univention/admin/handlers/container/ou.py:70
+msgid "Add to standard policy containers"
+msgstr "Zu Standard-Richtlinien-Container hinzufügen"
+
+#: modules/univention/admin/handlers/container/cn.py:123
+#: modules/univention/admin/handlers/container/ou.py:124
+msgid "Add to standard printer containers"
+msgstr "Zu Standard-Drucker-Container hinzufügen"
+
+#: modules/univention/admin/handlers/container/cn.py:117
+#: modules/univention/admin/handlers/container/ou.py:118
+msgid "Add to standard share containers"
+msgstr "Zu Standard-Freigaben-Container hinzufügen"
+
+#: modules/univention/admin/handlers/container/cn.py:87
+#: modules/univention/admin/handlers/container/ou.py:88
+msgid "Add to standard user containers"
+msgstr "Zu Standard-Benutzer-Container hinzufügen"
+
+#: modules/univention/admin/handlers/container/cn.py:150
+#: modules/univention/admin/handlers/container/dc.py:141
+#: modules/univention/admin/handlers/container/ou.py:151
+msgid "Basic settings"
+msgstr "Grundeinstellungen"
+
+#: modules/univention/admin/handlers/container/cn.py:49
+msgid "Container"
+msgstr "Container"
+
+#: modules/univention/admin/handlers/container/cn.py:151
+msgid "Container description"
+msgstr "Container-Bezeichnung"
+
+#: modules/univention/admin/handlers/container/cn.py:154
+#: modules/univention/admin/handlers/container/ou.py:155
+msgid "Container settings"
+msgstr "Container-Einstellungen"
+
+#: modules/univention/admin/handlers/container/cn.py:48
+msgid "Container: Container"
+msgstr "Container: Container"
+
+#: modules/univention/admin/handlers/container/dc.py:54
+msgid "Container: Domain"
+msgstr "Container: Domäne"
+
+#: modules/univention/admin/handlers/container/ou.py:49
+msgid "Container: Organisational Unit"
+msgstr "Container: Organisationseinheit"
+
+#: modules/univention/admin/handlers/container/cn.py:50
+msgid "Containers"
+msgstr "Container"
+
+#: modules/univention/admin/handlers/container/dc.py:146
+msgid "DNS"
+msgstr "DNS"
+
+#: modules/univention/admin/handlers/container/dc.py:146
+msgid "DNS Zones"
+msgstr "DNS-Zonen"
+
+#: modules/univention/admin/handlers/container/dc.py:85
+msgid "DNS forward lookup zone"
+msgstr "Forward Lookup Zone"
+
+#: modules/univention/admin/handlers/container/dc.py:92
+msgid "DNS reverse lookup zone"
+msgstr "Reverse Lookup Zone"
+
+#: modules/univention/admin/handlers/container/cn.py:154
+#: modules/univention/admin/handlers/container/ou.py:155
+msgid "Default position when adding objects"
+msgstr "Vorgegebene Position beim Hinzufügen von Objekten"
+
+#: modules/univention/admin/handlers/container/cn.py:141
+#: modules/univention/admin/handlers/container/ou.py:142
+msgid "Description"
+msgstr "Beschreibung"
+
+#: modules/univention/admin/handlers/container/dc.py:55
+msgid "Domain Container"
+msgstr "Domänen-Container"
+
+#: modules/univention/admin/handlers/container/dc.py:56
+msgid "Domain Containers"
+msgstr "Domänen-Container"
+
+#: modules/univention/admin/handlers/container/dc.py:142
+msgid "Domain container description"
+msgstr "Bezeichnung - Domänen-Container"
+
+#: modules/univention/admin/handlers/container/cn.py:150
+#: modules/univention/admin/handlers/container/dc.py:141
+#: modules/univention/admin/handlers/container/ou.py:151
+msgid "General"
+msgstr "Allgemein"
+
+#: modules/univention/admin/handlers/container/ou.py:211
+msgid ""
+"It is not allowed to create a container/ou as child object of a "
+"container/cn."
+msgstr ""
+"Es ist nicht gestattet einen container/ou als untergeordnetes Objekt von "
+"einem container/cn zu erstellen."
+
+#: modules/univention/admin/handlers/container/dc.py:153
+msgid "Kerberos"
+msgstr "Kerberos"
+
+#: modules/univention/admin/handlers/container/dc.py:153
+msgid "Kerberos Settings"
+msgstr "Kerberos-Einstellungen"
+
+#: modules/univention/admin/handlers/container/dc.py:64
+#: modules/univention/admin/handlers/container/dc.py:130
+msgid "Kerberos realm"
+msgstr "Kerberos Realm"
+
+#: modules/univention/admin/handlers/container/cn.py:60
+#: modules/univention/admin/handlers/container/dc.py:76
+#: modules/univention/admin/handlers/container/ou.py:61
+msgid "Name"
+msgstr "Name"
+
+#: modules/univention/admin/handlers/container/ou.py:50
+msgid "Organisational Unit"
+msgstr "Organisationseinheit"
+
+#: modules/univention/admin/handlers/container/ou.py:51
+msgid "Organisational Units"
+msgstr "Organisationseinheiten"
+
+#: modules/univention/admin/handlers/container/ou.py:152
+msgid "Organisational unit description"
+msgstr "Bezeichnung - Organisationseinheit"
+
+#: modules/univention/admin/handlers/container/dc.py:69
+#: modules/univention/admin/handlers/container/dc.py:149
+msgid "Samba"
+msgstr "Samba"
+
+#: modules/univention/admin/handlers/container/dc.py:123
+msgid "Samba Next Group RID"
+msgstr "Nächste Samba-Gruppen-RID"
+
+#: modules/univention/admin/handlers/container/dc.py:116
+msgid "Samba Next User RID"
+msgstr "Nächste Samba-User-RID"
+
+#: modules/univention/admin/handlers/container/dc.py:108
+msgid "Samba SID"
+msgstr "Samba-SID"
+
+#: modules/univention/admin/handlers/container/dc.py:149
+msgid "Samba Settings"
+msgstr "Samba-Einstellungen"
+
+#: modules/univention/admin/handlers/container/dc.py:99
+msgid "Samba domain name"
+msgstr "Samba-Domänenname"
+
+#~ msgid "Administrator password for this domain"
+#~ msgstr "Administrator Passwort für die Domäne"
+
+#~ msgid "Domain Password"
+#~ msgstr "Domänen-Passwort"
+
+#~ msgid "Domain password"
+#~ msgstr "Domänen-Passwort"
+
+#~ msgid "Mail"
+#~ msgstr "Mail"
+
+#~ msgid "Mail Settings"
+#~ msgstr "Mail-Einstellungen"
+
+#~ msgid "Mail relay server"
+#~ msgstr "Mail Relay-Server"

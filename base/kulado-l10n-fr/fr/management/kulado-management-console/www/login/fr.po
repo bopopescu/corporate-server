@@ -1,0 +1,148 @@
+# Sandrine Burriel <sandrine@workshop-chapina.com>, 2017.
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-login\n"
+"Report-Msgid-Bugs-To: forge.univention.org\n"
+"POT-Creation-Date: 2017-04-14 00:29+0200\n"
+"PO-Revision-Date: 2017-05-28 20:52+0900\n"
+"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"Language-Team: French <fr@workshop-chapina.com>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Lokalize 1.5\n"
+
+#: www/login/main.js:433
+msgid "Authentication required"
+msgstr "Authentification requise"
+
+#: www/login/main.js:488
+msgid "Cancel"
+msgstr "Annuler"
+
+#: www/login/LoginDialog.js:237
+msgid ""
+"Changing password failed. The passwords do not match, please retype again."
+msgstr ""
+"Le changement du mot de passe a échoué. Les mots de passe saisis sont "
+"différents, veuillez les saisir à nouveau."
+
+#: www/login/main.js:487
+msgid "Do you really want to logout?"
+msgstr "Voulez-vous vraiment vous déconnecter ?"
+
+#: www/login/dialog.js:124
+msgid "How do I login?"
+msgstr "Comment s'authentifier?"
+
+#: www/login/LoginDialog.js:65 www/login/LoginDialog.js:250
+#: www/login/main.js:193 www/login/main.js:451
+msgid "Login"
+msgstr "Connexion"
+
+#: www/login/config.js:13
+#, python-format
+msgid "Login at %(domainname)s"
+msgstr "Authentification à %(domainname)s"
+
+#: www/login/main.js:493
+msgid "Logout"
+msgstr "Se déconnecter"
+
+#: www/login/LoginDialog.js:63
+msgid "New Password"
+msgstr "Nouveau mot de passe"
+
+#: www/login/LoginDialog.js:64 www/login/LoginDialog.js:257
+msgid "New Password (retype)"
+msgstr "Nouveau mot de passe (saisir à nouveau)"
+
+#: www/login/LoginDialog.js:256
+msgid "New password"
+msgstr "Nouveau mot de passe"
+
+#: www/login/LoginDialog.js:66 www/login/LoginDialog.js:258
+msgid "One time password"
+msgstr "Mot de passe temporaire"
+
+#: www/login/LoginDialog.js:62 www/login/LoginDialog.js:255
+#: www/login/main.js:447
+msgid "Password"
+msgstr "Mot de passe"
+
+#: www/login/dialog.js:147
+msgid ""
+"Please enable your browser cookies which are necessary for using Univention "
+"Services."
+msgstr ""
+"Veuillez activer les cookies de votre navigateurs. Ceux-ci sont nécessaires "
+"lorsque "
+"vous utiliser les services Univention."
+
+#: www/login/dialog.js:118
+msgid "Please login with a valid username and password."
+msgstr ""
+"Veuillez vous identifier avec un nom d'utilisateur et un mot de passe "
+"valides."
+
+#: www/login/LoginDialog.js:251
+msgid "Set password"
+msgstr "Définir le mot de passe"
+
+#: www/login/main.js:351
+msgid "So far the authentication failed. Continuing nevertheless."
+msgstr ""
+"Pour le moment, l'authentification a échoué. Néanmoins, le processus "
+"continue."
+
+#: www/login/main.js:193
+msgid "The current session timed out. Please login again."
+msgstr "La session actuelle a expiré. Veuillez vous authentifier à nouveau."
+
+#: www/login/dialog.js:122
+#, python-format
+msgid "The default username to manage the domain is %s."
+msgstr "Le nom d'utilisateur par défaut pour gérer le domaine est %s."
+
+#: www/login/main.js:428
+msgid "This action requires you to supply your password."
+msgstr "Cette action suppose de saisir votre mot de passe."
+
+#: www/login/dialog.js:93
+msgid ""
+"This network connection is not encrypted. All personal or sensitive data "
+"such as passwords will be transmitted in plain text. Please follow this link "
+"to use a secure SSL connection."
+msgstr ""
+"Cette connexion réseau n'est pas chiffrée. Toutes les données sensibles ou "
+"personnelles seront transmises en clair. Veuillez suivre ce lien pour "
+"utiliser une connexion SSL sécurisée."
+
+#: www/login/dialog.js:94
+msgid ""
+"This network connection is not encrypted.<br/>Click here for an HTTPS "
+"connection."
+msgstr ""
+"Cette connexion réseau n'est pas chiffrée.<br/>Veuillez suivre ce lien pour "
+"une connexion HTTPS."
+
+#: www/login/dialog.js:120
+#, python-format
+msgid "Use the %s user for the initial system configuration."
+msgstr "Utiliser l'utilisateur %s pour la configuration initiale du système."
+
+#: www/login/LoginDialog.js:61 www/login/LoginDialog.js:254
+#: www/login/main.js:442
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+#: www/login/dialog.js:113
+msgid ""
+"Your browser is outdated! You may experience performance issues and other "
+"problems when using Univention Services."
+msgstr ""
+"Votre navigateur est obsolète ! Vous pouvez rencontrer des problèmes de "
+"performances et d'autres soucis lorsque vous utilisez les services Univention."
+

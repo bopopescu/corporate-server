@@ -1,0 +1,239 @@
+#!/usr/share/ucs-test/runner bash 
+## desc: "Check license v2 count for clients, servers and users"
+## exposure: dangerous
+## packages:
+## - univention-directory-manager-tools
+## roles:
+##  - domaincontroller_master
+## tags:
+##  - basic
+##  - apptest
+## versions:
+##  3.1-1: skip
+##  3.2-0: fixed
+
+. "$TESTLIBPATH/base.sh" || exit 137
+. "$TESTLIBPATH/random.sh" || exit 137
+
+eval "$(ucr shell)"
+
+licenseVersion="$(univention-ldapsearch '(&(cn=admin)(objectClass=univentionLicense))' -LLL univentionLicenseVersion | sed -ne 's|univentionLicenseVersion: ||p')"
+
+if [ "$licenseVersion" != 2 ]; then
+	exit 137
+fi
+
+getManagedClient ()
+{
+	univention-license-check  | sed -ne 's|^Managed Clients: *||p' | sed  -e 's| .*||'
+}
+getUsers ()
+{
+	univention-license-check  | sed -ne 's|^Users: *||p' | sed  -e 's| .*||'
+}
+getServers ()
+{
+	univention-license-check  | sed -ne 's|^Servers: *||p' | sed  -e 's| .*||'
+}
+getUCC ()
+{
+	univention-license-check  | sed -ne 's|^Corporate Clients: *||p' | sed  -e 's| .*||'
+}
+getDVSUsers ()
+{
+	univention-license-check  | sed -ne 's|^DVS Users: *||p' | sed  -e 's| .*||'
+}
+getDVSClients ()
+{
+	univention-license-check  | sed -ne 's|^DVS Clients: *||p' | sed  -e 's| .*||'
+}
+
+createObject ()
+{
+	module="$1"
+	name="$2"
+
+	echo "Create UDM object of type $module"
+
+	if [ "$module" = "computers/thinclient" ]; then
+		udm-test $module create --set name="$name" --position "cn=computers,$ldap_base" --set ip=1.3.4.5 --set mac=00:01:20:03:04:05 || fail_test 110 "Failed to create $module: name: $name with param: $param"
+	else
+		udm-test $module create --set name="$name" --position "cn=computers,$ldap_base" $param || fail_test 110 "Failed to create $module: name: $name with param: $param"
+	fi
+}
+removeObject ()
+{
+	module="$1"
+	name="$2"
+	udm-test $module remove --dn "cn=$name,cn=computers,$ldap_base" || fail_test 110 "Failed to remove $module: cn=$name,cn=computers,$ldap_base"
+}
+
+# Ignore connector side effects
+test -x /etc/init.d/univention-s4-connector && /etc/init.d/univention-s4-connector stop
+
+
+# These objects should be counted as managed clients
+for m in "computers/linux" "computers/macos" \
+			"computers/ubuntu" "computers/windows" \
+			"computers/windows_domaincontroller"; do
+
+	echo "** Testing module $m"
+
+	name="$(random_chars)"
+
+	oldValueManaged="$(getManagedClient)"
+	oldValueUsers="$(getUsers)"
+	oldValueServers="$(getServers)"
+	oldValueUCC="$(getUCC)"
+	oldValueDVSUsers="$(getDVSUsers)"
+	oldValueDVSClients="$(getDVSClients)"
+
+	createObject "$m" "$name"
+
+	wait_for_replication
+
+	newValueManaged="$(getManagedClient)"
+	newValueUsers="$(getUsers)"
+	newValueServers="$(getServers)"
+	newValueUCC="$(getUCC)"
+	newValueDVSUsers="$(getDVSUsers)"
+	newValueDVSClients="$(getDVSClients)"
+
+	echo "Dump values:"
+	echo "oldValueManaged=$oldValueManaged"
+	echo "oldValueUsers=$oldValueUsers"
+	echo "oldValueServers=$oldValueServers"
+	echo "oldValueUCC=$oldValueUCC"
+	echo "oldValueDVSUsers=$oldValueDVSUsers"
+	echo "oldValueDVSClients=$oldValueDVSClients"
+	echo "newValueManaged=$newValueManaged"
+	echo "newValueUsers=$newValueUsers"
+	echo "newValueServers=$newValueServers"
+	echo "newValueUCC=$newValueUCC"
+	echo "newValueDVSUsers=$newValueDVSUsers"
+	echo "newValueDVSClients=$newValueDVSClients"
+
+	echo "Test managed client count"; test "$((oldValueManaged+1))" = "$newValueManaged"; fail_bool 0 110
+	echo "Test users count"; test "$oldValueUsers" = "$newValueUsers"; fail_bool 0 110
+	echo "Test server count"; test "$oldValueServers" = "$newValueServers"; fail_bool 0 110
+	echo "Test ucc count"; test "$oldValueUCC" = "$newValueUCC"; fail_bool 0 110
+	echo "Test dvs users count"; test "$oldValueDVSUsers" = "$newValueDVSUsers"; fail_bool 0 110
+	echo "Test dvs client count"; test "$oldValueDVSClients" = "$newValueDVSClients"; fail_bool 0 110
+
+	removeObject "$m" "$name"
+
+	wait_for_replication
+done
+
+### # These objects shouldn't be counted
+for m in "computers/ipmanagedclient"; do
+
+	echo "** Testing module $m"
+
+	name="$(random_chars)"
+
+	oldValueManaged="$(getManagedClient)"
+	oldValueUsers="$(getUsers)"
+	oldValueServers="$(getServers)"
+	oldValueUCC="$(getUCC)"
+	oldValueDVSUsers="$(getDVSUsers)"
+	oldValueDVSClients="$(getDVSClients)"
+
+	createObject "$m" "$name"
+
+	wait_for_replication
+
+	newValueManaged="$(getManagedClient)"
+	newValueUsers="$(getUsers)"
+	newValueServers="$(getServers)"
+	newValueUCC="$(getUCC)"
+	newValueDVSUsers="$(getDVSUsers)"
+	newValueDVSClients="$(getDVSClients)"
+
+	echo "Dump values:"
+	echo "oldValueManaged=$oldValueManaged"
+	echo "oldValueUsers=$oldValueUsers"
+	echo "oldValueServers=$oldValueServers"
+	echo "oldValueUCC=$oldValueUCC"
+	echo "oldValueDVSUsers=$oldValueDVSUsers"
+	echo "oldValueDVSClients=$oldValueDVSClients"
+	echo "newValueManaged=$newValueManaged"
+	echo "newValueUsers=$newValueUsers"
+	echo "newValueServers=$newValueServers"
+	echo "newValueUCC=$newValueUCC"
+	echo "newValueDVSUsers=$newValueDVSUsers"
+	echo "newValueDVSClients=$newValueDVSClients"
+
+	echo "Test managed client count"; test "$oldValueManaged" = "$newValueManaged"; fail_bool 0 110
+	echo "Test users count"; test "$oldValueUsers" = "$newValueUsers"; fail_bool 0 110
+	echo "Test server count"; test "$oldValueServers" = "$newValueServers"; fail_bool 0 110
+	echo "Test ucc count"; test "$oldValueUCC" = "$newValueUCC"; fail_bool 0 110
+	echo "Test dvs users count"; test "$oldValueDVSUsers" = "$newValueDVSUsers"; fail_bool 0 110
+	echo "Test dvs client count"; test "$oldValueDVSClients" = "$newValueDVSClients"; fail_bool 0 110
+
+	removeObject "$m" "$name"
+
+	wait_for_replication
+done
+
+ucr set --force ldap/master="$ldap_master"
+
+### These objects should be counted as servers
+for m in "computers/memberserver" "computers/domaincontroller_slave" \
+			"computers/domaincontroller_backup" "computers/domaincontroller_master"; do
+
+	echo "** Testing module $m"
+
+	name="$(random_chars)"
+
+	oldValueManaged="$(getManagedClient)"
+	oldValueUsers="$(getUsers)"
+	oldValueServers="$(getServers)"
+	oldValueUCC="$(getUCC)"
+	oldValueDVSUsers="$(getDVSUsers)"
+	oldValueDVSClients="$(getDVSClients)"
+
+	createObject "$m" "$name"
+
+	wait_for_replication
+
+	newValueManaged="$(getManagedClient)"
+	newValueUsers="$(getUsers)"
+	newValueServers="$(getServers)"
+	newValueUCC="$(getUCC)"
+	newValueDVSUsers="$(getDVSUsers)"
+	newValueDVSClients="$(getDVSClients)"
+
+	echo "Dump values:"
+	echo "oldValueManaged=$oldValueManaged"
+	echo "oldValueUsers=$oldValueUsers"
+	echo "oldValueServers=$oldValueServers"
+	echo "oldValueUCC=$oldValueUCC"
+	echo "oldValueDVSUsers=$oldValueDVSUsers"
+	echo "oldValueDVSClients=$oldValueDVSClients"
+	echo "newValueManaged=$newValueManaged"
+	echo "newValueUsers=$newValueUsers"
+	echo "newValueServers=$newValueServers"
+	echo "newValueUCC=$newValueUCC"
+	echo "newValueDVSUsers=$newValueDVSUsers"
+	echo "newValueDVSClients=$newValueDVSClients"
+
+	echo "Test managed client count"; test "$oldValueManaged" = "$newValueManaged"; fail_bool 0 110
+	echo "Test users count"; test "$oldValueUsers" = "$newValueUsers"; fail_bool 0 110
+	echo "Test server count"; test "$((oldValueServers+1))" = "$newValueServers"; fail_bool 0 110
+	echo "Test ucc count"; test "$oldValueUCC" = "$newValueUCC"; fail_bool 0 110
+	echo "Test dvs users count"; test "$oldValueDVSUsers" = "$newValueDVSUsers"; fail_bool 0 110
+	echo "Test dvs client count"; test "$oldValueDVSClients" = "$newValueDVSClients"; fail_bool 0 110
+
+	removeObject "$m" "$name"
+
+	wait_for_replication
+done
+
+# Ignore connector side effects
+test -x /etc/init.d/univention-s4-connector && /etc/init.d/univention-s4-connector start
+
+ucr unset --force ldap/master
+ucr set ldap/master="$ldap_master"
+
+exit "$RETVAL"

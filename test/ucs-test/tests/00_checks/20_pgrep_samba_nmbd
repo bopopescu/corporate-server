@@ -1,0 +1,16 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check if 'nmbd' is running
+## exposure: safe
+## bugs: [37022]
+## packages:
+##  - univention-samba | univention-samba4
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+if pgrep "nmbd" >/dev/null
+then
+	echo "OK. Process 'nmbd' found."
+else
+	ps afxw
+	fail_fast 110 "Could not find the 'nmbd' process."
+fi

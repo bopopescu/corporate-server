@@ -1,0 +1,56 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check whether SSO is not possible with expired user account
+## tags:
+##  - saml
+##  - univention
+## join: true
+## exposure: dangerous
+## packages:
+##  - python-requests
+## tags:
+##  - skip_admember
+
+from __future__ import print_function
+from datetime import datetime, timedelta
+
+import univention.testing.udm as udm_test
+import univention.testing.utils as utils
+
+import samltest
+
+
+def main():
+	test_expired_account()
+	test_unexpired_account()
+
+
+def test_expired_account():
+	yesterday = datetime.now() - timedelta(days=1)
+	with udm_test.UCSTestUDM() as udm:
+		testcase_user_name = udm.create_user(userexpiry=yesterday.isoformat()[:10])[1]
+		SamlSession = samltest.SamlTest(testcase_user_name, 'univention')
+
+		try:
+			SamlSession.login_with_new_session_at_IdP()
+		except samltest.SamlLoginError as exc:
+			expected_error = 'Got account expired notice'
+			if exc.message == expected_error:
+				return
+			else:
+				error_message = "Expected message: %s\nReceived message: %s" % (expected_error, exc.message)
+				utils.fail(error_message)
+		utils.fail("Could login with expired account")
+
+
+def test_unexpired_account():
+	tomorrow = datetime.now() + timedelta(days=1)
+	with udm_test.UCSTestUDM() as udm:
+		testcase_user_name = udm.create_user(userexpiry=tomorrow.isoformat()[:10])[1]
+		SamlSession = samltest.SamlTest(testcase_user_name, 'univention')
+		SamlSession.login_with_new_session_at_IdP()
+		SamlSession.test_login()
+
+
+if __name__ == '__main__':
+	main()
+	print("Success: It is not possible to login with expired account")

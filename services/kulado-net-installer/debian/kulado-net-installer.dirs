@@ -1,0 +1,2 @@
+var/lib/univention-client-boot/pxelinux.cfg
+var/lib/univention-client-boot/preseed

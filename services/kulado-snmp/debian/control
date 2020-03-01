@@ -1,0 +1,22 @@
+Source: univention-snmp
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.8.2
+Build-Depends: debhelper,
+ univention-config-dev,
+ ucslint-univention
+
+Package: univention-snmp
+Architecture: all
+Depends: ${misc:Depends},
+ univention-config,
+ snmp
+Description: UCS - SNMP client configuration
+ This package contains the configuration for the
+ snmp package.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/

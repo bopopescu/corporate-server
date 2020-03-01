@@ -1,0 +1,85 @@
+/* CheckBox
+ * 
+ * Styling CheckBox mainly includes:
+ * 
+ * 1. Containers
+ * 		.dijitCheckBox|.dijitCheckBoxIcon - for border, padding, width|height and background image
+ * 
+ * 2. CheckBox within ToggleButton
+ * 		.dijitToggleButton|.dijitToggleButtonChecked .* - for background image
+ * 
+ * 3. Checked state
+ * 		.dijitCheckBoxChecked - for checked background-color|image
+ * 		.dijitToggleButtonChecked - for border, background-color|image, display and width|height
+ * 
+ * 4. Hover state
+ * 		.dijitCheckBoxHover|.dijitCheckBoxCheckedHover - for background image
+ * 
+ * 5. Disabled state
+ * 		.dijitCheckBoxDisabled|.dijitCheckBoxCheckedDisabled - for background image
+ */
+
+@import "../variables"
+
+.umc .dijitToggleButton .dijitCheckBoxIcon
+	icon-image(0, -36, "../", "-small", 12px, 12px)
+
+
+.umc .dijitCheckBox,
+.umc .dijitCheckBoxIcon		/* inside a toggle button */
+	icon-image(0, -36, "../", "-small", 12px, 12px)
+
+
+/* unchecked */
+.umc .dijitCheckBox,
+.umc .dijitToggleButton .dijitCheckBoxIcon
+	background-position: 0 -48px
+
+
+/* checked */
+.umc .dijitCheckBoxChecked,
+.umc .dijitToggleButtonChecked .dijitCheckBoxIcon
+	background-position: -48px -48px
+
+
+/* disabled */
+.umc .dijitCheckBoxDisabled
+	background-position: -24px -48px
+
+
+/* disabled but checked */
+.umc .dijitCheckBoxCheckedDisabled
+	background-position: -72px -48px
+
+
+/* hovering over an unchecked enabled checkbox */
+.umc .dijitCheckBoxHover
+	background-position: -12px -48px
+	opacity: 0.66
+
+
+/* hovering over an checked enabled checkbox */
+.umc .dijitCheckBoxCheckedHover
+	background-position: -60px -48px
+	opacity: 0.66
+
+
+.umc .umcLabelPane-dijitCheckBox
+	display: inline-flex
+	align-items: flex-start
+
+	.umcLabelPaneContainerNode
+		font-size: $font-size-caption
+
+		.dijitCheckBox
+			vertical-align: baseline
+			margin-right: 0.3em
+
+	.umcLabelPaneLabelNode
+		display: flex
+
+		label
+			padding: 0
+		.umcDescription
+			flex: 0 0 auto
+			margin: 0 0 0 0.6em

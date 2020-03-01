@@ -1,0 +1,28 @@
+Source: univention-directory-replication
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.8.2
+Build-Depends: debhelper,
+ ucslint-univention,
+ univention-config-dev
+
+Package: univention-directory-replication
+Architecture: all
+Depends: ${misc:Depends},
+ univention-ldap-server (>= 1.8),
+ shell-univention-lib,
+ univention-directory-listener,
+ python-univention,
+ python-univention-debug,
+ python-ldap,
+ python-univention-lib (>= 1.0.25-1),
+ pwgen
+Description: UCS - Directory replication
+ This package implements a client initiated LDAP master/slave
+ replication, based on the UCS Directory Notifier/Listener.
+ .
+ It is part of Univention Corporate Server (UCS), an integrated,
+ directory driven solution for managing corporate environments.
+ For more information about UCS, refer to:
+ https://www.univention.de/

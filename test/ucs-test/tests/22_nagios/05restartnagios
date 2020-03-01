@@ -1,0 +1,39 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Restarting Nagios doesn't shutdown the old Instance of Nagios
+## bugs: [10849]
+## tags: [basic]
+## packages:
+##  - univention-directory-manager-tools
+##  - univention-nagios-server
+##  - univention-nagios-client
+## exposure: careful
+
+###################
+###  Information  #
+###################
+### This script tests, if there is only one instance of Nagios after a restart of Nagios
+###################
+
+set -x
+
+trap "service nagios stop; pkill nagios; service nagios start" EXIT
+
+# ensure nagios is started
+if [ "$(pgrep -c nagios)" -eq 0 ]; then
+	service nagios start
+	sleep 3
+fi
+nagios_pid="$(nagiostats | grep -i "Nagios PID:" | sed -ne 's/Nagios PID: *//p')"
+
+# restart Nagios
+echo "Restarting Nagios"
+service nagios restart
+sleep 3
+new_nagios_pid="$(nagiostats | grep -i "Nagios PID:" | sed -ne 's/Nagios PID: *//p')"
+
+# make sure old pid is no longer running
+test -d /proc/$nagios_pid && exit 111
+test ! -d /proc/$new_nagios_pid && exit 111
+
+exit 101
+# vim:set filetype=sh ts=4:

@@ -1,0 +1,128 @@
+#!/bin/bash
+#
+# Univention SSL
+#  postinst script
+#
+# Copyright 2004-2019 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+CERTPATH="/etc/univention/ssl/ucsCA/certs"
+INDEXATTRPATH="/etc/univention/ssl/ucsCA/index.txt.attr"
+
+test -d "$CERTPATH" || /bin/mkdir -p "$CERTPATH"
+
+# add random id to default SSL common name (Bug #22846)
+random_id="$(tr -d -c '[:alnum:]' < /dev/urandom | head -c8)"
+country="$(ucr get locale/default | cut -c 4-5)"
+univention-config-registry set ssl/country?"${country:-DE}" \
+	ssl/state?"${country:-DE}" \
+	ssl/locality?"${country:-DE}" \
+	ssl/organization?"${country:-DE}" \
+	ssl/organizationalunit?"Univention Corporate Server" \
+	ssl/common?"Univention Corporate Server Root CA (ID=$random_id)" \
+	ssl/email?"ssl@$domainname" \
+	ssl/default/days?1825 \
+	ssl/validity/warning?30 \
+	ssl/validity/check?yes \
+	ssl/update/expired?yes \
+	ssl/host/objectclass?univentionDomainController,univentionMemberServer,univentionClient,univentionMobileClient,univentionCorporateClient \
+	ssl/crl/interval?7 \
+	ssl/crl/validity?10 \
+	ssl/ca/cipher?aes256 \
+	ssl/default/hashfunction?sha256 \
+	ssl/default/bits?2048
+
+eval "$(univention-config-registry shell)"
+
+. /usr/share/univention-lib/base.sh
+create_logfile_if_missing /var/log/univention/ssl-sync.log "root:adm" 640
+case "$server_role" in
+domaincontroller_master|basesystem|'')
+	if [ ! -s $CERTPATH/00.pem ] && [ ! -e "/etc/univention/ssl/$hostname.$domainname" ]; then
+
+		# try to set the clock before generating the root CA, otherwise it is possible that the certificate is not valid at the end of the installation
+		# Bug #13549
+		timeout -k 5 15 rdate -n 2.debian.pool.ntp.org ||
+			timeout -k 5 15 rdate time.fu-berlin.de ||
+			timeout -k 5 15 rdate 130.133.1.10 ||
+			true
+
+		. /usr/share/univention-ssl/make-certificates.sh
+		init
+		univention-certificate new -name "$hostname.$domainname"
+		ln -snf "$hostname.$domainname" "/etc/univention/ssl/$hostname"
+	else
+		echo "skipped. SSL Certificate found in $CERTPATH"
+	fi
+	;;
+esac
+
+if [ "$1" = "configure" ]
+then
+	if dpkg --compare-versions "$2" lt-nl 12.0.0-9
+	then
+		echo 'unique_subject = no' > "$INDEXATTRPATH"
+		sed -i '/^policy \+=/aunique_subject      = no' /etc/univention/ssl/openssl.cnf
+	fi
+
+	if dpkg --compare-versions "$2" lt-nl 10.0.0-12
+	then
+		find /etc/univention/ssl -name openssl.cnf -exec sed -r \
+			-e 's/^(default_bits\s*=\s*)\d+$/\1$ENV::DEFAULT_BITS/' \
+			-e 's/^(default_md\s*=\s*)\S+$/\1$ENV::DEFAULT_MD/' \
+			-e 's/^(default_crl_days\s*=\s*)\S+$/\1$ENV::DEFAULT_CRL_DAYS/' \
+			-i {} +
+	fi
+	if dpkg --compare-versions "$2" lt-nl 10.0.0-5
+	then
+		if ! grep -q 'copy_extensions     = copy' /etc/univention/ssl/openssl.cnf; then
+			sed --in-place 's/crl_extensions     = crl_ext/crl_extensions     = crl_ext\ncopy_extensions     = copy/g' /etc/univention/ssl/openssl.cnf
+		fi
+		# create new ssl/validity/... ucr variables
+		if [ -x /usr/sbin/univention-certificate-check-validity ]; then
+			/usr/sbin/univention-certificate-check-validity
+		fi
+	fi
+	SSL='/usr/local/share/ca-certificates/ucsCA.crt'
+	if [ ! -e "$SSL" ]
+	then
+		ln -snf "/etc/univention/ssl/ucsCA/CAcert.pem" "$SSL" || return $?
+		update-ca-certificates --fresh || return $?
+	fi
+	if test -f /etc/init.d/univention-directory-listener
+	then
+		/etc/init.d/univention-directory-listener crestart || true
+	fi
+fi
+
+if dpkg --compare-versions "$2" lt-nl 10.0.0-12 && [ -e '/usr/local/share/ca-certificates/ucsCA.crt' ]; then
+	update-ca-certificates --fresh
+fi
+
+#DEBHELPER#
+
+exit 0

@@ -1,0 +1,85 @@
+/*
+ * Copyright 2014-2019 Univention GmbH
+ *
+ * https://www.univention.de/
+ *
+ * All rights reserved.
+ *
+ * The source code of this program is made available
+ * under the terms of the GNU Affero General Public License version 3
+ * (GNU AGPL V3) as published by the Free Software Foundation.
+ *
+ * Binary versions of this program provided by Univention to you as
+ * well as other copyrighted, protected or trademarked materials like
+ * Logos, graphics, fonts, specific documentations and configurations,
+ * cryptographic keys etc. are subject to a license agreement between
+ * you and Univention and not subject to the GNU AGPL V3
+ *
+ * In the case you use this program under the terms of the GNU AGPL V3,
+ * the program is provided in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Publi
+ * License with the Debian GNU/Linux or Univention distribution in file
+ * /usr/share/common-licenses/AGPL-3 if not, see
+ * <https://www.gnu.org/licenses/>.
+ */
+
+@import "../variables"
+
+.umcModuleHeader
+	transition: border-color 0.2s
+	border-bottom: 1px solid transparent
+
+.umcModule--scrolled .umcModuleHeader
+	border-bottom-color: $grey-medium
+
+.umcModuleHeaderOuterContainer
+	padding: material-grid(2) 0
+
+.umcModuleHeaderWrapper
+	display: flex
+	align-items: center
+	flex-wrap: wrap
+
+.umcModuleHeaderRight
+	flex: 1 1 auto
+	min-width: 0%
+	text-align: right
+
+.umcModuleTitle
+	font-size: $font-size-headline
+	line-height: 1.4em
+
+.umc .umcModule
+	.umcModuleWrapper
+		margin: 0 auto
+		padding: 0
+
+		.umcModuleContent .umcModuleContentChildWrapper.dijitHidden
+			display: none !important
+
+.umc .umcPageHelpText
+	margin-bottom: 1.5em
+
+.umc .umcPageHeader h1
+	font-size: $font-size-title
+	font-weight: 500
+
+.umc .umcPageNav
+	margin-bottom: 2.5em
+
+	.positionText
+		margin: 1em 0
+		font-size: $font-size-caption
+		color: rgba(40, 40, 40, 0.54)
+
+.umc .umcPageNav .umcPageHeader:first-child h1
+	margin-top: 0
+
+.umc .dijitDialogPaneContent .umcButtonRow:last-child,
+.umc .umcPageFooter
+	margin-top: 0.75em
+	clear: both

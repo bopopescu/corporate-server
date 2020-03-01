@@ -1,0 +1,63 @@
+html, body {
+	padding: 0;
+	margin: 0;
+	background-color: #f2f2f2;
+}
+header {
+	background-color: #6e6e6e;
+	min-height: 48px;
+	position: fixed;
+	z-index: 1000;
+	width: 100%;
+}
+header a {
+	color: #ffffff;
+}
+header h1 {
+	display: inline-block;
+}
+main {
+	margin: 8px;
+}
+body > nav {
+	width: 400px;
+	word-break: break-all;
+}
+body > nav, body > main {
+	float: left;
+	position: relative;
+	top: 48px;
+}
+h1 {
+	margin: 0;
+}
+
+#logo {
+	background-image: url('/univention/js/dijit/themes/umc/images/univention_u-white.svg');
+	background-repeat: no-repeat;
+	background-position: center center;
+	width: 56px;
+	height: 48px;
+	position: relative;
+	right: 0;
+}
+
+input[type=image][name=jpegPhoto-preview] {
+	max-width: 250px;
+}
+
+details {
+	margin-inline-start: 2px;
+	margin-inline-end: 2px;
+	padding-block-start: 0.35em;
+	padding-inline-start: 0.75em;
+	padding-inline-end: 0.75em;
+	padding-block-end: 0.625em;
+	min-inline-size: min-content;
+	border-width: 0;
+	border-top-width: 2px;
+	border-style: groove;
+	border-color: threedface;
+	border-image: initial;
+	margin-bottom: 0.5em;
+}

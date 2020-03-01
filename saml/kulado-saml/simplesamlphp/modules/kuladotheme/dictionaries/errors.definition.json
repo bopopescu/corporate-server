@@ -1,0 +1,71 @@
+{
+	"title_WRONGUSERPASS": {
+		"en": "Incorrect username or password"
+	},
+	"descr_WRONGUSERPASS": {
+		"en": "Either no user with the given username could be found, or the password you gave was wrong. Please check the username and try again."
+	},
+	"title_LDAP_ACCDISABLED": {
+		"en": "Account disabled"
+	},
+	"descr_LDAP_ACCDISABLED": {
+		"en": "The LDAP account is disabled, login is denied"
+	},
+	"title_LDAP_ACCEXPIRED": {
+		"en": "Account expired"
+	},
+	"descr_LDAP_ACCEXPIRED": {
+		"en": "The LDAP account is expired, login is denied"
+	},
+	"title_KRB_ACCEXPIRED": {
+		"en": "Account expired"
+	},
+	"descr_KRB_ACCEXPIRED": {
+		"en": "The Kerberos account is expired, login is denied"
+	},
+	"title_SAMBA_ACCEXPIRED": {
+		"en": "Account expired"
+	},
+	"descr_SAMBA_ACCEXPIRED": {
+		"en": "The Samba account is expired, login is denied"
+	},
+	"title_LDAP_PWCHANGE": {
+		"en": "Your password is expired"
+	},
+	"descr_LDAP_PWCHANGE": {
+		"en": "Please %s and log in again."
+	},
+	"linktitle_LDAP_PWCHANGE": {
+		"en": "change your password"
+	},
+	"title_KRB_PWCHANGE": {
+		"en": "Your password is expired"
+	},
+	"descr_KRB_PWCHANGE": {
+		"en": "Please %s and log in again."
+	},
+	"linktitle_KRB_PWCHANGE": {
+		"en": "change your password"
+	},
+	"title_SAMBA_PWCHANGE": {
+		"en": "Your password is expired"
+	},
+	"descr_SAMBA_PWCHANGE": {
+		"en": "Please %s and log in again."
+	},
+	"linktitle_SAMBA_PWCHANGE": {
+		"en": "change your password"
+	},
+	"title_SAMBA_ACCLOCKED": {
+		"en": "Account locked"
+	},
+	"descr_SAMBA_ACCLOCKED": {
+		"en": "The Samba account is locked, login is denied"
+	},
+	"title_KRB_ACCLOCKED": {
+		"en": "Account locked"
+	},
+	"descr_KRB_ACCLOCKED": {
+		"en": "The Kerberos account is locked, login is denied"
+	}
+}

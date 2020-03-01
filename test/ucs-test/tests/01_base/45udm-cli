@@ -1,0 +1,99 @@
+#!/usr/share/ucs-test/runner python
+## desc: Create a user via udm cli and authenticate via ldap and samba
+## roles:
+##  - domaincontroller_master
+##  - domaincontroller_backup
+##  - domaincontroller_slave
+##  - memberserver
+## tags:
+##  - basic
+##  - apptest
+##  - skip_admember
+## packages:
+##  - univention-directory-manager-tools
+## exposure: dangerous
+## versions:
+##  3.0-0: found
+
+from __future__ import print_function
+
+import time
+import subprocess
+
+import univention.uldap as uldap
+import univention.config_registry as configRegistry
+import univention.testing.utils as utils
+import univention.testing.udm as udm_test
+
+
+class cmd(object):
+	def __init__(self, *args):
+		self.args = args
+		self.input = None
+
+	def with_stdin(self, input):
+		self.input = input
+		return self
+
+	def check(self):
+		cmd = subprocess.Popen(self.args, stdin=subprocess.PIPE)
+
+		if self.input:
+			cmd.communicate(self.input)
+		else:
+			cmd.wait()
+
+		return cmd.returncode == 0
+
+
+def test_ldap_connection(ucr, user_dn, password):
+	print("Testing ldap connection")
+	if ucr.get('server/role').startswith('domaincontroller_'):
+		access = uldap.access(binddn=user_dn, bindpw=password)
+	else:
+		access = uldap.access(ucr.get('ldap/master'), base=ucr.get('ldap/base'),
+			binddn=user_dn, bindpw=password)
+	for (key, value) in access.get(user_dn, required=True).items():
+		print("{} = {}".format(key, value))
+
+
+def test_samba_connection(ucr, username, password):
+	# In case of a memberserver in a S4 environment, we have to
+	# wait until the user has been synchronized to Samba 4. Otherwise
+	# we can't get a kerberos ticket
+	if ucr.get("server/role") == "memberserver":
+		time.sleep(16)
+
+	print("Try to get a kerberos ticket for the new user", username)
+	kinit = cmd("kinit", "--password-file=STDIN", username).with_stdin(password)
+
+	if not kinit.check():
+		utils.fail("Failed to acquire kerberos ticket.")
+
+	s4_or_pdc_installed = utils.package_installed("univention-samba4") or utils.package_installed("univention-samba-slave-pdc")
+	if utils.package_installed("univention-samba") or s4_or_pdc_installed:
+		host = 'localhost' if s4_or_pdc_installed else ucr.get('ldap/master')
+		print("Samba Logon with this new user against {}".format(host))
+
+		smbclient = cmd("smbclient", "-L", host, "-U", "{}%{}".format(username, password))
+
+		if not smbclient.check():
+			print("First Samba login failed. Wait for 30 seconds and try again ...")
+			time.sleep(30)
+			if not smbclient.check():
+				utils.fail("Samba login failed for {} with {}".format(username, password))
+
+
+def test(password="univention"):
+	ucr = configRegistry.ConfigRegistry()
+	ucr.load()
+
+	with udm_test.UCSTestUDM() as udm:
+		(user_dn, username) = udm.create_user(wait_for=True)
+
+		test_ldap_connection(ucr, user_dn, password)
+		test_samba_connection(ucr, username, password)
+
+
+if __name__ == '__main__':
+	test()

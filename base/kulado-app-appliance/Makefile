@@ -1,0 +1,43 @@
+#!/usr/bin/make -f
+#
+# Copyright 2015-2019 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+build: usr/share/univention-web/js/umc/hooks/appliance.css ucs-appliance-dark.script ucs-appliance-light.script
+
+%.css: %.styl
+	stylus "$<"
+
+ucs-appliance-dark.script:
+	sed "s/\$${FONT_COLOR}/ 1, 1, 1,/g" plymouth/ucs-appliance-TEMPLATE.script > plymouth/ucs-appliance-dark/ucs-appliance-dark.script
+
+ucs-appliance-light.script:
+	sed "s/\$${FONT_COLOR}/ 0, 0, 0,/g" plymouth/ucs-appliance-TEMPLATE.script > plymouth/ucs-appliance-light/ucs-appliance-light.script
+
+clean:
+	rm -f usr/share/univention-web/js/umc/hooks/appliance.css
+

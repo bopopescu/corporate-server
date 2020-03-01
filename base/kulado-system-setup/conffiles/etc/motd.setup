@@ -1,0 +1,115 @@
+@!@
+import socket
+import fcntl
+import struct
+import urllib2
+from univention.config_registry.interfaces import Interfaces
+
+msg_amazon = '''
+########################################################################
+
+Welcome to Univention Corporate Server (UCS)!
+
+This system was configured with a random or default password. It is
+recommended to change the password of the administrative root account.
+To do so, please enter the following command and type in your password
+twice:
+ passwd root
+
+This system is not completely configured yet. To finalise the configuration
+of this system you need to login to the web-based Univention Management
+Console which can be reached with a web browser via the following URL
+
+  %(url_list)s
+
+The login at the Univention Management Console needs to be done with
+the user "root" and the new password you entered in the above-mentioned
+password change.
+
+UMC uses numerous Javascript and CSS functions to display the web
+interface. Some of these features are unavailable in older browsers. The
+following web browsers are supported:
+ - Chrome as of version 37 or later
+ - Firefox as of version 38 or later
+ - Internet Explorer as of version 11 or later
+ - Safari and Safari Mobile as of version 9
+
+########################################################################
+
+'''
+
+msg_di_uss = '''
+########################################################################
+
+Welcome to Univention Corporate Server (UCS)!
+
+This system is not completely configured yet. To finalise the configuration
+of this system you need to login to the web-based Univention Management
+Console which can be reached with a web browser under the following URL
+
+  %(url_list)s
+
+The login at the Univention Management Console needs to be done with
+the user "root" and the password you entered during installation.
+
+UMC uses numerous Javascript and CSS functions to display the web
+interface. Some of these features are unavailable in older browsers. The
+following web browsers are supported:
+ - Chrome as of version 37 or later
+ - Firefox as of version 38 or later
+ - Internet Explorer as of version 11 or later
+ - Safari and Safari Mobile as of version 9
+
+########################################################################
+
+'''
+
+def query_ec2(key):
+	url = 'http://169.254.169.254/latest/meta-data/' + key
+	socket.setdefaulttimeout(2)
+	try:
+		result = urllib2.urlopen(url)
+		value = result.read().strip()
+		return value
+	except urllib2.URLError:
+		pass
+
+def get_ip_address(ifname):
+	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+	try:
+		# SIOCGIFADDR == 0x8915
+		addr = socket.inet_ntoa(fcntl.ioctl( s.fileno(), 0x8915, struct.pack('256s', ifname[:15]))[20:24])
+	except IOError:
+		addr = None
+	s.close()
+	return addr
+
+
+url_list = []
+if configRegistry.is_true('server/amazon', False):
+	for key in ('public-hostname', 'public-ipv4', 'local-ipv4'):
+		addr = query_ec2(key)
+		if addr:
+			url_list.append('https://%s/' % (addr,))
+
+if not url_list:
+	interfaces = Interfaces(configRegistry)
+	for ifname, iface in interfaces.all_interfaces:
+		#IPv4
+		if iface.type == 'dhcp':
+			addr = get_ip_address(ifname)
+			url_list.append('https://%s/' % (addr,))
+		else:
+			addr = iface.ipv4_address()
+			if addr:
+				url_list.append('https://%s/' % (addr.ip,))
+		# IPv6
+		addr = iface.ipv6_address()
+		if addr:
+			url_list.append('https://[%s]/' % (addr.ip,))
+
+msg = msg_amazon if configRegistry.is_true('server/amazon') else msg_di_uss
+print msg % {
+	'url_list': '\n  '.join(url_list),
+}
+@!@

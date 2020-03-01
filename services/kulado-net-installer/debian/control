@@ -1,0 +1,63 @@
+Source: univention-net-installer
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper,
+ univention-config-dev,
+ ucslint-univention
+Standards-Version: 3.8.2
+
+Package: univention-net-installer
+Architecture: all
+Depends: ${misc:Depends},
+ univention-directory-manager-tools (>> 7.0.147),
+ univention-tftp,
+ univention-apache,
+ univention-config,
+ shell-univention-lib
+Description: UCS - automatic profile-based installation services
+ This package contains the packages for the profile-based installation
+ of UCS systems via Preboot Execution Environment (PXE).
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-net-installer-daemon
+Architecture: all
+Depends:
+ python-univention,
+ univention-config,
+ ${misc:Depends},
+Description: UCS - automatic profile server installation
+ This package contains a net installer daemon which removes the reinstallation
+ flag in the ldap directory.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: di-univention-net-installer
+Package-Type: udeb
+Architecture: all
+Section: debian-installer
+Priority: standard
+XB-Installer-Menu-Item: 7650
+Depends: cdebconf-udeb,
+ kernel-installer,
+ di-utils,
+ installed-base,
+ created-fstab,
+ bootable-system,
+ ${misc:Depends},
+Description: UCS - automatic profile-based installation services
+ This package contains the integration of profile-based installation
+ of UCS systems into the Debian installer running in Preboot Execution
+ Environment (PXE).
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/

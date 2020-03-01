@@ -1,0 +1,364 @@
+/*
+ * Copyright 2017-2019 Univention GmbH
+ *
+ * https://www.univention.de/
+ *
+ * All rights reserved.
+ *
+ * The source code of this program is made available
+ * under the terms of the GNU Affero General Public License version 3
+ * (GNU AGPL V3) as published by the Free Software Foundation.
+ *
+ * Binary versions of this program provided by Univention to you as
+ * well as other copyrighted, protected or trademarked materials like
+ * Logos, graphics, fonts, specific documentations and configurations,
+ * cryptographic keys etc. are subject to a license agreement between
+ * you and Univention and not subject to the GNU AGPL V3
+ *
+ * In the case you use this program under the terms of the GNU AGPL V3,
+ * the program is provided in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Publi
+ * License with the Debian GNU/Linux or Univention distribution in file
+ * /usr/share/common-licenses/AGPL-3 if not, see
+ * <https://www.gnu.org/licenses/>.
+ */
+.umc {
+  min-height: 100%;
+/* standby animation */
+/* styling of headers and page */
+/* stylings of live citz search */
+/* generic stylings for all setup pages */
+/* specific stylings for various setup pages */
+/* Virtual keyboard */
+/* other stylings */
+}
+@media (min-width: 768px) {
+  .umc .container:not(.umcInlineDialog) {
+    width: 100%;
+  }
+}
+.umc #content {
+  opacity: 1;
+  transition: opacity 0.75s;
+}
+.umc.standby {
+  background: no-repeat center url("/univention/js/dijit/themes/umc/images/standbyAnimation.svg");
+}
+.umc.standby #content {
+  opacity: 0;
+}
+.umc .umcHeader,
+.umc .umcHeader .umcHeaderLeft {
+  height: 48px;
+}
+.umc .umcHeader {
+  background-color: #787878;
+}
+.umc .umcHeader .umcHeaderRight {
+  left: 0;
+}
+.umc .umcHeader .umcHeaderRight .univentionLogo {
+  background: url("/univention/js/dijit/themes/umc/images/univention-white.svg") left center no-repeat;
+  margin-left: 12px;
+  width: 100%;
+}
+.umc .umcWizard .umcPage {
+  margin-top: 61px;
+}
+.umc .umcWizard.umcInlineDialog .umcPage {
+  margin-top: 41px;
+}
+.umc .umcWizard .umcPage .umcPageNav .umcPageHeader {
+  position: absolute;
+  top: -45px;
+}
+.umc .umcWizard .umcPage .umcPageNav .umcPageHeader h1 {
+  font-size: 24px;
+  font-weight: normal;
+  width: 600px;
+}
+.umc .umcInlineDialog {
+/* the content is displayed as a Google Material Card in an external browser */
+  max-width: 970px;
+}
+.umc .umcInlineDialog .dijitDefaultButton .dijitButtonText {
+  color: #7ab51d;
+}
+.umc .umc-ucssetup-wizard-livesearch {
+  margin-top: 0.75em;
+}
+.umc .umc-ucssetup-wizard-city-details {
+  min-width: 50%;
+}
+.umc .umc-ucssetup-wizard-change-locale-button {
+  margin-top: 0.5em;
+  float: right;
+}
+.umc .umc-setup-page .umcLiveSearch .dijitArrowButtonInner {
+  background-position: -260px -40px;
+}
+.umc .umc-setup-page .umcLiveSearch .umcLiveSearching .dijitArrowButtonInner {
+  background-position: center;
+  background-image: url("../../dijit/themes/umc/form/images/loading.gif");
+}
+.umc .umc-setup-page .city-match td {
+  padding-right: 0.5em;
+  padding-bottom: 0.25em;
+}
+.umc .umc-setup-page .umcPageIcon {
+  background-repeat: no-repeat;
+  height: 120px;
+  background-size: contain;
+  background-position: center bottom;
+}
+.umc .umc-setup-page .umcPageHelpText {
+  min-height: 50px;
+}
+@media (max-width: 767px) {
+  .umc .umc-setup-page .umcPageIcon {
+    height: 100px;
+  }
+  .umc .umc-setup-page .umcPageHelpText {
+    min-height: 1px;
+  }
+  .umc .umc-setup-page .umcPageMain {
+/* overwrite autoHeight property for small devices */
+    min-height: 0px !important;
+  }
+}
+.umc .umc-setup-page-validation li,
+.umc .umc-setup-page-error li {
+  padding-bottom: 0.75em;
+}
+.umc .umc-setup-page-summary ul {
+  margin-top: 0;
+}
+.umc .umc-setup-page-summary p {
+  margin-top: 0.75em;
+}
+.umc .umc-setup-page-summary .umcPageIcon {
+  background-image: url("summary.svg");
+}
+.umc .umc-setup-page-software th .dojoxGridRowSelector {
+  display: none;
+}
+.umc .umc-setup-page-software .umcPageIcon {
+  height: 180px;
+  background-image: url("software.svg");
+}
+@media (max-height: 799px) {
+  .umc .umc-setup-page-software .umcPageIcon {
+    height: 120px;
+  }
+}
+.umc .umc-setup-page-software .umcGrid.umcUCSSetupSoftwareGrid .dgrid {
+  max-height: 35em;
+}
+@media (max-height: 799px) and (min-width: 768px) {
+  .umc .umc-setup-page-software .umcGrid.umcUCSSetupSoftwareGrid .dgrid {
+    height: calc(100vh - 250px);
+    max-height: none;
+  }
+}
+.umc .umc-setup-page-software .umcGrid.umcUCSSetupSoftwareGrid .umcGridHeader {
+  display: flex !important;
+}
+.umc .umc-setup-page-software .umcGrid.umcUCSSetupSoftwareGrid .umcGrid__toolbar,
+.umc .umc-setup-page-software .umcGrid.umcUCSSetupSoftwareGrid .umcGrid__contextActionsToolbar {
+  display: none !important;
+}
+.umc .umc-setup-page-software .umcGrid.umcUCSSetupSoftwareGrid .dgrid .dgrid-row {
+  height: auto;
+  line-height: 1.5em;
+}
+.umc .umc-setup-page-software .umcGrid.umcUCSSetupSoftwareGrid .dgrid .dgrid-cell {
+  white-space: normal;
+}
+.umc .umc-setup-page-software .umcGrid.umcUCSSetupSoftwareGrid .dgrid .dgrid-cell .umcAppEntry,
+.umc .umc-setup-page-software .umcGrid.umcUCSSetupSoftwareGrid .dgrid .dgrid-cell .umcAppName,
+.umc .umc-setup-page-software .umcGrid.umcUCSSetupSoftwareGrid .dgrid .dgrid-cell .umcAppDescription,
+.umc .umc-setup-page-software .umcGrid.umcUCSSetupSoftwareGrid .dgrid .dgrid-cell .umcInfoIcon {
+  display: block;
+}
+.umc .umc-setup-page-software .umcGrid.umcUCSSetupSoftwareGrid .dgrid .umcAppEntry {
+  position: relative;
+  padding: 5px 0;
+  padding: 5px 0;
+}
+.umc .umc-setup-page-software .umcGrid.umcUCSSetupSoftwareGrid .dgrid .umcAppDescription {
+  color: #818181;
+}
+.umc .umc-setup-page-software .umcGrid.umcUCSSetupSoftwareGrid .dgrid .umcAppDescription,
+.umc .umc-setup-page-software .umcGrid.umcUCSSetupSoftwareGrid .dgrid .umcAppName {
+  margin-right: 40px;
+}
+.umc .umc-setup-page-software .umcGrid.umcUCSSetupSoftwareGrid .dgrid .umcInfoIcon {
+  background: url("info-icon.png") no-repeat center;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  margin-top: -20px;
+  cursor: pointer;
+}
+.umc .umc-setup-page-role .umcLabelPane,
+.umc .umc-setup-page-role-nonmaster-ad .umcLabelPane,
+.umc .umc-setup-page-schooldomain-slave .umcLabelPane {
+  padding-bottom: 0.75em;
+}
+.umc .umc-setup-page-role .umcLabelPane .umcLabelPaneLabelNode label,
+.umc .umc-setup-page-role-nonmaster-ad .umcLabelPane .umcLabelPaneLabelNode label,
+.umc .umc-setup-page-schooldomain-slave .umcLabelPane .umcLabelPaneLabelNode label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 0.25em;
+}
+.umc .umc-setup-page-welcome .umcPageIcon {
+  background-image: url("welcome.svg");
+}
+.umc .umc-setup-page-locale .umcPageIcon {
+  background-image: url("locale.svg");
+}
+.umc .umc-setup-page-required_ram .umcPageIcon {
+  background-image: url("warning.svg");
+  background-size: 140px;
+}
+.umc .umc-setup-page-license .umcPageIcon {
+  background-image: url("license.svg");
+}
+.umc .umc-setup-page-role .umcPageIcon,
+.umc .umc-setup-page-role-nonmaster-ad .umcPageIcon,
+.umc .umc-setup-page-warning-basesystem .umcPageIcon {
+  background-image: url("domain.svg");
+}
+.umc .umc-setup-page-network .umcPageIcon {
+  background-image: url("network.svg");
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .umc .umc-setup-page-network .umcSize-One {
+    width: 50%;
+  }
+}
+.umc .umc-setup-page-credentials-master .umcAccountInfoText {
+  margin-top: 1em;
+}
+.umc .umc-setup-page-credentials-master .umcPageIcon {
+  background-image: url("account.svg");
+}
+.umc .umc-setup-page-credentials-nonmaster .umcPageIcon,
+.umc .umc-setup-page-credentials-ad .umcPageIcon {
+  background-image: url("credentials.svg");
+}
+.umc .umc-setup-page-fqdn-master .umcPageIcon,
+.umc .umc-setup-page-fqdn-nonmaster-all .umcPageIcon {
+  background-image: url("fqdn.svg");
+}
+.umc .umc-setup-page-validation .umcPageIcon,
+.umc .umc-setup-page-error .umcPageIcon {
+  background-image: url("error.svg");
+}
+.umc .umc-setup-page-done .umcPageIcon {
+  background-image: url("done.svg");
+}
+.umc .umcKeyboardIcon {
+  background-image: url("keyboard.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 24px;
+  height: 24px;
+  float: right;
+  margin: 2px 5px;
+}
+.umc .umcKeyContainer {
+  text-align: center;
+}
+.umc .umcKeyboardKey {
+  margin: 5px;
+  height: 40px;
+  width: 40px;
+}
+.umc .umcKeyboardKey.dijitButton .dijitButtonNode {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  height: 33px;
+  width: 33px;
+  max-width: 33px;
+  max-height: 33px;
+}
+.umc .umcKeyboardRow .umcKeyboardKey .dijitReset.dijitInline.dijitButtonText {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  text-decoration: none;
+  padding: 0;
+}
+.umc .dijitTooltipContainer {
+  width: 100%;
+  max-width: 800px;
+}
+.umc .umcLayoutRow .umcLabelPane.umc-ucssetup-wizard-radio-button-label {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+.umc .umcContainerWidget:first-child > .umc-ucssetup-wizard-radio-button-label {
+  margin-top: 0;
+}
+.umc .umc-ucssetup-wizard-indent {
+  margin-left: 16px;
+}
+.umc .umcUCSSetupLicenseAgreement {
+  overflow: auto;
+  height: 350px !important;
+}
+.umc .privacyStatementOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: #fff;
+  z-index: 1;
+  display: flex;
+  flex-flow: column;
+  transition: opacity 0.25s, visibility 0s;
+  opacity: 1;
+}
+.umc .privacyStatementOverlay.privacyStatementOverlayHidden {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s, visibility 0s 0.3s;
+  pointer-events: none;
+}
+.umc .privacyStatementOverlay.privacyStatementOverlayLocalMode {
+  top: 48px;
+  height: calc(100% - 48px);
+}
+.umc .privacyStatementOverlay .privacyStatementOverlayTitle {
+  padding: 24px 24px 19px 24px;
+  font-size: 20px;
+  font-weight: 500;
+}
+.umc .privacyStatementOverlay .privacyStatementOverlayContent {
+  flex-grow: 1;
+  overflow: auto;
+  padding: 0 24px;
+}
+.umc .privacyStatementOverlay .privacyStatementOverlayContent .privacyStatementOverlayTextWrapper {
+  column-width: 35em;
+}
+.umc .privacyStatementOverlay .privacyStatementOverlayFooter {
+  text-align: right;
+}
+.umc .privacyStatementOverlay .privacyStatementOverlayFooter .privacyStatementOverlayFooterButton {
+  margin: 24px 8px 8px 8px;
+}
+.umc .privacyStatementOverlay .privacyStatementOverlayFooter .privacyStatementOverlayFooterButton .dijitButtonText {
+  color: #7ab51d;
+}

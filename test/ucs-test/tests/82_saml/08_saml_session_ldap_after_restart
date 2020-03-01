@@ -1,0 +1,29 @@
+#!/usr/share/ucs-test/runner python
+## desc: Check if SSO session is still active after LDAP server restart
+## tags: [saml]
+## roles: [domaincontroller_master]
+## exposure: dangerous
+## packages:
+##  - python-requests
+## tags:
+##  - skip_admember
+
+from __future__ import print_function
+import subprocess
+import univention.testing.utils as utils
+import samltest
+
+
+def main():
+
+	account = utils.UCSTestDomainAdminCredentials()
+
+	SamlSession = samltest.SamlTest(account.username, account.bindpw)
+	SamlSession.login_with_new_session_at_IdP()
+	subprocess.call(['/etc/init.d/slapd', 'restart'])
+	SamlSession.test_login()
+
+
+if __name__ == '__main__':
+	main()
+	print("Success: SSO session is still working after slapd restart")

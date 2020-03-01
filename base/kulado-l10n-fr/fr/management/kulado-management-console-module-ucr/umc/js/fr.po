@@ -1,0 +1,143 @@
+# Nicolas Ternisien <nicolas@bureau-cornavin.com>, 2016.
+# Eric Bischoff <eric@bureau-cornavin.com>, 2016.
+# Sandrine Burriel <sandrine@workshop-chapina.com>, 2017.
+msgid ""
+msgstr ""
+"Project-Id-Version: univention-management-console-module-ucr\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2017-04-14 00:29+0200\n"
+"PO-Revision-Date: 2017-05-28 20:40+0900\n"
+"Last-Translator: Sandrine Burriel <sandrine@workshop-chapina.com>\n"
+"Language-Team: French <fr@workshop-chapina.com>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Lokalize 1.5\n"
+
+#: umc/js/ucr.js:227
+msgid "Add"
+msgstr "Ajouter"
+
+#: umc/js/ucr.js:171
+msgid "Add UCR variable"
+msgstr "Ajouter une variable UCR"
+
+#: umc/js/ucr.js:228
+msgid "Adding a new UCR variable"
+msgstr "Ajout d'une nouvelle variable UCR"
+
+#: umc/js/ucr.js:303 umc/js/ucr.js:314
+msgid "All"
+msgstr "Toutes"
+
+#: umc/js/ucr.js:255
+#, javascript-format
+msgid "Are you sure to delete the %d selected UCR variable(s)?"
+msgstr ""
+"Voulez-vous vraiment supprimer les %d variable(s) UCR sélectionnée(s) ?"
+
+#: umc/js/ucr.js:115 umc/js/ucr.js:264
+msgid "Cancel"
+msgstr "Annuler"
+
+#: umc/js/ucr.js:301
+msgid "Category"
+msgstr "Catégorie"
+
+#: umc/js/ucr.js:300
+msgid "Category the UCR variable should be associated with"
+msgstr "Catégorie à laquelle la variable UCR peut être associée"
+
+#: umc/js/ucr.js:249 umc/js/ucr.js:256
+msgid "Delete"
+msgstr "Supprimer"
+
+#: umc/js/ucr.js:250
+msgid "Deleting the selected UCR variables"
+msgstr "Suppression des variables UCR sélectionnées"
+
+#: umc/js/ucr.js:317
+msgid "Description"
+msgstr "Description"
+
+#: umc/js/ucr.js:90
+msgid "Description of the UCR variable"
+msgstr "Description de la variable UCR"
+
+#: umc/js/ucr.js:91
+msgid "Description:"
+msgstr "Description :"
+
+#: umc/js/ucr.js:237
+msgid "Edit"
+msgstr "Modifier"
+
+#: umc/js/ucr.js:70 umc/js/ucr.js:179
+msgid "Edit UCR variable"
+msgstr "Modifier la variable UCR"
+
+#: umc/js/ucr.js:80
+msgid "Name of UCR variable"
+msgstr "Nom de la variable UCR"
+
+#: umc/js/ucr.js:106
+msgid "Save"
+msgstr "Enregistrer"
+
+#: umc/js/ucr.js:312
+msgid "Search attribute"
+msgstr "Chercher un attribut"
+
+#: umc/js/ucr.js:324
+msgid "Search..."
+msgstr "Rechercher..."
+
+#: umc/js/ucr.js:311
+msgid ""
+"Select the attribute of a UCR variable that should be searched for the given "
+"keyword"
+msgstr ""
+"Sélectionnez l'attribut recherché de la variable UCR pour le mot-clé donné"
+
+#: umc/js/ucr.js:238
+msgid "Setting the UCR variable, editing the categories and/or description"
+msgstr ""
+"Définition de la variable UCR, modification des catégories et / ou de la "
+"description"
+
+#: umc/js/ucr.js:220
+msgid ""
+"The Univention Configuration Registry (UCR) is the local database for the "
+"configuration of UCS systems to access and edit system-wide properties in a "
+"unified manner. Caution: Changing UCR variables directly results in the "
+"change of the system configuration. Misconfiguration may cause an unusable "
+"system!"
+msgstr ""
+"Univention Configuration Registry (UCR) est une base de données locale "
+"contenant la configuration des systèmes UCS pour l'accès et l'édition de "
+"façon unifiée de propriétés globales au système. Attention : la modification "
+"de variables UCR provoque des modifications dans la configuration du "
+"système. Un système inutilisable peut résulter d'une mauvaise configuration !"
+
+#: umc/js/ucr.js:81 umc/js/ucr.js:274
+msgid "UCR variable"
+msgstr "Variable UCR"
+
+#: umc/js/ucr.js:275
+msgid "Unique name of the UCR variable"
+msgstr "Nom unique de la variable UCR"
+
+#: umc/js/ucr.js:86 umc/js/ucr.js:279 umc/js/ucr.js:316
+msgid "Value"
+msgstr "Valeur"
+
+#: umc/js/ucr.js:85 umc/js/ucr.js:280
+msgid "Value of the UCR variable"
+msgstr "Valeur de la variable UCR"
+
+#: umc/js/ucr.js:315
+msgid "Variable"
+msgstr "Variable"
+

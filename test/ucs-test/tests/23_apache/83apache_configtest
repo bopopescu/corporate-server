@@ -1,0 +1,8 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Run apachectl configtest
+## tags: [apptest]
+## exposure: safe
+
+apachectl configtest
+
+# vim: set ft=sh :

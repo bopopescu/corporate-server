@@ -1,0 +1,8 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check home page by FQDN using https
+## tags: [apptest]
+## exposure: safe
+
+wget -S --ca-certificate=/etc/univention/ssl/ucsCA/CAcert.pem "https://$(hostname -f)/" -O/dev/null
+
+# vim: set ft=sh :

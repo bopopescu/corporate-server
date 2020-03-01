@@ -1,0 +1,39 @@
+Source: univention-bootsplash
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.8.2
+Build-Depends: debhelper,
+ univention-config-dev,
+ ucslint-univention,
+ gettext,
+ dh-systemd
+
+Package: univention-bootsplash
+Architecture: all
+Depends: ${misc:Depends},
+ plymouth,
+ plymouth-themes,
+Description: UCS - bootsplash
+ This package configures the graphical boot screen.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/
+
+Package: univention-welcome-screen
+Architecture: all
+Depends: ${misc:Depends},
+ univention-bootsplash (= ${binary:Version}),
+ gettext-base,
+ bsdmainutils,
+ netpbm
+Description: UCS - welcome screen
+ This package provides a welcome screen to the UCS system
+ which is shown after the system startup.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: https://www.univention.de/

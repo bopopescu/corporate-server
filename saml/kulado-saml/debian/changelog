@@ -1,0 +1,1334 @@
+univention-saml (6.0.2-18) unstable; urgency=medium
+
+  * Bug #50594: display link when password is expired
+
+ -- Florian Best <best@univention.de>  Thu, 05 Dec 2019 19:54:46 +0100
+
+univention-saml (6.0.2-17) unstable; urgency=medium
+
+  * Bug #50510: ensure the HOST header has the same case as in the idp config
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 25 Nov 2019 15:30:23 +0100
+
+univention-saml (6.0.2-16) unstable; urgency=medium
+
+  * Bug #50510: Make it possible to configure multiple entity IDs for one IdP
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 21 Nov 2019 16:59:36 +0100
+
+univention-saml (6.0.2-14) unstable; urgency=medium
+
+  * Bug #49167: migrate to dh_python
+
+ -- Florian Best <best@univention.de>  Fri, 08 Nov 2019 16:54:34 +0100
+
+univention-saml (6.0.2-13) unstable; urgency=medium
+
+  * Bug #49485: ignore empty subnet variable
+
+ -- Florian Best <best@univention.de>  Thu, 07 Nov 2019 08:32:55 +0100
+
+univention-saml (6.0.2-12) unstable; urgency=medium
+
+  * Bug #49485: add missing build dependency to python-support
+
+ -- Florian Best <best@univention.de>  Wed, 06 Nov 2019 07:51:34 +0100
+
+univention-saml (6.0.2-11) unstable; urgency=medium
+
+  * Bug #49485: fix typo
+
+ -- Florian Best <best@univention.de>  Tue, 05 Nov 2019 14:37:15 +0100
+
+univention-saml (6.0.2-10) unstable; urgency=medium
+
+  * Bug #49485: fix ucslint
+
+ -- Florian Best <best@univention.de>  Tue, 05 Nov 2019 14:01:44 +0100
+
+univention-saml (6.0.2-9) unstable; urgency=medium
+
+  * Bug #49485: allow to restrict negotiate authentication to certain IP
+    networks
+
+ -- Florian Best <best@univention.de>  Tue, 05 Nov 2019 13:50:52 +0100
+
+univention-saml (6.0.2-8) unstable; urgency=medium
+
+  * Bug #50177: fix invalid true/false values for TrueFalseUp syntax
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 12 Sep 2019 18:12:27 +0200
+
+univention-saml (6.0.2-7) unstable; urgency=medium
+
+  * Bug #50177: fix invalid true/false values for TrueFalseUp syntax
+
+ -- Florian Best <best@univention.de>  Thu, 12 Sep 2019 12:34:22 +0200
+
+univention-saml (6.0.2-6) unstable; urgency=medium
+
+  * Bug #50177: fix invalid true/false values for TrueFalseUp syntax
+
+ -- Florian Best <best@univention.de>  Thu, 12 Sep 2019 12:08:37 +0200
+
+univention-saml (6.0.2-5) unstable; urgency=medium
+
+  * Bug #50177: fix invalid true/false values for TrueFalseUp syntax
+
+ -- Florian Best <best@univention.de>  Wed, 11 Sep 2019 15:22:52 +0200
+
+univention-saml (6.0.2-4) unstable; urgency=medium
+
+  * Bug #48961: update for changes in upstream simplesamlphp
+
+ -- Florian Best <best@univention.de>  Tue, 16 Jul 2019 20:08:59 +0200
+
+univention-saml (6.0.2-3) unstable; urgency=medium
+
+  * Bug #49503 Make IdP session duration configurable with UCR
+    saml/idp/session-duration. The default value is raised from 8 to 12 hours
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 25 Jun 2019 14:19:50 +0200
+
+univention-saml (6.0.2-2) unstable; urgency=medium
+
+  * Bug #49436: Add custom css from login to saml login
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Thu, 09 May 2019 09:57:21 +0100
+
+univention-saml (6.0.2-1) unstable; urgency=medium
+
+  * Bug #48621: fix size of checkboxes
+
+ -- Florian Best <best@univention.de>  Wed, 06 Mar 2019 15:28:30 +0100
+
+univention-saml (6.0.1-2) unstable; urgency=medium
+
+  * Bug #46198 UMC: Fix password auto-fill
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 28 Feb 2019 13:10:07 +0100
+
+univention-saml (6.0.1-1) unstable; urgency=medium
+
+  * Bug #48738: add object_name
+
+ -- Florian Best <best@univention.de>  Fri, 22 Feb 2019 15:14:16 +0100
+
+univention-saml (6.0.0-1) unstable; urgency=medium
+
+  * Bug #48326: UCS-4.4-0 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 14 Dec 2018 15:12:42 +0100
+
+univention-saml (5.0.4-30) unstable; urgency=medium
+
+  * Bug #48348:: Include additional configuration files from
+    /etc/apache2/sso-vhost.conf.d in saml virtualhost config
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 13 Dec 2018 15:51:47 +0100
+
+univention-saml (5.0.4-29) unstable; urgency=medium
+
+  * Bug #47880: Tweak required commands
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Wed, 05 Dec 2018 10:04:12 +0200
+
+univention-saml (5.0.4-28) unstable; urgency=medium
+
+  * Bug #47880: Add required command block to module definition
+
+ -- Ole Schwiegert <schwiegert@univention.de>  Tue, 04 Dec 2018 12:27:35 +0200
+
+univention-saml (5.0.4-27) unstable; urgency=medium
+
+  * Bug #47250: Create runtime directory for stunnel
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 03 Sep 2018 13:06:13 +0200
+
+univention-saml (5.0.4-26) unstable; urgency=medium
+
+  * Bug #47309: Fix joinscript error handling
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 25 Jul 2018 17:38:19 +0200
+
+univention-saml (5.0.4-24) unstable; urgency=medium
+
+  * Bug #47309: Fix config to allow SAML+Kerberos Login
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 23 Jul 2018 17:37:18 +0200
+
+univention-saml (5.0.4-23) unstable; urgency=medium
+
+  * Bug #47309: IdP configuration options regarding allowed LDAP attributes
+    are now configured centrally in LDAP. This can be exended in the future
+  * The default object DN for the configuration is
+    id=default-saml-idp,cn=univention,LDAPBASE
+  * A listener has been added, which replicates changes to this object on all
+    SAML IDP servers
+  * Previous UCRv values set to saml/idp/ldap/get_attributes are added to the
+    default configuration on package update 
+  * Resync univention-saml-simplesamlphp-configuration when installing and
+    upgrading package
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 13 Jul 2018 15:48:23 +0200
+
+univention-saml (5.0.4-22) unstable; urgency=medium
+
+  * Bug #47309 Support raw simplesaml service provider configurations with
+    replication
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 05 Jul 2018 13:15:59 +0200
+
+univention-saml (5.0.4-21) unstable; urgency=medium
+
+  * Bug #47241: Fix apache configuration when operating without a separate
+    VirtualHost for single sign-on
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 04 Jul 2018 13:06:56 +0200
+
+univention-saml (5.0.4-19) unstable; urgency=medium
+
+  * Bug #47068: pwdfile support in join script
+
+ -- Felix Botner <botner@univention.de>  Thu, 24 May 2018 13:43:10 +0200
+
+univention-saml (5.0.4-18) unstable; urgency=medium
+
+  * Bug #46842: pwdfile support in join script
+
+ -- Felix Botner <botner@univention.de>  Mon, 07 May 2018 15:29:56 +0200
+
+univention-saml (5.0.4-17) unstable; urgency=medium
+
+  * Bug #46576: Change auth default module to univention-ldap
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 09 Mar 2018 17:23:53 +0100
+
+univention-saml (5.0.4-16) unstable; urgency=medium
+
+  * Bug #46267: php5 gets disabled in preup and libapache2-mod-php7.0
+    enables php7.0, so we don't nee to do it here
+
+ -- Arvid Requate <requate@univention.de>  Thu, 01 Mar 2018 21:04:37 +0100
+
+univention-saml (5.0.4-15) unstable; urgency=medium
+
+  * Bug #46451: Move simplesamlphp.keytab to /etc to avoid permission issues
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 01 Mar 2018 15:54:27 +0100
+
+univention-saml (5.0.4-14) unstable; urgency=medium
+
+  * Bug #46267: switch to libapache2-mod-php7.0
+
+ -- Arvid Requate <requate@univention.de>  Wed, 28 Feb 2018 15:20:26 +0100
+
+univention-saml (5.0.4-13) unstable; urgency=medium
+
+  * Bug #33214: Partly revert previous version, only create ucs-sso user as
+    hidden
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 23 Feb 2018 09:56:43 +0100
+
+univention-saml (5.0.4-12) unstable; urgency=medium
+
+  * Bug #33214: Create ucs-sso user as functional and hidden
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 22 Feb 2018 12:24:38 +0100
+
+univention-saml (5.0.4-11) unstable; urgency=medium
+
+  * Bug #33214: On DC Backup, copy keytab from master
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 21 Feb 2018 17:10:33 +0100
+
+univention-saml (5.0.4-10) unstable; urgency=medium
+
+  * Bug #33214: Create ucs-sso user in u-saml joinscript
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 20 Feb 2018 11:33:20 +0100
+
+univention-saml (5.0.4-9) unstable; urgency=medium
+
+  * Bug #46212: Add systemd addon to dh because compat level is set to 9
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 19 Feb 2018 17:39:06 +0100
+
+univention-saml (5.0.4-8) unstable; urgency=medium
+
+  * Bug #46212: Cleanup daemon start, use dh_installinit
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 16 Feb 2018 17:37:07 +0100
+
+univention-saml (5.0.4-7) unstable; urgency=medium
+
+  * Bug #33214: Set correct SPN in OpenLDAP
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 13 Feb 2018 17:13:15 +0100
+
+univention-saml (5.0.4-6) unstable; urgency=medium
+
+  * Bug #46110 Change dependency from php-xml-parser to php-xml to remove
+    php5 dependency
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 12 Feb 2018 14:11:23 +0100
+
+univention-saml (5.0.4-5) unstable; urgency=medium
+
+  * Bug #33214 Adjust univention-saml configuration
+  * Add joinscript to configure kerberos service principal
+  * Modify univention-saml apache config to work with negotiate module
+  * Adjust simplesaml negotiate config to use the same ldap parameters as
+    the fallback ldap connection (saml/idp/ldap/get_attributes)
+  * Make IdP auth source configurable via saml/idp/authsource, default
+    is univention-negotiate
+  * Add dependencies to php-krb5 and univention-heimdal-common
+  * Enable simplesamlphp negotiate module by default
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 09 Feb 2018 13:33:59 +0100
+
+univention-saml (5.0.4-4) unstable; urgency=medium
+
+  * Bug #46212: Do not let dh_installinit restart the service on upgrade
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 02 Feb 2018 15:37:21 +0100
+
+univention-saml (5.0.4-3) unstable; urgency=medium
+
+  * Bug #45882: restart stunnel4 to load new configuration
+
+ -- Jürn Brodersen <brodersen@univention.de>  Thu, 01 Feb 2018 15:16:15 +0100
+
+univention-saml (5.0.4-2) unstable; urgency=medium
+
+  * Bug #46110: Remove dependency on php5 package php-openid
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 30 Jan 2018 11:20:37 +0100
+
+univention-saml (5.0.4-1) unstable; urgency=medium
+
+  * Bug #45842: add necessary "name" attribute
+
+ -- Florian Best <best@univention.de>  Thu, 25 Jan 2018 12:11:25 +0100
+
+univention-saml (5.0.3-1) unstable; urgency=medium
+
+  * Bug #45842: migrate sys-idp-user to users/ldap
+
+ -- Florian Best <best@univention.de>  Fri, 29 Dec 2017 13:49:39 +0100
+
+univention-saml (5.0.2-3) unstable; urgency=medium
+
+  * Bug #46110: Update dependencies for UCS 4.3 with php7
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 23 Jan 2018 16:59:22 +0100
+
+univention-saml (5.0.2-1) unstable; urgency=medium
+
+  * Bug #45882: disable SSLv3
+
+ -- Florian Best <best@univention.de>  Wed, 17 Jan 2018 19:43:22 +0100
+
+univention-saml (5.0.1-2) unstable; urgency=medium
+
+  * Remove code from univention-saml.init since systemd is used. The
+    file can be removed once all 'test -x /etc/init.d/univention-saml
+    &&' code has been removed (Bug #45960)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 14 Jan 2018 19:24:22 +0100
+
+univention-saml (5.0.1-1) unstable; urgency=medium
+
+  * Create a systemd script for the univention saml memcached
+    (Bug #45960)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 28 Dec 2017 16:43:02 +0100
+
+univention-saml (5.0.0-4) unstable; urgency=medium
+
+  * Bug #43336: remove XS-Python-Version
+
+ -- Florian Best <best@univention.de>  Thu, 21 Dec 2017 11:52:29 +0100
+
+univention-saml (5.0.0-3) unstable; urgency=medium
+
+  * Bug #45882: workaround for stunnel start
+
+ -- Felix Botner <botner@univention.de>  Tue, 19 Dec 2017 11:11:16 +0100
+
+univention-saml (5.0.0-2) unstable; urgency=medium
+
+  * Bug #45882: disabled options = NO_SSLv2 for now
+
+ -- Felix Botner <botner@univention.de>  Mon, 18 Dec 2017 17:41:42 +0100
+
+univention-saml (5.0.0-1) unstable; urgency=medium
+
+  * Bug #45841: UCS-4.3 version bump
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 11 Dec 2017 14:40:54 +0100
+
+univention-saml (4.0.14-12) unstable; urgency=medium
+
+  * Bug #44121: SSO login page now shows domainname instead of hostfqdn
+
+ -- Jannik Ahlers <ahlers@univention.de>  Fri, 24 Nov 2017 12:06:31 +0100
+
+univention-saml (4.0.14-11) unstable; urgency=medium
+
+  * Bug #44704: The access permissions for the SAML Identify Provider
+    certificate have been corrected.
+
+ -- Florian Best <best@univention.de>  Tue, 28 Nov 2017 17:57:40 +0100
+
+univention-saml (4.0.14-10) unstable; urgency=medium
+
+  * Bug #40927: make SAML apache certificate configurable
+
+ -- Florian Best <best@univention.de>  Tue, 19 Sep 2017 16:19:51 +0200
+
+univention-saml (4.0.14-9) unstable; urgency=medium
+
+  * Bug #45394: protect against information disclosure
+
+ -- Florian Best <best@univention.de>  Thu, 14 Sep 2017 14:01:00 +0200
+
+univention-saml (4.0.14-8) unstable; urgency=medium
+
+  * Bug #45393: make displaying of simplesamlphp exceptions configurable
+
+ -- Florian Best <best@univention.de>  Thu, 14 Sep 2017 13:42:38 +0200
+
+univention-saml (4.0.14-7) unstable; urgency=medium
+
+  * Bug #41500: Disable univention-saml apache site upon package removal
+  * Bug #44815: Fix unjoin script path
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 18 Jul 2017 15:40:04 +0200
+
+univention-saml (4.0.14-6) unstable; urgency=medium
+
+  * Bug #41695: Applied additional patch - cleanup
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 03 Jul 2017 14:29:16 +0200
+
+univention-saml (4.0.14-5) unstable; urgency=medium
+
+  * Bug #41695: Applied patch from Florian Best - Fix definition of multiple
+    identifies=True properties
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 03 Jul 2017 14:17:47 +0200
+
+univention-saml (4.0.14-4) unstable; urgency=low
+
+  * Bug #44216: start and stop only own memcache instance
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 03 Apr 2017 09:42:29 +0200
+
+univention-saml (4.0.14-3) unstable; urgency=medium
+
+  * Bug #44146: revert dead code
+
+ -- Florian Best <best@univention.de>  Thu, 30 Mar 2017 18:24:03 +0200
+
+univention-saml (4.0.14-2) unstable; urgency=medium
+
+  * Bug #44146: remove old conffiles
+
+ -- Florian Best <best@univention.de>  Thu, 30 Mar 2017 12:42:44 +0200
+
+univention-saml (4.0.14-1) unstable; urgency=medium
+
+  * Bug #44106: display privacy policy centered
+
+ -- Florian Best <best@univention.de>  Tue, 28 Mar 2017 13:15:17 +0200
+
+univention-saml (4.0.13-1) unstable; urgency=medium
+
+  * Bug #43918: add link to regular login
+
+ -- Florian Best <best@univention.de>  Mon, 20 Mar 2017 17:40:42 +0100
+
+univention-saml (4.0.12-1) unstable; urgency=medium
+
+  * Bug #43873: Bug #43783: fix API change of simplesamlphp
+
+ -- Florian Best <best@univention.de>  Wed, 15 Mar 2017 15:21:05 +0100
+
+univention-saml (4.0.11-1) unstable; urgency=medium
+
+  * Bug #42174: adjust styling of login dialog
+
+ -- Florian Best <best@univention.de>  Fri, 10 Mar 2017 13:17:23 +0100
+
+univention-saml (4.0.10-1) unstable; urgency=medium
+
+  * Bug #42174: adjust styling of error messages
+
+ -- Florian Best <best@univention.de>  Fri, 10 Mar 2017 11:41:36 +0100
+
+univention-saml (4.0.9-1) unstable; urgency=medium
+
+  * Bug #42174: adjust visibility of error messages
+
+ -- Florian Best <best@univention.de>  Thu, 09 Mar 2017 17:30:06 +0100
+
+univention-saml (4.0.8-2) unstable; urgency=medium
+
+  * Bug #42174: fix SAML login page rendering
+
+ -- Florian Best <best@univention.de>  Wed, 08 Mar 2017 14:48:02 +0100
+
+univention-saml (4.0.8-1) unstable; urgency=medium
+
+  * Bug #42174: fix SAML login page rendering
+
+ -- Florian Best <best@univention.de>  Tue, 07 Mar 2017 17:00:42 +0100
+
+univention-saml (4.0.7-2) unstable; urgency=medium
+
+  * Bug #42263: Adjust menu structure
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 07 Mar 2017 15:56:25 +0100
+
+univention-saml (4.0.7-1) unstable; urgency=medium
+
+  * Bug #42174: adjust login dialog
+
+ -- Florian Best <best@univention.de>  Mon, 06 Mar 2017 19:25:14 +0100
+
+univention-saml (4.0.6-4) unstable; urgency=medium
+
+  * Bug #43708: enable required cgi module in postinst
+
+ -- Florian Best <best@univention.de>  Thu, 02 Mar 2017 18:19:35 +0100
+
+univention-saml (4.0.6-3) unstable; urgency=medium
+
+  * Bug #42263: use umc/widgets/Menu instead of umc/Menu
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 22 Feb 2017 13:19:57 +0100
+
+univention-saml (4.0.6-2) unstable; urgency=medium
+
+  * Bug #42174: styling of login dialog
+
+ -- Florian Best <best@univention.de>  Tue, 14 Feb 2017 17:32:24 +0100
+
+univention-saml (4.0.6-1) unstable; urgency=medium
+
+  * Bug #42174: styling of login dialog
+
+ -- Florian Best <best@univention.de>  Mon, 13 Feb 2017 18:32:14 +0100
+
+univention-saml (4.0.5-1) unstable; urgency=medium
+
+  * Bug #42174: remove SingleSignOn Button widget and related apache
+  	configuration
+
+ -- Florian Best <best@univention.de>  Wed, 08 Feb 2017 15:40:58 +0100
+
+univention-saml (4.0.4-2) unstable; urgency=medium
+
+  * Bug #43384: Fix typo
+
+ -- Jürn Brodersen <brodersen@univention.de>  Wed, 08 Feb 2017 14:41:45 +0100
+
+univention-saml (4.0.4-1) unstable; urgency=medium
+
+  * Bug #42174: adjust styling of SAML login
+
+ -- Florian Best <best@univention.de>  Wed, 08 Feb 2017 14:19:49 +0100
+
+univention-saml (4.0.3-3) unstable; urgency=medium
+
+  * Bug #43384: Use floor instead of round in uldap.php to imitate the
+    behavior of shadowbind
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 06 Feb 2017 11:03:24 +0100
+
+univention-saml (4.0.3-2) unstable; urgency=medium
+
+  * Bug #43384: Always check for expired password/user
+
+ -- Jürn Brodersen <brodersen@univention.de>  Fri, 03 Feb 2017 16:25:03 +0100
+
+univention-saml (4.0.3-1) unstable; urgency=medium
+
+  * Bug #42228: ucs-overview → univention
+
+ -- Florian Best <best@univention.de>  Thu, 02 Feb 2017 21:13:53 +0100
+
+univention-saml (4.0.2-4) unstable; urgency=medium
+
+  * Bug #43384: Catch more specific exception
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 30 Jan 2017 14:50:28 +0100
+
+univention-saml (4.0.2-3) unstable; urgency=medium
+
+  * Bug #43384: Fix login failure checks 
+
+ -- Jürn Brodersen <brodersen@univention.de>  Mon, 30 Jan 2017 14:00:32 +0100
+
+univention-saml (4.0.2-2) unstable; urgency=medium
+
+  * Bug #43349: fix UMC module definition
+
+ -- Florian Best <best@univention.de>  Tue, 17 Jan 2017 10:38:25 +0100
+
+univention-saml (4.0.1-1) unstable; urgency=medium
+
+  * Consider the renamed univention-saml apache site in 91univention-
+    saml.inst (Bug #42196)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 13 Jan 2017 16:54:16 +0100
+
+univention-saml (4.0.0-7) unstable; urgency=medium
+
+  * Bug #41187: update .mo file
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 01 Nov 2016 13:39:27 +0100
+
+univention-saml (4.0.0-6) unstable; urgency=medium
+
+  * Bug #41187: fix module description translation
+
+ -- Eduard Mai <mai@univention.de>  Wed, 19 Oct 2016 18:49:30 +0200
+
+univention-saml (4.0.0-5) precise; urgency=low
+
+  * Bug #38438: Fix use of get_lsb_header_val
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 13 Sep 2016 10:08:12 +0200
+
+univention-saml (4.0.0-4) precise; urgency=low
+
+  * Bug #38438: Make init-script LSB compliant
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 09 Sep 2016 16:12:53 +0200
+
+univention-saml (4.0.0-3) unstable; urgency=medium
+
+  * Bug #42196: apache: Move univention-saml to univention-saml.conf
+
+ -- Florian Best <best@univention.de>  Fri, 09 Sep 2016 12:00:42 +0200
+
+univention-saml (4.0.0-2) precise; urgency=low
+
+  * Bug #42071: Corrected a typo.
+
+ -- Richard Ulmer <ulmer@univention.de>  Wed, 31 Aug 2016 10:43:27 +0200
+
+univention-saml (4.0.0-1) unstable; urgency=medium
+
+  * Bug #41963: UCS-4.2 version bump
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 12 Aug 2016 13:55:58 +0200
+
+univention-saml (3.0.27-4) unstable; urgency=medium
+
+  * Bug #40895: Make serviceprovider extended attribute available for udm user
+    template module
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 14 Mar 2016 13:57:30 +0100
+
+univention-saml (3.0.27-3) unstable; urgency=medium
+
+  * Bug #40741: fixup syntax error
+
+ -- Florian Best <best@univention.de>  Mon, 29 Feb 2016 12:08:06 +0100
+
+univention-saml (3.0.27-2) unstable; urgency=medium
+
+  * Bug #40741: don't fail to create SAML user due to extended attributes
+
+ -- Florian Best <best@univention.de>  Thu, 25 Feb 2016 12:41:24 +0100
+
+univention-saml (3.0.27-1) unstable; urgency=medium
+
+  * Bug #39850: Fix internet explorer compatibility
+
+ -- Florian Best <best@univention.de>  Tue, 10 Nov 2015 11:45:07 +0100
+
+univention-saml (3.0.26-6) unstable; urgency=medium
+
+  * Bug #38947: Add suexec options to VirtualHost on port 80
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 10 Nov 2015 09:28:23 +0100
+
+univention-saml (3.0.26-5) unstable; urgency=medium
+
+  * Bug #38947: Move suexec functionality back to VirtualHost to increase
+    compatibility with other programs. Only activate it globally in
+    single-server scenarios
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 06 Nov 2015 14:20:28 +0100
+
+univention-saml (3.0.26-4) unstable; urgency=medium
+
+  * Bug #38947: Allow webserver to read public certificate
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 04 Nov 2015 14:48:34 +0100
+
+univention-saml (3.0.26-3) unstable; urgency=medium
+
+  * Bug #39739: Reinitialize listener module to write metadata config
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 04 Nov 2015 13:03:48 +0100
+
+univention-saml (3.0.26-2) unstable; urgency=medium
+
+  * Bug #39739: add more debug output
+
+ -- Florian Best <best@univention.de>  Tue, 03 Nov 2015 16:56:25 +0100
+
+univention-saml (3.0.26-1) unstable; urgency=medium
+
+  * Bug #39605: prevent caching of blank.json
+
+ -- Florian Best <best@univention.de>  Tue, 03 Nov 2015 12:25:43 +0100
+
+univention-saml (3.0.25-7) unstable; urgency=medium
+
+  * schema.postinst: restart slapd only if it runs (Bug #39683)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 Oct 2015 16:37:34 +0100
+
+univention-saml (3.0.25-6) unstable; urgency=medium
+
+  * Bug #39479: Check certificate for unix sockets
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 29 Oct 2015 12:00:03 +0100
+
+univention-saml (3.0.25-5) unstable; urgency=medium
+
+  * Bug #31943: fixup
+
+ -- Florian Best <best@univention.de>  Wed, 28 Oct 2015 20:56:20 +0100
+
+univention-saml (3.0.25-4) unstable; urgency=medium
+
+  * Bug #39455: default loglevel is not set to errors
+
+ -- Florian Best <best@univention.de>  Wed, 28 Oct 2015 17:18:25 +0100
+
+univention-saml (3.0.25-3) unstable; urgency=medium
+
+  * Bug #39605: Allow Content-Type in CORS request
+
+ -- Florian Best <best@univention.de>  Wed, 28 Oct 2015 16:19:53 +0100
+
+univention-saml (3.0.25-2) unstable; urgency=medium
+
+  * Bug #39455: Support update from UCS 4.0
+  * Raise default simplesamlphp loglevel to ERR
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 28 Oct 2015 16:13:06 +0100
+
+univention-saml (3.0.25-1) unstable; urgency=medium
+
+  * Bug #39605: make it possible to detect if the IDP is reachable
+
+ -- Florian Best <best@univention.de>  Tue, 27 Oct 2015 21:11:06 +0100
+
+univention-saml (3.0.24-13) unstable; urgency=medium
+
+  * Bug #39479: Use correct host identifier in stunnel config
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 28 Oct 2015 09:56:47 +0100
+
+univention-saml (3.0.24-12) unstable; urgency=medium
+
+  * listener module: Check if UCR variables are set (Bug #39479)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Oct 2015 06:19:08 +0100
+
+univention-saml (3.0.24-11) unstable; urgency=medium
+
+  * Bug #39181: Fix logic bug
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 26 Oct 2015 14:41:35 +0100
+
+univention-saml (3.0.24-10) unstable; urgency=medium
+
+  * Bug #39479: Listener: Restart univention-saml only if certificates are
+    present
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 26 Oct 2015 11:59:49 +0100
+
+univention-saml (3.0.24-9) unstable; urgency=medium
+
+  * Removed apache2 reload workaround (Bug #39476)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Oct 2015 10:00:13 +0100
+
+univention-saml (3.0.24-8) unstable; urgency=medium
+
+  * Bug #39431: Change default NameIDFormat to
+    urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified, update old LDAP
+    objects
+  * Bug #39627: Fix listener regressions
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 23 Oct 2015 15:45:54 +0200
+
+univention-saml (3.0.24-7) unstable; urgency=medium
+
+  * listener/univention-saml-servers.py: import subporocess (Bug #39479)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Oct 2015 06:18:25 +0200
+
+univention-saml (3.0.24-6) unstable; urgency=medium
+
+  * Bug #39479: Allow only SAML services to connect to stunnel
+  * Reordered stunnel/univention_saml.conf options to prevent warning
+  * Added UCRV stunnel/debuglevel with default=4 to reduce logfile spam
+  * Added univention-saml restart to idp-server listener
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 22 Oct 2015 15:53:21 +0200
+
+univention-saml (3.0.24-5) unstable; urgency=medium
+
+  * Bug #39181: Check for expired passwords, required password changes,
+    locked and disabled accounts
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 22 Oct 2015 11:57:35 +0200
+
+univention-saml (3.0.24-4) unstable; urgency=low
+
+  * Bug #39574: register ucs-sso A in AD 
+
+ -- Felix Botner <botner@univention.de>  Wed, 21 Oct 2015 10:39:53 +0200
+
+univention-saml (3.0.24-3) unstable; urgency=low
+
+  * Bug #39574: register ucs-sso A in AD
+
+ -- Felix Botner <botner@univention.de>  Wed, 21 Oct 2015 09:35:09 +0200
+
+univention-saml (3.0.24-2) unstable; urgency=low
+
+  * Bug #39574: register ucs-sso A in AD
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Oct 2015 17:44:35 +0200
+
+univention-saml (3.0.24-1) unstable; urgency=medium
+
+  * Bug #39233: fix setting of CORS header
+
+ -- Florian Best <best@univention.de>  Sat, 17 Oct 2015 21:31:58 +0200
+
+univention-saml (3.0.23-1) unstable; urgency=medium
+
+  * Bug #39320: fix PHP warning caused by template
+
+ -- Florian Best <best@univention.de>  Sat, 17 Oct 2015 15:06:18 +0200
+
+univention-saml (3.0.22-1) unstable; urgency=medium
+
+  * Bug #39233: enable CORS header
+
+ -- Florian Best <best@univention.de>  Thu, 15 Oct 2015 18:27:16 +0200
+
+univention-saml (3.0.21-5) unstable; urgency=medium
+
+  * Introduce ucs/server/sso/virtualhost (Bug #39549)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Oct 2015 21:58:26 +0200
+
+univention-saml (3.0.21-4) unstable; urgency=medium
+
+  * Bug #39495: don't create logfiles world-readable
+
+ -- Florian Best <best@univention.de>  Tue, 13 Oct 2015 12:02:03 +0200
+
+univention-saml (3.0.21-3) unstable; urgency=medium
+
+  * Bug #38947: Do not break config file if secret file cannot be read
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 12 Oct 2015 16:45:53 +0200
+
+univention-saml (3.0.21-2) unstable; urgency=medium
+
+  * Bug #39495: don't create logfiles world-readable
+  * Bug #39399: create /var/run/univention-saml/ dynamically
+
+ -- Florian Best <best@univention.de>  Mon, 12 Oct 2015 11:21:52 +0200
+
+univention-saml (3.0.21-1) unstable; urgency=medium
+
+  * Bug #39399: move saml sockets into /var/run/univention-saml/
+
+ -- Florian Best <best@univention.de>  Fri, 09 Oct 2015 12:50:30 +0200
+
+univention-saml (3.0.20-3) unstable; urgency=medium
+
+  * Bug #38947: Prevent apache config from being written if certificates
+    have not been generated (partly reverts previous commit)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 08 Oct 2015 16:57:12 +0200
+
+univention-saml (3.0.20-2) unstable; urgency=medium
+
+  * Bug #38947: Add preinst
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 08 Oct 2015 15:49:49 +0200
+
+univention-saml (3.0.20-1) unstable; urgency=medium
+
+  * Added more UCR variables for the ucs-sso configuration
+    ucs/server/sso/autoregistraton,
+    ucs/server/sso/certificate/generation and
+    ucs/server/sso/certificate/download (Bug #39386)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Oct 2015 15:36:05 +0200
+
+univention-saml (3.0.19-2) unstable; urgency=medium
+
+  * Bug #38947: Execute Single Sign On php processes as separate
+    system user
+  * Bug #39386: Fix all references to old joinscript name
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 08 Oct 2015 14:53:38 +0200
+
+univention-saml (3.0.19-1) unstable; urgency=medium
+
+  * Fixed listener name (Bug #39468)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 Oct 2015 20:41:46 +0200
+
+univention-saml (3.0.18-4) unstable; urgency=medium
+
+  * Bug #39472: re-add listener module
+
+ -- Florian Best <best@univention.de>  Tue, 06 Oct 2015 17:35:16 +0200
+
+univention-saml (3.0.18-3) unstable; urgency=medium
+
+  * Added a dependency to shell-univention-lib and import the shell lib
+    before calling call_joinscript (Bug #39472)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 06 Oct 2015 17:09:26 +0200
+
+univention-saml (3.0.18-2) unstable; urgency=medium
+
+  * Bug #38881: Remove UMC module icon
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 06 Oct 2015 13:41:12 +0200
+
+univention-saml (3.0.18-1) unstable; urgency=medium
+
+  * Bug #38933: fix php escaping
+
+ -- Florian Best <best@univention.de>  Tue, 06 Oct 2015 12:52:41 +0200
+
+univention-saml (3.0.17-1) unstable; urgency=medium
+
+  * Bug #39399: adapt stunnel configuration
+
+ -- Florian Best <best@univention.de>  Tue, 06 Oct 2015 11:41:31 +0200
+
+univention-saml (3.0.16-1) unstable; urgency=medium
+
+  * Move the univention-saml join script from univention-saml-schema to
+    univention-saml (Bug #39472)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 05 Oct 2015 16:00:59 +0200
+
+univention-saml (3.0.15-1) unstable; urgency=medium
+
+  * Bug #32786: add link to certificate of identity provider
+
+ -- Florian Best <best@univention.de>  Mon, 05 Oct 2015 15:01:17 +0200
+
+univention-saml (3.0.14-4) unstable; urgency=medium
+
+  * Ensure apache is reloaded in the SAML join script. Fixed typo of
+    previous commit (Bug #39386)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 04 Oct 2015 21:26:58 +0200
+
+univention-saml (3.0.14-3) unstable; urgency=medium
+
+  * Ensure apache is reloaded in the SAML join script (Bug #39386)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 04 Oct 2015 20:42:01 +0200
+
+univention-saml (3.0.14-2) unstable; urgency=medium
+
+  * Move univention-saml join script to a later point because it needs
+    a running DNS server (Bug #39386)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 04 Oct 2015 19:29:43 +0200
+
+univention-saml (3.0.14-1) unstable; urgency=medium
+
+  * Re-create Apache configuration after the certificate generation
+    (Bug #39386)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 04 Oct 2015 14:51:59 +0200
+
+univention-saml (3.0.13-1) unstable; urgency=medium
+
+  * Bug #39399: resolve dependency problems
+
+ -- Florian Best <best@univention.de>  Tue, 29 Sep 2015 17:33:10 +0200
+
+univention-saml (3.0.12-2) unstable; urgency=medium
+
+  * Bug #38947: Move idp-ldap-user.secret to /etc
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 29 Sep 2015 17:13:39 +0200
+
+univention-saml (3.0.12-1) unstable; urgency=medium
+
+  * Bug #39399: adjust firewall settings, save global entityID
+
+ -- Florian Best <best@univention.de>  Tue, 29 Sep 2015 13:10:44 +0200
+
+univention-saml (3.0.11-2) unstable; urgency=medium
+
+  * Bug #39399: fixup
+
+ -- Florian Best <best@univention.de>  Mon, 28 Sep 2015 20:31:02 +0200
+
+univention-saml (3.0.11-1) unstable; urgency=medium
+
+  * Bug #39399: fixup
+
+ -- Florian Best <best@univention.de>  Mon, 28 Sep 2015 18:12:00 +0200
+
+univention-saml (3.0.10-1) unstable; urgency=medium
+
+  * Bug #39399: change simplesamlphp session type to memcache
+  * replicate SAML IDP server via UCR policy
+
+ -- Florian Best <best@univention.de>  Fri, 25 Sep 2015 16:03:57 +0200
+
+univention-saml (3.0.9-3) unstable; urgency=medium
+
+  * Bug #39250: convert saml20-idp-hosted.php to multifile
+
+ -- Florian Best <best@univention.de>  Wed, 23 Sep 2015 16:19:49 +0200
+
+univention-saml (3.0.9-2) unstable; urgency=medium
+
+  * Bug #32786: fixup
+
+ -- Florian Best <best@univention.de>  Tue, 22 Sep 2015 19:10:21 +0200
+
+univention-saml (3.0.9-1) unstable; urgency=medium
+
+  * Bug #39386: create ucs-sso.$domainname virtual host
+  * Bug #32786: provide certificate via /simplesamlphp/saml2/idp/certificate
+
+ -- Florian Best <best@univention.de>  Tue, 22 Sep 2015 18:40:58 +0200
+
+univention-saml (3.0.8-1) unstable; urgency=medium
+
+  * Bug #38947: Use dedicated ldap user for ldap access by SAML IdP
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 22 Sep 2015 13:00:43 +0200
+
+univention-saml (3.0.7-1) unstable; urgency=medium
+
+  * Bug #38933: escape PHP strings/arrays/booleans
+  * Bug #39310: cleanup unnecessary things (e.g. apache reload)
+
+ -- Florian Best <best@univention.de>  Tue, 08 Sep 2015 13:26:11 +0200
+
+univention-saml (3.0.6-2) unstable; urgency=medium
+
+  * Bug #39310: fixup typo
+
+ -- Florian Best <best@univention.de>  Tue, 08 Sep 2015 09:12:11 +0200
+
+univention-saml (3.0.6-1) unstable; urgency=medium
+
+  * Bug #39310: adjustments for UMC service provider
+
+ -- Florian Best <best@univention.de>  Mon, 07 Sep 2015 17:17:39 +0200
+
+univention-saml (3.0.5-1) unstable; urgency=medium
+
+  * Bug #39310: allow the raw XML metadata to be set on service provider entries
+
+ -- Florian Best <best@univention.de>  Sat, 05 Sep 2015 10:10:32 +0200
+
+univention-saml (3.0.4-1) unstable; urgency=medium
+
+  * Bug #39015: adapt mapping of 'AssertionConsumerService'
+
+ -- Florian Best <best@univention.de>  Fri, 04 Sep 2015 09:59:15 +0200
+
+univention-saml (3.0.3-1) unstable; urgency=medium
+
+  * Bug #33912: allow to set entityID of SAML IDP via UCR variable
+
+ -- Florian Best <best@univention.de>  Fri, 28 Aug 2015 14:36:48 +0200
+
+univention-saml (3.0.2-1) unstable; urgency=medium
+
+  * Bug #39250: convert simplesamlphp/authsources.php to a UCR multifile
+
+ -- Florian Best <best@univention.de>  Thu, 27 Aug 2015 17:44:29 +0200
+
+univention-saml (3.0.1-4) unstable; urgency=medium
+
+  * Bug #39255: rename joinscript
+
+ -- Florian Best <best@univention.de>  Mon, 24 Aug 2015 14:16:08 +0200
+
+univention-saml (3.0.1-3) unstable; urgency=medium
+
+  * Bug #39255: move certificate creation into joinscript
+
+ -- Florian Best <best@univention.de>  Mon, 24 Aug 2015 13:57:25 +0200
+
+univention-saml (3.0.1-2) unstable; urgency=medium
+
+  * Bug #31943: the sp metadata configuration is a UCR multifile now
+
+ -- Florian Best <best@univention.de>  Fri, 14 Aug 2015 10:25:13 +0200
+
+univention-saml (3.0.1-1) unstable; urgency=medium
+
+  * Bug #39015: allow AssertionConsumerService to be multivalue
+
+ -- Florian Best <best@univention.de>  Thu, 23 Jul 2015 16:24:00 +0200
+
+univention-saml (3.0.0-1) unstable; urgency=medium
+
+  * Bug #38934: disallow renaming of a service provider
+  * Bug #38927: write attributes as PHP array into config
+  * Bug #38935: fix ACL evaluation by always passing required attribute
+
+ -- Florian Best <best@univention.de>  Thu, 23 Jul 2015 12:10:46 +0200
+
+univention-saml (2.0.5-1) unstable; urgency=low
+
+  * Bug #36428: Show description above directly below login message 
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 04 Nov 2014 17:19:07 +0100
+
+univention-saml (2.0.4-1) unstable; urgency=low
+
+  * Bug #36428: use input type password for password textbox
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 04 Nov 2014 16:41:14 +0100
+
+univention-saml (2.0.3-2) unstable; urgency=low
+
+  * Bug #35890: Update UMC module layout
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 03 Nov 2014 18:05:26 +0100
+
+univention-saml (2.0.3-1) unstable; urgency=low
+
+  Bug #35890:
+  * removed duplicate title from logout.php
+  * added "warning" class to authorize_403.php
+    to adjust style
+  * adjusted styling of loginerror to match
+    umcloginerror 
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 03 Nov 2014 17:37:22 +0100
+
+univention-saml (2.0.2-1) unstable; urgency=low
+
+  * Bug #35890: Improved texts, changed error message position 
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 03 Nov 2014 13:16:36 +0100
+
+univention-saml (2.0.1-1ubuntu1) unstable; urgency=low
+
+  Bug #35890: 
+  * renamed classes for loginDialog
+  * added dijitHidden to footer class
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 31 Oct 2014 13:36:20 +0100
+
+univention-saml (2.0.1-1) unstable; urgency=low
+
+  * Bug #35890: adapted php files to new UCS overview design
+
+ -- Johannes Keiser <keiser@univention.de>  Thu, 30 Oct 2014 20:00:02 +0100
+
+univention-saml (2.0.0-2) unstable; urgency=low
+
+  * Fixed file permissions (Bug #35890) 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 10 Oct 2014 16:27:03 +0200
+
+univention-saml (2.0.0-1) unstable; urgency=low
+
+  * Update for UCS 4 (Bug #35890)
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 10 Oct 2014 13:29:22 +0200
+
+univention-saml (1.0.11-1) unstable; urgency=low
+
+  * Explicitly set file permissions and owner/group for ucr templates (Bug #34233) 
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 04 Mar 2014 11:27:19 +0100
+
+univention-saml (1.0.10-1) unstable; urgency=low
+
+  * Bugfix in language switching: Revert changes, do not use univention-apache
+    javascript (Bug #32897)
+  * Include additional translations
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 04 Nov 2013 14:41:30 +0100
+
+univention-saml (1.0.9-1) unstable; urgency=low
+
+  * Added extra css rule to disable service/admin tabs on firefox (Bug #32897) 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 01 Nov 2013 13:32:55 +0100
+
+univention-saml (1.0.8-1) unstable; urgency=low
+
+  * Adapted updated links in website footer (Bug #32897)
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 01 Nov 2013 11:03:00 +0100
+
+univention-saml (1.0.7-1) unstable; urgency=low
+
+  * Fixed problems with language switcher which could result in errors
+    or multiple languages on pages (Bug #32897)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 24 Oct 2013 16:23:23 +0200
+
+univention-saml (1.0.6-1) unstable; urgency=low
+
+  * Integrate default ucs javascript functions for the language switcher
+    and to translate the links in the website footer (Bug #32897)
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 22 Oct 2013 11:47:51 +0200
+
+univention-saml (1.0.5-5) unstable; urgency=low
+
+  * Fixed prerm script to correctly disable apache site (Bug #31693) 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 09 Oct 2013 12:06:30 +0200
+
+univention-saml (1.0.5-4) unstable; urgency=low
+
+  * Fixed joinscript error handling (Bug #31693) 
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 07 Oct 2013 11:20:17 +0200
+
+univention-saml (1.0.5-3) unstable; urgency=low
+
+  * Fixed configuration error (Bug #31693) 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 02 Oct 2013 16:10:52 +0200
+
+univention-saml (1.0.5-2) unstable; urgency=low
+
+  * Fixed enforcing en-US as available language (Bug #31693) 
+  * Fixed dependencies: apache2 -> univention-apache 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 02 Oct 2013 14:32:55 +0200
+
+univention-saml (1.0.5-1) unstable; urgency=low
+
+  * Show hostname in header claim (Bug #31693)
+  * Add english as fallback language choice
+  * Changed warning icon when a wrong password has been entered 
+  * Redirect from /simplesamlphp welcome page to /ucs-overview 
+  * Corrected texts and translations
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 01 Oct 2013 16:50:09 +0200
+
+univention-saml (1.0.4-1) unstable; urgency=low
+
+  * Corrected use of ldap server port in config file (Bug #31693)
+  * Fixed UCR variable descriptions
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 30 Sep 2013 12:21:05 +0200
+
+univention-saml (1.0.3-3) unstable; urgency=low
+
+  * Fixed joinscript bug (Bug #31693) 
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 26 Sep 2013 16:03:41 +0200
+
+univention-saml (1.0.3-1) unstable; urgency=low
+
+  * Provide a theme to match UCS look (Bug #32621)
+  * Enable language switching
+  * Countless smaller improvements
+  * Three default/example service provider configurations are shipped with
+    this version (Bug #31693)
+  * A new checkbox controls if a service provider is enabled, i.e. its
+    configuration file is written (Bug #31693)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 26 Sep 2013 15:47:08 +0200
+
+univention-saml (1.0.2-1) unstable; urgency=low
+
+  * Bug #32048: Add keywords to UMC module definition
+
+ -- Florian Best <best@univention.de>  Mon, 09 Sep 2013 13:47:59 +0200
+
+univention-saml (1.0.1-7) unstable; urgency=low
+
+  * Updated udm module description (Bug #31693)
+  * Improved UMC module layout 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 30 Aug 2013 15:23:24 +0200
+
+univention-saml (1.0.1-6) unstable; urgency=low
+
+  * Changed App icon (Bug #31693)
+  * Improved many text-strings and translations 
+  * Changed simplesamlLDAPattributes a multivalue field 
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 29 Aug 2013 15:23:06 +0200
+
+univention-saml (1.0.1-5) unstable; urgency=low
+
+  * Corrected config file permission (Bug #31693)
+  * Added server password change script 
+  * Added icons
+  * Added UMC module definition 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 16 Aug 2013 14:30:51 +0200
+
+univention-saml (1.0.1-4) unstable; urgency=low
+
+  * Added more configuration options for simplesamlphp (Bug #31693) 
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 08 Aug 2013 16:33:27 +0200
+
+univention-saml (1.0.1-3) unstable; urgency=low
+
+  * New feature: Users must be enabled to use SAML service providers
+    by adding the SP on the users contact page (Bug #31693)
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 08 Aug 2013 12:52:17 +0200
+
+univention-saml (1.0.1-2) unstable; urgency=low
+
+  * Removed univention-config-dev from binary package dependency (Bug #31693) 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 07 Aug 2013 10:26:25 +0200
+
+univention-saml (1.0.1-1) unstable; urgency=low
+
+  * Initial App Center Release (Bug #31693)
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 06 Aug 2013 16:06:14 +0200
+
+univention-saml (0.0.1-1) unstable; urgency=low
+
+  * Bug #25408: minor fixes to make the package build
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 10 Jul 2013 15:03:42 +0200
+
+univention-saml (0.0.0-1) unstable; urgency=low
+
+  * Bug #25408: Initial release
+
+ -- Jacek Groth <groth@univention.de>  Wed, 10 Jul 2013 08:19:58 -0400

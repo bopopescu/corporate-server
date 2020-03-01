@@ -1,0 +1,81 @@
+#!/usr/share/ucs-test/runner bash
+## desc: "Test creating A, CNAME and SRV records"
+## exposure: safe
+## roles:
+## - domaincontroller_master
+## - domaincontroller_backup
+## - domaincontroller_slave
+## packages:
+##  - univention-samba4
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+function cleanup() {
+	echo "----Cleanup"
+	udm-test dns/forward_zone modify \
+		--dn zoneName="$domainname,cn=dns,$ldap_base" \
+		--remove a="111.111.111.111"
+	udm-test dns/srv_record remove \
+		--superordinate "zoneName=$domainname,cn=dns,$ldap_base" \
+		--dn "relativeDomainName=_45dnstest_srv_record._tcp.foobar,zoneName=$domainname,cn=dns,$ldap_base"
+	udm-test dns/alias remove \
+		--superordinate "zoneName=$domainname,cn=dns,$ldap_base" \
+		--dn relativeDomainName="alias1,zoneName=$domainname,cn=dns,$ldap_base"
+}
+
+trap 'cleanup' INT TERM EXIT
+
+REPLICATION_TIME=30
+
+#============Prepare============
+#CNAME RECORD
+echo "----Create CNAME record"
+udm-test dns/alias create --superordinate "zoneName=$domainname,cn=dns,$ldap_base" --set name=alias1 --set cname="$hostname.$domainname"
+if [ "$?" != 0 ];then
+	fail_test 1 "Could not create CNAME record." 
+fi
+
+#SRV RECORD
+echo "----Create SRV record"
+udm-test dns/srv_record create --superordinate "zoneName=$domainname,cn=dns,$ldap_base" --set name="45dnstest_srv_record tcp foobar" --set location="0 100 389 $hostname.$domainname"
+if [ "$?" != 0 ]; then
+	fail_test 1 "Could not create SRV record." 
+fi
+
+#A RECORD
+echo "----Create A record"
+udm-test dns/forward_zone modify --dn zoneName="$domainname,cn=dns,$ldap_base" --append a="111.111.111.111"
+if [ "$?" != 0 ];then
+	fail_test 1 "Could not modify Forward Zone."
+fi
+
+#============Check============
+
+#CNAME RECORD
+echo "----Check functionality of CNAME record"
+for((i=0;i<$REPLICATION_TIME;i++)); do
+	alias_test="$(dig "alias1.$domainname" | grep "alias1.$domainname" | grep CNAME | grep "$hostname.$domainname")"
+	test -n "$alias_test" && break
+	sleep 1
+done
+test "$i" = "$REPLICATION_TIME" && fail_test 1 "Created CNAME record could not be found." 
+
+#SRV RECORD
+echo "----Check functionality of SRV record"
+for((i=0;i<$REPLICATION_TIME;i++)); do
+	srv_test="$(dig SRV "_45dnstest_srv_record._tcp.foobar.$domainname" | grep "ANSWER SECTION")"
+	test -n "$srv_test" && break
+	sleep 1
+done
+test "$i" = "$REPLICATION_TIME" && fail_test 1 "Created SRV record could not be found." 
+
+#A RECORD
+echo "----Check functionality of A record"
+for((i=0;i<$REPLICATION_TIME;i++)); do
+	a_test="$(dig "$domainname" | grep "$domainname" | grep A | grep 111.111.111.111)"
+	test -n "$a_test" && break
+	sleep 1
+done
+test "$i" = "$REPLICATION_TIME" && fail_test 1 "Created A record could not be found." 
+
+exit $RETVAL

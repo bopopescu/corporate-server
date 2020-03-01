@@ -1,0 +1,12 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check join status
+## roles-not: [basesystem]
+## tags:
+##  - basic
+##  - apptest
+## exposure: safe
+
+. "$TESTLIBPATH/base.sh" || exit 137
+
+/usr/share/univention-join/check_join_status ||
+	fail_fast 110 "check_join_status failed"

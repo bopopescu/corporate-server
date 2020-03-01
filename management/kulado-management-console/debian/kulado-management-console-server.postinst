@@ -1,0 +1,101 @@
+#!/bin/sh
+#
+# Univention Management Console Server
+#  postinst script for UMC server
+#
+# Copyright 2002-2019 Univention GmbH
+#
+# https://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <https://www.gnu.org/licenses/>.
+
+#DEBHELPER#
+
+. /usr/share/univention-lib/all.sh
+
+# unset old default value
+if [ "512" -eq "$(ucr get umc/server/upload/max)" ]; then
+	univention-config-registry unset umc/server/upload/max
+fi
+
+# set default UCR settings
+univention-config-registry set \
+	umc/server/debug/level?2 \
+	umc/server/autostart?yes \
+	umc/server/upload/max?2048 \
+	umc/module/debug/level?2 \
+	umc/module/timeout?600
+
+create_logfile /var/log/univention/ec2.log "root:adm" 640
+
+# create UMC ACLs for user root
+eval "$(ucr shell server/role)"
+
+# append new command patterns to allow list
+/usr/sbin/univention-management-console-acls allow --user root --host "*" \
+			--command 'ucr/*' \
+			--command 'service/*' \
+			--command 'quota/*' \
+			--command 'top/*' \
+			--command 'reboot/*' \
+			--command 'services/*' \
+			--command 'sysinfo/*' \
+			--command 'updater/*' \
+			--command 'lib/*'
+
+if [ "$server_role" != "basesystem" ]; then
+	# mrtg does not work because univention-maintenance is not installed
+	/usr/sbin/univention-management-console-acls allow --user root --host "*" --command 'join/*' --command 'mrtg/*'
+fi
+
+/usr/sbin/univention-management-console-acls allow --user root --host "*" --flavor "*" \
+			--command 'setup/*'
+
+if [ -x /etc/init.d/univention-directory-listener ]; then
+	invoke-rc.d univention-directory-listener restart
+fi
+
+# configure firewall
+ucr set security/packetfilter/package/univention-management-console-server/tcp/6670/all="ACCEPT" \
+		security/packetfilter/package/univention-management-console-server/tcp/6670/all/en="UMC"
+[ -x "/etc/init.d/univention-firewall" ] && invoke-rc.d univention-firewall restart
+
+# Bug #46847: Due to an issue in u-updater, while system-setup is running,
+# the umc-server executable has no dpkg-statoverride which removes the executable bit
+# Emulate the functionality here.
+if dpkg --compare-versions "10.0.5" gt-nl "$2"; then
+	if pgrep -l -f /usr/lib/univention-system-setup/scripts/setup-join.sh; then
+		umc_executable="/usr/sbin/univention-management-console-server"
+		if [ -x "$umc_executable" ]; then
+			/usr/bin/dpkg-statoverride --add root root 0644 "$umc_executable" 2>&1
+			/bin/chmod a-x "$umc_executable"
+		fi
+	fi
+fi
+
+
+invoke-rc.d univention-management-console-server restart
+
+# ucslint needs this
+exit 0
