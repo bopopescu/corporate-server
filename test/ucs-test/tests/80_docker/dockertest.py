@@ -266,7 +266,7 @@ class App(object):
 		self.ini['Logo'] = '%s.svg' % self.app_name
 		if self.package:
 			self.ini['DefaultPackages'] = self.package_name
-		self.ini['ServerRole'] = 'domaincontroller_master,domaincontroller_backup,domaincontroller_slave,memberserver'
+		self.ini['ServerRole'] = 'domaincontroller_main,domaincontroller_backup,domaincontroller_subordinate,memberserver'
 
 		self.scripts = {}
 

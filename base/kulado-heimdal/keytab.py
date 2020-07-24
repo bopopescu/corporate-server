@@ -41,7 +41,7 @@ domainname = listener.configRegistry['domainname']
 base_domain = listener.configRegistry['ldap/base'].replace('dc=', '').replace(',', '.')
 realm = listener.configRegistry['kerberos/realm']
 server_role = listener.configRegistry['server/role']
-ldap_master = listener.configRegistry['ldap/master']
+ldap_main = listener.configRegistry['ldap/main']
 samba4_role = listener.configRegistry.get('samba4/role', '')
 
 
@@ -88,14 +88,14 @@ def handler(dn, new, old):
 		return
 
 	if server_role == 'memberserver':
-		ud.debug(ud.LISTENER, ud.PROCESS, 'Fetching %s from %s' % (K5TAB, ldap_master))
+		ud.debug(ud.LISTENER, ud.PROCESS, 'Fetching %s from %s' % (K5TAB, ldap_main))
 		listener.setuid(0)
 		try:
 			if os.path.exists(K5TAB):
 				os.remove(K5TAB)
 			count = 0
 			while not os.path.exists(K5TAB):
-				call(['univention-scp', '/etc/machine.secret', '%s$@%s:/var/lib/univention-heimdal/%s' % (hostname, ldap_master, hostname), K5TAB])
+				call(['univention-scp', '/etc/machine.secret', '%s$@%s:/var/lib/univention-heimdal/%s' % (hostname, ldap_main, hostname), K5TAB])
 				if not os.path.exists(K5TAB):
 					if count > 30:
 						ud.debug(ud.LISTENER, ud.ERROR, 'E: failed to download keytab for memberserver')

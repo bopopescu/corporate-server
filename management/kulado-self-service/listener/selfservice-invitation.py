@@ -48,7 +48,7 @@ def handler(dn, new, old, command):
 	if not listener.configRegistry.is_true('umc/self-service/invitation/enabled', True):
 		return
 
-	if not listener.configRegistry.get('server/role', 'undefined') == 'domaincontroller_master':
+	if not listener.configRegistry.get('server/role', 'undefined') == 'domaincontroller_main':
 		return
 
 	if new and not old and command == 'a':

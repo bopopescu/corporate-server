@@ -168,7 +168,7 @@ def getAdminConnection(start_tls=2, decode_ignorelist=[]):
 	return access(lo=lo), pos
 
 
-def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True):
+def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_main=True):
 	# type: (int, List[str], bool) -> Tuple[univention.admin.uldap.access, univention.admin.uldap.position]
 	"""
 	Open a LDAP connection using the machine credentials.
@@ -176,11 +176,11 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True):
 	:param int start_tls: Negotiate TLS with server. If `2` is given, the command will require the operation to be successful.
 	:param decode_ignorelist: List of LDAP attribute names which shall be handled as binary attributes.
 	:type decode_ignorelist: list[str]
-	:param bool ldap_master: Open a connection to the Master if True, to the preferred LDAP server otherwise.
+	:param bool ldap_main: Open a connection to the Main if True, to the preferred LDAP server otherwise.
 	:return: A 2-tuple (LDAP-access, LDAP-position)
 	:rtype: tuple[univention.admin.uldap.access, univention.admin.uldap.position]
 	"""
-	lo = univention.uldap.getMachineConnection(start_tls, decode_ignorelist=decode_ignorelist, ldap_master=ldap_master)
+	lo = univention.uldap.getMachineConnection(start_tls, decode_ignorelist=decode_ignorelist, ldap_main=ldap_main)
 	pos = position(lo.base)
 	return access(lo=lo), pos
 

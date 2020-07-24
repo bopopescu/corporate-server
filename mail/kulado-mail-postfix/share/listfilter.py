@@ -85,7 +85,7 @@ def listfilter(attrib):
 		return "REJECT Access denied for empty recipient."
 	else:
 		try:
-			ldap = univention.uldap.getMachineConnection(ldap_master=False, secret_file="/etc/listfilter.secret")
+			ldap = univention.uldap.getMachineConnection(ldap_main=False, secret_file="/etc/listfilter.secret")
 
 			user_dn = ""
 			users_groups = []

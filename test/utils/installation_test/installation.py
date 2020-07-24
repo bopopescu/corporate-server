@@ -223,13 +223,13 @@ class UCSInstallation(object):
 
 	def setup(self):
 		self.client.waitForText(self._['domain_setup'], timeout=self.timeout + 900)
-		if self.args.role == 'master':
+		if self.args.role == 'main':
 			self.click(self._['new_domain'])
 			self.click(self._['next'])
 			self.client.waitForText(self._['account_information'], timeout=self.timeout)
 			self.client.enterText('home')
 			self.click(self._['next'])
-		elif self.args.role in ['slave', 'backup', 'member']:
+		elif self.args.role in ['subordinate', 'backup', 'member']:
 			self.click(self._['join_domain'])
 			self.click(self._['next'])
 			self.client.waitForText(self._['no_dc_dns'])
@@ -248,7 +248,7 @@ class UCSInstallation(object):
 			time.sleep(10)
 			if self.args.role == 'backup':
 				self.click(self._['next'])
-			if self.args.role == 'slave':
+			if self.args.role == 'subordinate':
 				self.client.keyPress('down')
 				self.click(self._['next'])
 			if self.args.role == 'member':
@@ -303,7 +303,7 @@ class UCSInstallation(object):
 
 	def hostname(self):
 		# name hostname
-		if self.args.role == 'master':
+		if self.args.role == 'main':
 			self.client.waitForText(self._['host_settings'], timeout=self.timeout)
 		else:
 			self.client.waitForText(self._['system_name'])
@@ -324,10 +324,10 @@ class UCSInstallation(object):
 	def software_configuration(self):
 		# software configuration
 		if self.args.role != 'basesystem':
-			if self.args.role == 'master':
+			if self.args.role == 'main':
 				self.client.waitForText(self._['software_configuration'], timeout=self.timeout)
 			else:
-				self.client.waitForText(self._['software_configuration_non_master'], timeout=self.timeout)
+				self.client.waitForText(self._['software_configuration_non_main'], timeout=self.timeout)
 			self.select_components()
 			self.click(self._['next'])
 		time.sleep(5)

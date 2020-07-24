@@ -111,8 +111,8 @@ def _get_handler_message_object(lo, position, handler_name, create=False):
 
 
 def set_handler_message(name, dn, msg):
-	# currently only on master
-	if listener.configRegistry.get('server/role') in ('domaincontroller_master'):
+	# currently only on main
+	if listener.configRegistry.get('server/role') in ('domaincontroller_main'):
 		ud.debug(ud.LISTENER, ud.INFO, 'set_handler_message for {}'.format(name))
 		setuid = False if os.geteuid() == 0 else True
 		if setuid:
@@ -144,7 +144,7 @@ def get_handler_message(name, binddn, bindpw):
 	msg = dict()
 	try:
 		lo = udm_uldap.access(
-			host=listener.configRegistry.get('ldap/master'),
+			host=listener.configRegistry.get('ldap/main'),
 			base=listener.configRegistry.get('ldap/base'),
 			binddn=binddn, bindpw=bindpw)
 		position = udm_uldap.position(lo.base)
@@ -218,7 +218,7 @@ class UniventionLDAPExtension(object):
 		while not self.is_local_active()[1]:
 			if time.time() - t0 > timeout:
 				print("ERROR")
-				print("ERROR: Master did not mark the extension object active within %s seconds." % (timeout,), file=sys.stderr)
+				print("ERROR: Main did not mark the extension object active within %s seconds." % (timeout,), file=sys.stderr)
 				return False
 			sys.stdout.write(".")
 			sys.stdout.flush()
@@ -524,8 +524,8 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 			ud.debug(ud.LISTENER, ud.ERROR, '%r basedir conflict: %s' % (dn, exc))
 
 	def _handler(self, dn, new, old, name=None):
-		"""Handle LDAP schema extensions on Master and Backup"""
-		if not listener.configRegistry.get('server/role') in ('domaincontroller_master', 'domaincontroller_backup'):
+		"""Handle LDAP schema extensions on Main and Backup"""
+		if not listener.configRegistry.get('server/role') in ('domaincontroller_main', 'domaincontroller_backup'):
 			return
 
 		if new:  # create / modify
@@ -713,13 +713,13 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 			ud.debug(ud.LISTENER, ud.ERROR, '%r basedir conflict: %s' % (dn, exc))
 
 	def _handler(self, dn, new, old, name=None):
-		"""Handle LDAP ACL extensions on Master, Backup and Slave"""
+		"""Handle LDAP ACL extensions on Main, Backup and Subordinate"""
 
 		if not listener.configRegistry.get('ldap/server/type'):
 			return
 
-		if not listener.configRegistry.get('server/role') in ('domaincontroller_master'):
-			# new, ignore first *inactive* appearance, has to be activated on master first
+		if not listener.configRegistry.get('server/role') in ('domaincontroller_main'):
+			# new, ignore first *inactive* appearance, has to be activated on main first
 			if new and not old and new.get('univentionLDAPACLActive', ['FALSE'])[0] != 'TRUE':
 				ud.debug(ud.LISTENER, ud.PROCESS, '%s: ignore first appearance of %s, not yet activated' % (name, dn))
 				return
@@ -755,8 +755,8 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 			if old:  # check for trivial changes
 				diff_keys = [key for key in new.keys() if new.get(key) != old.get(key) and key not in ('entryCSN', 'modifyTimestamp', 'modifiersName')]
 				if diff_keys == ['univentionLDAPACLActive'] and new.get('univentionLDAPACLActive')[0] == 'TRUE':
-					# ignore status change on master, already activated
-					if listener.configRegistry.get('server/role') in ('domaincontroller_master'):
+					# ignore status change on main, already activated
+					if listener.configRegistry.get('server/role') in ('domaincontroller_main'):
 						ud.debug(ud.LISTENER, ud.INFO, '%s: extension %s: activation status changed.' % (name, new['cn'][0]))
 						return
 				elif diff_keys == ['univentionAppIdentifier']:

@@ -17,7 +17,7 @@ def main():
 	description = sys.modules[__name__].__doc__
 	parser = ArgumentParser(description=description)
 	parser.add_argument('--vnc', required=True)
-	parser.add_argument('--fqdn', default='master.ucs.local')
+	parser.add_argument('--fqdn', default='main.ucs.local')
 	parser.add_argument('--ip', help='Give an IP address, if DHCP is unavailable.')
 	parser.add_argument('--password', default='univention')
 	parser.add_argument('--organisation', default='ucs')
@@ -27,10 +27,10 @@ def main():
 	parser.add_argument('--join-password')
 	parser.add_argument('--school-dep', default=[], choices=['central', 'edu', 'adm'])
 	parser.add_argument('--language', default='deu', choices=['deu', 'eng', 'fra'])
-	parser.add_argument('--role', default='master', choices=['master', 'slave', 'member', 'backup', 'admember', 'basesystem', 'applianceEC2', 'applianceLVM'])
+	parser.add_argument('--role', default='main', choices=['main', 'subordinate', 'member', 'backup', 'admember', 'basesystem', 'applianceEC2', 'applianceLVM'])
 	parser.add_argument('--components', default=[], choices=components.keys() + ['all'], action='append')
 	args = parser.parse_args()
-	if args.role in ['slave', 'backup', 'member', 'admember']:
+	if args.role in ['subordinate', 'backup', 'member', 'admember']:
 		assert args.dns is not None
 		assert args.join_user is not None
 		assert args.join_password is not None

@@ -352,9 +352,9 @@ class CheckOperations(object):
 	def _packages(self):
 		for package in self.info.get("default_packages", list()):
 			yield package
-		master = ("domaincontroller_master", "domaincontroller_backup")
-		if self.ucr.get("server/role") in master:
-			for package in self.info.get("default_packages_master", list()):
+		main = ("domaincontroller_main", "domaincontroller_backup")
+		if self.ucr.get("server/role") in main:
+			for package in self.info.get("default_packages_main", list()):
 				yield package
 
 	def _dpkg_status(self, package):
@@ -492,7 +492,7 @@ class TestOperations(object):
 		self.application = application
 
 	def operation_successfull(self, result, msg=None):
-		problems = ("master_unreachable", "problems_with_hosts", "serious_problems", "serious_problems_with_hosts")
+		problems = ("main_unreachable", "problems_with_hosts", "serious_problems", "serious_problems_with_hosts")
 		no_problems = not any(result.get(p, True) for p in problems)
 		if msg and not no_problems:
 			raise AppCenterCheckError(msg.format(self.application))

@@ -76,7 +76,7 @@ class Domain(CredentialsAction):
 
 	def get_appcenter_hosts(self, lo, pos):
 		ret = []
-		for role in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver']:
+		for role in ['domaincontroller_main', 'domaincontroller_backup', 'domaincontroller_subordinate', 'memberserver']:
 			objs = search_objects('computers/%s' % role, lo, pos)
 			for obj in objs:
 				if not 'serverRole' in obj.info:

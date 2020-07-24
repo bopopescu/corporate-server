@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Directory Listener
-"""Read the notifier id from the DC master"""
+"""Read the notifier id from the DC main"""
 #
 # Copyright 2004-2017 Univention GmbH
 #
@@ -41,13 +41,13 @@ def main():
     configRegistry = ConfigRegistry()
     configRegistry.load()
 
-    master = configRegistry.get('ldap/master')
-    if not master:
-        print >> sys.stderr, 'Error: ldap/master not set'
+    main = configRegistry.get('ldap/main')
+    if not main:
+        print >> sys.stderr, 'Error: ldap/main not set'
         sys.exit(1)
 
     try:
-        sock = socket.create_connection((master, 6669), 60.0)
+        sock = socket.create_connection((main, 6669), 60.0)
 
         sock.send('Version: 3\nCapabilities: \n\n')
         sock.recv(100)

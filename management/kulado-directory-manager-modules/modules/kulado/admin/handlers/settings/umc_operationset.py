@@ -90,7 +90,7 @@ property_descriptions = {
 	),
 	'hosts': univention.admin.property(
 		short_description=_('Restrict to host'),
-		long_description=_('Defines on which hosts this operations are permitted on. The value can be either a host name (as filename pattern e.g. server1*), a server role (e.g. serverrole:domaincontroller_slave) or a service, which must run on the host, (e.g. service:LDAP). Leaving this empty causes all hosts to be allowed.'),
+		long_description=_('Defines on which hosts this operations are permitted on. The value can be either a host name (as filename pattern e.g. server1*), a server role (e.g. serverrole:domaincontroller_subordinate) or a service, which must run on the host, (e.g. service:LDAP). Leaving this empty causes all hosts to be allowed.'),
 		syntax=udm_syntax.string,
 		multivalue=True,
 		dontsearch=True,

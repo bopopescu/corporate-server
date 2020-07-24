@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ## desc: Test various functions in the UDM REST API
 ## tags: [udm,apptest]
-## roles: [domaincontroller_master]
+## roles: [domaincontroller_main]
 ## exposure: careful
 ## packages:
 ##   - univention-directory-manager-rest
@@ -32,13 +32,13 @@ if ucr.is_true('ad/member'):
 class UDMClient(UDMClient):
 
 	@classmethod
-	def master_connection(cls, username, password):
-		return cls.http('https://%s/univention/udm/' % (ucr['ldap/master'],), username, password)
+	def main_connection(cls, username, password):
+		return cls.http('https://%s/univention/udm/' % (ucr['ldap/main'],), username, password)
 
 	@classmethod
 	def test_connection(cls):
 		account = UCSTestDomainAdminCredentials(ucr)
-		return cls.master_connection(account.username, account.bindpw)
+		return cls.main_connection(account.username, account.bindpw)
 
 
 def test_authentication(udm):
@@ -46,17 +46,17 @@ def test_authentication(udm):
 
 	print('1. invalid password must be detected')
 	with pytest.raises(Unauthorized):
-		udm_client = UDMClient.master_connection(user, 'foobar')
+		udm_client = UDMClient.main_connection(user, 'foobar')
 		udm_client.get('users/user')
 
 	print('2. regular domain user must not access the API')
 	with pytest.raises(Forbidden):
-		udm_client = UDMClient.master_connection(user, 'univention')
+		udm_client = UDMClient.main_connection(user, 'univention')
 		udm_client.get('users/user')
 
 	udm.modify_object('users/user', dn=userdn, groups='cn=%s,cn=groups,%s' % (custom_groupname('Domain Admins', ucr), ucr['ldap/base'],))
 	print('3. domain admin must be able to access the API')
-	udm_client = UDMClient.master_connection(user, 'univention')
+	udm_client = UDMClient.main_connection(user, 'univention')
 	udm_client.get('users/user')
 
 

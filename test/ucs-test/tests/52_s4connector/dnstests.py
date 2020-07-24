@@ -129,8 +129,8 @@ def match(re_test_object, dns_name, typ, param=None, should_exist=True):
 	utils.fail("FAIL: DNS still not synced, made %s dig attempts " % MATCH_ATTEMPTS)
 
 
-def get_hostname_of_ldap_master():
-	host = ucr.get("ldap/master")
+def get_hostname_of_ldap_main():
+	host = ucr.get("ldap/main")
 	return host
 
 

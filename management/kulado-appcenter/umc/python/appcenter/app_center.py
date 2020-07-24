@@ -74,7 +74,7 @@ import univention.admin.uexceptions as udm_errors
 from univention.appcenter.utils import app_ports, gpg_verify, container_mode, send_information
 from univention.management.console.modules.decorators import reloading_ucr
 from univention.management.console.ldap import machine_connection, get_machine_connection
-from univention.management.console.modules.appcenter.util import urlopen, get_current_ram_available, component_registered, component_current, get_master, get_all_backups, get_all_hosts, set_save_commit_load, get_md5, verbose_http_error
+from univention.management.console.modules.appcenter.util import urlopen, get_current_ram_available, component_registered, component_current, get_main, get_all_backups, get_all_hosts, set_save_commit_load, get_md5, verbose_http_error
 from univention.appcenter.app_cache import AppCache, Apps
 from univention.appcenter.actions import get_action
 from univention.appcenter.ucr import ucr_instance, ucr_save
@@ -195,7 +195,7 @@ class ApplicationLDAPObject(object):
 			'conflictingApps': app.get('conflictedapps'),
 			'conflictingSystemPackages': app.get('conflictedsystempackages'),
 			'defaultPackages': app.get('defaultpackages'),
-			'defaultPackagesMaster': app.get('defaultpackagesmaster'),
+			'defaultPackagesMain': app.get('defaultpackagesmain'),
 			'umcModuleName': app.get('umcmodulename'),
 			'umcModuleFlavor': app.get('umcmoduleflavor'),
 			'serverRole': app.get('serverrole'),
@@ -353,7 +353,7 @@ class Application(object):
 				self._options[ikey] = 0
 
 		# parse list values
-		for ikey in ('categories', 'defaultpackages', 'additionalpackagesmaster', 'additionalpackagesbackup', 'additionalpackagesslave', 'additionalpackagesmember', 'conflictedsystempackages', 'defaultpackagesmaster', 'conflictedapps', 'requiredapps', 'requiredappsindomain', 'serverrole', 'supportedarchitectures', 'portsexclusive', 'portsredirection', 'supporteducsversions'):
+		for ikey in ('categories', 'defaultpackages', 'additionalpackagesmain', 'additionalpackagesbackup', 'additionalpackagessubordinate', 'additionalpackagesmember', 'conflictedsystempackages', 'defaultpackagesmain', 'conflictedapps', 'requiredapps', 'requiredappsindomain', 'serverrole', 'supportedarchitectures', 'portsexclusive', 'portsredirection', 'supporteducsversions'):
 			ival = self.get(ikey)
 			if ival:
 				self._options[ikey] = self._reg_comma.split(ival)
@@ -1006,9 +1006,9 @@ class Application(object):
 		res['is_installed'] = self.is_installed(package_manager)
 		res['is_current'] = self.is_current(ucr)
 		res['is_joined'] = os.path.exists('/var/univention-join/joined')
-		res['is_master'] = ucr.get('server/role') == 'domaincontroller_master'
+		res['is_main'] = ucr.get('server/role') == 'domaincontroller_main'
 		res['local_role'] = ucr.get('server/role')
-		res['host_master'] = ucr.get('ldap/master')
+		res['host_main'] = ucr.get('ldap/main')
 		res['umc_module'] = 'apps'
 		res['umc_flavor'] = self.id
 		ldap_object = self.get_ldap_object()
@@ -1096,9 +1096,9 @@ class Application(object):
 		return True
 
 	@HardRequirement('install', 'update')
-	def must_be_joined_if_master_packages(self):
+	def must_be_joined_if_main_packages(self):
 		is_joined = os.path.exists('/var/univention-join/joined')
-		return bool(is_joined or not self.get('defaultpackagesmaster'))
+		return bool(is_joined or not self.get('defaultpackagesmain'))
 
 	@HardRequirement('install', 'update', 'uninstall')
 	def must_not_have_concurrent_operation(self, package_manager):
@@ -1258,12 +1258,12 @@ class Application(object):
 		packages.extend(self.get('defaultpackages'))
 		if additional:
 			role = ucr.get('server/role')
-			if role == 'domaincontroller_master':
-				packages.extend(self.get('additionalpackagesmaster'))
+			if role == 'domaincontroller_main':
+				packages.extend(self.get('additionalpackagesmain'))
 			elif role == 'domaincontroller_backup':
 				packages.extend(self.get('additionalpackagesbackup'))
-			elif role == 'domaincontroller_slave':
-				packages.extend(self.get('additionalpackagesslave'))
+			elif role == 'domaincontroller_subordinate':
+				packages.extend(self.get('additionalpackagessubordinate'))
 			elif role == 'memberserver':
 				packages.extend(self.get('additionalpackagesmember'))
 		return packages
@@ -1279,7 +1279,7 @@ class Application(object):
 			# apt_pkg.CURSTATE. Not desired when called during
 			# installation of umc-module-appcenter together with
 			# several other (app relevant) packages; for example
-			# in postinst or joinscript (on master).
+			# in postinst or joinscript (on main).
 			# see Bug #33535 and Bug #31261
 			for package_name in default_packages:
 				try:
@@ -1322,9 +1322,9 @@ class Application(object):
 		self._finished('uninstall', status, component_manager.ucr, package_manager, username, password)
 		return status == 200
 
-	def install_dry_run(self, package_manager, component_manager, remove_component=True, username=None, password=None, only_master_packages=False, dont_remote_install=False, function='install', force=False, this_version=False):
+	def install_dry_run(self, package_manager, component_manager, remove_component=True, username=None, password=None, only_main_packages=False, dont_remote_install=False, function='install', force=False, this_version=False):
 		if not this_version and self.candidate:
-			return self.candidate.install_dry_run(package_manager, component_manager, remove_component, username, password, only_master_packages, dont_remote_install, function, force, True)
+			return self.candidate.install_dry_run(package_manager, component_manager, remove_component, username, password, only_main_packages, dont_remote_install, function, force, True)
 		MODULE.info('Invoke install_dry_run')
 		ucr.load()
 		server_role = ucr.get('server/role')
@@ -1335,32 +1335,32 @@ class Application(object):
 		else:
 			remote_function = 'install-schema'
 
-		master_packages = self.get('defaultpackagesmaster')
+		main_packages = self.get('defaultpackagesmain')
 
-		# connect to master/backups
+		# connect to main/backups
 		unreachable = []
 		hosts_info = {}
 		remote_info = {
-			'master_unreachable': False,
+			'main_unreachable': False,
 			'problems_with_hosts': False,
 			'serious_problems_with_hosts': False,
 		}
 		dry_run_threads = []
-		if master_packages and not dont_remote_install:
-			is_master = server_role == 'domaincontroller_master'
-			hosts = self.find_all_hosts(is_master=is_master)
+		if main_packages and not dont_remote_install:
+			is_main = server_role == 'domaincontroller_main'
+			hosts = self.find_all_hosts(is_main=is_main)
 			# checking remote host is I/O heavy, so use threads
 			#   "global" variables: unreachable, hosts_info, remote_info
 
-			def _check_remote_host(application_id, host, host_is_master, username, password, force, remote_function):
+			def _check_remote_host(application_id, host, host_is_main, username, password, force, remote_function):
 				MODULE.process('Starting dry_run for %s on %s' % (application_id, host))
 				try:
 					client = Client(host, username, password)
 				except (ConnectionError, HTTPError) as exc:
 					MODULE.warn('_check_remote_host: %s: %s' % (host, exc))
 					unreachable.append(host)
-					if host_is_master:
-						remote_info['master_unreachable'] = True
+					if host_is_main:
+						remote_info['main_unreachable'] = True
 				else:
 					host_info = {}
 					try:
@@ -1392,8 +1392,8 @@ class Application(object):
 					hosts_info[host] = host_info
 				MODULE.process('Finished dry_run for %s on %s' % (application_id, host))
 
-			for host, host_is_master in hosts:
-				thread = Thread(target=_check_remote_host, args=(self.id, host, host_is_master, username, password, force, remote_function))
+			for host, host_is_main in hosts:
+				thread = Thread(target=_check_remote_host, args=(self.id, host, host_is_main, username, password, force, remote_function))
 				thread.start()
 				dry_run_threads.append(thread)
 
@@ -1401,17 +1401,17 @@ class Application(object):
 		# checking localhost is I/O heavy, so use threads
 		#   "global" variables: result
 
-		def _check_local_host(app, only_master_packages, server_role, master_packages, component_manager, package_manager, remove_component, previously_registered_list):
+		def _check_local_host(app, only_main_packages, server_role, main_packages, component_manager, package_manager, remove_component, previously_registered_list):
 			MODULE.process('Starting dry_run for %s on %s' % (app.id, 'localhost'))
 			# packages to install
 			to_install = []
-			if not only_master_packages:
+			if not only_main_packages:
 				to_install.extend(app.get_packages())
 			MODULE.info('defaultpackages: %s' % (to_install, ))
-			if server_role in ('domaincontroller_master', 'domaincontroller_backup', ):
-				MODULE.info('Running on DC master or DC backup')
-				if master_packages:
-					to_install.extend(master_packages)
+			if server_role in ('domaincontroller_main', 'domaincontroller_backup', ):
+				MODULE.info('Running on DC main or DC backup')
+				if main_packages:
+					to_install.extend(main_packages)
 
 			# add the new component
 			previously_registered = app.register(component_manager, package_manager)
@@ -1443,7 +1443,7 @@ class Application(object):
 
 		previously_registered = False
 		previously_registered_list = []  # HACKY: thread shall "return" previously_registered
-		thread = Thread(target=_check_local_host, args=(self, only_master_packages, server_role, master_packages, component_manager, package_manager, remove_component, previously_registered_list))
+		thread = Thread(target=_check_local_host, args=(self, only_main_packages, server_role, main_packages, component_manager, package_manager, remove_component, previously_registered_list))
 		thread.start()
 		dry_run_threads.append(thread)
 		for thread in dry_run_threads:
@@ -1639,7 +1639,7 @@ class Application(object):
 			time.sleep(0.1)
 		return all_errors
 
-	def install_master_packages_on_host(self, package_manager, function, host, username, password):
+	def install_main_packages_on_host(self, package_manager, function, host, username, password):
 		if function == 'update':
 			function = 'update-schema'
 		else:
@@ -1654,46 +1654,46 @@ class Application(object):
 			return False
 
 	@machine_connection(write=False, loarg='lo', poarg='pos')
-	def find_all_hosts(self, is_master, lo=None, pos=None):
+	def find_all_hosts(self, is_main, lo=None, pos=None):
 		hosts = []
-		if not is_master:
-			hosts.append((get_master(lo), True))
+		if not is_main:
+			hosts.append((get_main(lo), True))
 		# use ucr to not find oneself!
 		hosts.extend([(host, False) for host in get_all_backups(lo, ucr)])
 		return hosts
 
-	def install_master_packages_on_hosts(self, package_manager, remote_function, username, password, is_master, hosts=None):
-		master_packages = self.get('defaultpackagesmaster')
+	def install_main_packages_on_hosts(self, package_manager, remote_function, username, password, is_main, hosts=None):
+		main_packages = self.get('defaultpackagesmain')
 		if hosts is None:
-			hosts = self.find_all_hosts(is_master=is_master)
+			hosts = self.find_all_hosts(is_main=is_main)
 		all_hosts_count = len(hosts)
 		package_manager.set_max_steps(all_hosts_count * 200)  # up to 50% if all hosts are installed
-		# maybe we already installed local packages (on master)
-		if is_master:
+		# maybe we already installed local packages (on main)
+		if is_main:
 			# TODO: set_max_steps should reset _start_steps. need function like set_start_steps()
 			package_manager.progress_state._start_steps = all_hosts_count * 100
-		for host, host_is_master in hosts:
+		for host, host_is_main in hosts:
 			package_manager.progress_state.info(_('Installing LDAP packages on %s') % host)
 			try:
-				if not self.install_master_packages_on_host(package_manager, remote_function, host, username, password):
-					error_message = 'Unable to install %r on %s. Check /var/log/univention/management-console-module-appcenter.log on the host and this server. All errata updates have been installed on %s?' % (master_packages, host, host)
+				if not self.install_main_packages_on_host(package_manager, remote_function, host, username, password):
+					error_message = 'Unable to install %r on %s. Check /var/log/univention/management-console-module-appcenter.log on the host and this server. All errata updates have been installed on %s?' % (main_packages, host, host)
 					raise Exception(error_message)
 			except Exception as e:
 				MODULE.error('%s: %s' % (host, e))
-				if host_is_master:
-					role = 'DC Master'
+				if host_is_main:
+					role = 'DC Main'
 				else:
 					role = 'DC Backup'
 				# ATTENTION: This message is not localised. It is parsed by the frontend to markup this message! If you change this message, be sure to do the same in AppCenterPage.js
 				package_manager.progress_state.error('Installing extension of LDAP schema for %s seems to have failed on %s %s' % (self.component_id, role, host))
-				if host_is_master:
-					raise  # only if host_is_master!
+				if host_is_main:
+					raise  # only if host_is_main!
 			finally:
 				package_manager.add_hundred_percent()
 
-	def install(self, package_manager, component_manager, add_component=True, send_as='install', username=None, password=None, only_master_packages=False, dont_remote_install=False, previously_registered_by_dry_run=False, this_version=False):
+	def install(self, package_manager, component_manager, add_component=True, send_as='install', username=None, password=None, only_main_packages=False, dont_remote_install=False, previously_registered_by_dry_run=False, this_version=False):
 		if not this_version and self.candidate:
-			return self.candidate.install(package_manager, component_manager, add_component, send_as, username, password, only_master_packages, dont_remote_install, previously_registered_by_dry_run, True)
+			return self.candidate.install(package_manager, component_manager, add_component, send_as, username, password, only_main_packages, dont_remote_install, previously_registered_by_dry_run, True)
 		if self.get('dockerimage'):
 			MODULE.error('Cannot install a Docker app. Use "univention-app install" or a newer version of the UMC module App Center')
 			return False
@@ -1709,31 +1709,31 @@ class Application(object):
 			if remote_function.startswith('install'):
 				remote_function = 'install'
 			ucr.load()
-			is_master = ucr.get('server/role') == 'domaincontroller_master'
+			is_main = ucr.get('server/role') == 'domaincontroller_main'
 			is_backup = ucr.get('server/role') == 'domaincontroller_backup'
 			to_install = []
-			if not only_master_packages:
+			if not only_main_packages:
 				to_install.extend(self.get_packages())
-			master_packages = self.get('defaultpackagesmaster')
-			if master_packages:
-				MODULE.info('Trying to install master packages on DC master and DC backup')
-				if is_master:
-					to_install.extend(master_packages)
+			main_packages = self.get('defaultpackagesmain')
+			if main_packages:
+				MODULE.info('Trying to install main packages on DC main and DC backup')
+				if is_main:
+					to_install.extend(main_packages)
 				else:
-					# install remotely when on backup or slave.
-					# remote installation on master is done after real installation
+					# install remotely when on backup or subordinate.
+					# remote installation on main is done after real installation
 					if is_backup:
 						# complete installation on backup, too
-						to_install.extend(master_packages)
+						to_install.extend(main_packages)
 					if username is None or dont_remote_install:
-						MODULE.warn('Not connecting to DC Master and Backups. Has to be done manually')
+						MODULE.warn('Not connecting to DC Main and Backups. Has to be done manually')
 					else:
-						self.install_master_packages_on_hosts(package_manager, remote_function, username, password, is_master=False)
+						self.install_main_packages_on_hosts(package_manager, remote_function, username, password, is_main=False)
 
 			hosts = None
-			if master_packages:
-				if is_master:
-					hosts = self.find_all_hosts(is_master=True)
+			if main_packages:
+				if is_main:
+					hosts = self.find_all_hosts(is_main=True)
 					if len(hosts):
 						# real installation is 50%
 						#   if there are any backups. otherwise use 100%
@@ -1758,16 +1758,16 @@ class Application(object):
 			# from now on better don't remove component
 			raised_before_installed = False
 
-			if only_master_packages:
+			if only_main_packages:
 				# do not leave the component registered. might cause troubles
 				# when updating to a new UCS version. See Bug #33947
 				self.unregister_all_and_register(previously_registered, component_manager, package_manager)
 
-			if master_packages and is_master:
+			if main_packages and is_main:
 				if username is None or dont_remote_install:
 					MODULE.warn('Not connecting to DC Backups. Has to be done manually')
 				else:
-					self.install_master_packages_on_hosts(package_manager, remote_function, username, password, is_master=True, hosts=hosts)
+					self.install_main_packages_on_hosts(package_manager, remote_function, username, password, is_main=True, hosts=hosts)
 
 			try:
 				self.tell_ldap(component_manager.ucr, package_manager)
@@ -1776,7 +1776,7 @@ class Application(object):
 				raise
 
 			# successful installation
-			if not only_master_packages:
+			if not only_main_packages:
 				register = get_action('register')
 				app = Apps().find(self.id, self.version)
 				if app:
@@ -1804,7 +1804,7 @@ class Application(object):
 		with NamedTemporaryFile() as pwd_file:
 			args = ['/usr/sbin/univention-run-join-scripts']
 			MODULE.process('Running join scripts')
-			if ucr.get('server/role') != 'domaincontroller_master':
+			if ucr.get('server/role') != 'domaincontroller_main':
 				if username is not None and password is not None:
 					args.extend(['-dcaccount', username])
 					pwd_file.write(password)

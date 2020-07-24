@@ -58,8 +58,8 @@ class UpdatePrinterModels(object):
 	def ldap_connection(self):
 		if self.options.binddn and self.options.bindpwd:
 			self.lo = univention.admin.uldap.access(
-				host=self.ucr['ldap/master'],
-				port=int(self.ucr.get('ldap/master/port', '7389')),
+				host=self.ucr['ldap/main'],
+				port=int(self.ucr.get('ldap/main/port', '7389')),
 				base=self.ucr['ldap/base'],
 				binddn=self.options.binddn,
 				bindpw=self.options.bindpwd,

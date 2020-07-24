@@ -2,7 +2,7 @@
 ## desc: Creates DNS forward zone entries with invalid names
 ## bugs: [41005]
 ## roles:
-##  - domaincontroller_master
+##  - domaincontroller_main
 ## packages:
 ##   - univention-config
 ##   - univention-directory-manager-tools

@@ -49,7 +49,7 @@ def handle(name, cfg, cloud, log, args):
 	windowsdomain = p.get('windowsdomain', 'UCS')
 	ldap_base = p.get('ldap_base', 'dc=ucs,dc=local')
 	rootpassword = p.get('rootpassword', 'univention')
-	role = p.get('role', 'domaincontroller_master')
+	role = p.get('role', 'domaincontroller_main')
 	defaultlocale = p.get('defaultlocale', 'de_DE.UTF-8:UTF-8')
 	components = p.get('components', '')
 	packages_install = p.get('packages_install', '')

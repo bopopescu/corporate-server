@@ -55,7 +55,7 @@ strings = {
 	'partitioning_warning3': 'the changes listed below will be written',
 
 	'domain_setup': 'domain settings',
-	'setup_master': 'Create a new',
+	'setup_main': 'Create a new',
 	'account_info': 'Organization name',
 	'company': 'Univention North America Inc.',
 	'host_settings': 'domain name',

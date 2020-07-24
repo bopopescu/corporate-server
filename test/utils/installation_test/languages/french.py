@@ -49,7 +49,7 @@ strings = {
 	'ad_account_information': '',
 	'host_settings': 'Réglages de l\'hôte',
 	'software_configuration': 'Configuration logicielle',
-	'software_configuration_non_master': '',
+	'software_configuration_non_main': '',
 	'confirm_config': 'Composants logiciels',
 	'confirm_config_non_maste': '',
 	'setup_successful': 'Installation d\'UCS réussie',

@@ -58,13 +58,13 @@ CMD_DISABLE_EXEC = ['/usr/share/univention-updater/disable-apache2-umc', '--excl
 RE_HOSTNAME = re.compile('^[a-z]([a-z0-9-]*[a-z0-9])*(\.([a-z0-9]([a-z0-9-]*[a-z0-9])*[.])*[a-z0-9]([a-z0-9-]*[a-z0-9])*)?$')
 
 
-def get_master_dns_lookup():
-	# DNS lookup for the DC master entry
+def get_main_dns_lookup():
+	# DNS lookup for the DC main entry
 	msg = None
 	fqdn = None
 	try:
 		domainname = ucr.get('domainname')
-		query = '_domaincontroller_master._tcp.%s.' % domainname
+		query = '_domaincontroller_main._tcp.%s.' % domainname
 		resolver = dns.resolver.Resolver()
 		resolver.lifetime = 3.0  # max. 3 seconds
 		result = resolver.query(query, 'SRV')
@@ -72,16 +72,16 @@ def get_master_dns_lookup():
 			fqdn = result[0].target.canonicalize().split(1)[0].to_text()
 	except dns.resolver.NXDOMAIN as exc:
 		MODULE.error('No record found for %s.' % (query,))
-		msg = _('No DNS record for the domaincontroller master was found. This might be a problem with the configured DNS server. Please make sure the DNS settings are correct.')
+		msg = _('No DNS record for the domaincontroller main was found. This might be a problem with the configured DNS server. Please make sure the DNS settings are correct.')
 	except dns.resolver.Timeout as exc:
 		MODULE.error('Timeout when looking up %s.' % (query,))
-		msg = _('The lookup of the domaincontroller master record timed out. There might be a problem with the configured DNS server. Make sure the DNS server is up and running or check the DNS settings.')
+		msg = _('The lookup of the domaincontroller main record timed out. There might be a problem with the configured DNS server. Make sure the DNS server is up and running or check the DNS settings.')
 	except dns.resolver.NoAnswer as exc:
 		MODULE.error('Non-Authoritative answer during lookup of %s.' % (query,))
 	except dns.exception.DNSException as exc:
-		MODULE.error('Error during DC master lookup: %s' % (traceback.format_exc(),))
-		msg = 'Error during DC master lookup: %s.' % (exc,)
-	return {'master': fqdn, 'error_message': msg}
+		MODULE.error('Error during DC main lookup: %s' % (traceback.format_exc(),))
+		msg = 'Error during DC main lookup: %s.' % (exc,)
+	return {'main': fqdn, 'error_message': msg}
 
 
 class HostSanitizer(StringSanitizer):
@@ -350,9 +350,9 @@ class Instance(Base):
 		return self._running
 
 	@simple_response
-	def master(self):
-		""" returns the hostname of the domaincontroller master as fqdn """
-		return get_master_dns_lookup()
+	def main(self):
+		""" returns the hostname of the domaincontroller main as fqdn """
+		return get_main_dns_lookup()
 
 	@property
 	def _joined(self):
@@ -399,8 +399,8 @@ class Instance(Base):
 			raise UMC_Error(_('A join process is already running.'))
 
 		# check for valid server role
-		if ucr.get('server/role') == 'domaincontroller_master':
-			raise UMC_Error(_('Invalid server role! A master domain controller can not be joined.'))
+		if ucr.get('server/role') == 'domaincontroller_main':
+			raise UMC_Error(_('Invalid server role! A main domain controller can not be joined.'))
 
 		# check for dpkg lock
 		if self._dpkg_locked():

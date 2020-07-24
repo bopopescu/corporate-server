@@ -130,8 +130,8 @@ def importRow(row):
 	# check if container for computer in this department exists
 	print 'udm container/ou create --ignore_exist --position "ou=Departments,%s" --set name="%s" --set computerPath="1"' % (LDAPBASE, office)
 
-	# check if DC slave for this department exists
-	print 'udm computers/domaincontroller_slave create --ignore_exist --position "ou=Departments,%s" --set name="server-%s" --set network="cn=default,cn=networks,%s" %s %s' % (LDAPBASE, office, LDAPBASE, DC_OPTIONS, NAGIOS_OPTIONS)
+	# check if DC subordinate for this department exists
+	print 'udm computers/domaincontroller_subordinate create --ignore_exist --position "ou=Departments,%s" --set name="server-%s" --set network="cn=default,cn=networks,%s" %s %s' % (LDAPBASE, office, LDAPBASE, DC_OPTIONS, NAGIOS_OPTIONS)
 
 	# generate computer object per user
 	print 'udm %s create  --ignore_exists --position "ou=%s,ou=Departments,%s" --set name="workstation%s" --set network="cn=default,cn=networks,%s"' % (computerType, office, LDAPBASE, roomNumber, LDAPBASE)

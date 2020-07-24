@@ -2422,7 +2422,7 @@ class PackagesRemove(Packages):
 	def parse(cls, text):
 		text = super(PackagesRemove, cls).parse(text)
 		if text in ['wget', 'screen', 'openssh-client', 'nmap', 'lsof', 'file']:
-			# Bug #36711: don't allow to remove packages which would uninstall univention-server-master
+			# Bug #36711: don't allow to remove packages which would uninstall univention-server-main
 			raise univention.admin.uexceptions.valueError(_('The package "%s" can not be removed as it would uninstall necessary components.') % (text,))
 		return text
 
@@ -2480,7 +2480,7 @@ class LDAP_Server(UDM_Objects):
 	"""
 	Syntax to select a |LDAP| server.
 	"""
-	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave')
+	udm_modules = ('computers/domaincontroller_main', 'computers/domaincontroller_backup', 'computers/domaincontroller_subordinate')
 	udm_filter = '!(univentionObjectFlag=docker)'
 	label = '%(fqdn)s'
 	simple = True
@@ -3095,7 +3095,7 @@ class PortalComputer(UDM_Objects):
 	"""
 	Syntax to select a |UCS| host from |LDAP| by |FQDN| running the portal service.
 	"""
-	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
+	udm_modules = ('computers/domaincontroller_main', 'computers/domaincontroller_backup', 'computers/domaincontroller_subordinate', 'computers/memberserver')
 	udm_filter = '!(univentionObjectFlag=docker)'
 	use_objects = False
 
@@ -3120,7 +3120,7 @@ class DomainController(IComputer_FQDN):
 	"""
 	Syntax to select a |UCS| domain controller from |LDAP| by |FQDN|.
 	"""
-	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave')
+	udm_modules = ('computers/domaincontroller_main', 'computers/domaincontroller_backup', 'computers/domaincontroller_subordinate')
 	use_objects = False
 
 
@@ -3135,7 +3135,7 @@ class UCS_Server(IComputer_FQDN):
 	"""
 	Syntax to select a |UCS| host from |LDAP| by |FQDN|.
 	"""
-	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
+	udm_modules = ('computers/domaincontroller_main', 'computers/domaincontroller_backup', 'computers/domaincontroller_subordinate', 'computers/memberserver')
 	use_objects = False
 
 
@@ -3146,7 +3146,7 @@ class ServicePrint_FQDN(IComputer_FQDN):
 	.. seealso::
 		* :py:class:`ServicePrint`
 	"""
-	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
+	udm_modules = ('computers/domaincontroller_main', 'computers/domaincontroller_backup', 'computers/domaincontroller_subordinate', 'computers/memberserver')
 	udm_filter = '(&(!(univentionObjectFlag=docker))(service=Print))'
 
 
@@ -4152,9 +4152,9 @@ class UCSServerRole(select):
 	"""
 	empty_value = True
 	choices = [
-		('domaincontroller_master', _('Domaincontroller Master')),
+		('domaincontroller_main', _('Domaincontroller Main')),
 		('domaincontroller_backup', _('Domaincontroller Backup')),
-		('domaincontroller_slave', _('Domaincontroller Slave')),
+		('domaincontroller_subordinate', _('Domaincontroller Subordinate')),
 		('memberserver', _('Memberserver')),
 	]
 
@@ -4166,7 +4166,7 @@ class ServiceMail(UDM_Objects):
 	.. seealso::
 		* :py:class:`MailHomeServer`
 	"""
-	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
+	udm_modules = ('computers/domaincontroller_main', 'computers/domaincontroller_backup', 'computers/domaincontroller_subordinate', 'computers/memberserver')
 	udm_filter = '(&(!(univentionObjectFlag=docker))(service=SMTP))'
 
 
@@ -4177,7 +4177,7 @@ class ServicePrint(UDM_Objects):
 	.. seealso::
 		* :py:class:`ServicePrint_FQDN`
 	"""
-	udm_modules = ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/memberserver')
+	udm_modules = ('computers/domaincontroller_main', 'computers/domaincontroller_backup', 'computers/domaincontroller_subordinate', 'computers/memberserver')
 	udm_filter = '(&(!(univentionObjectFlag=docker))(service=Print))'
 
 
@@ -4210,8 +4210,8 @@ class univentionAdminModules(select):
 	choices = [
 		('computers/managedclient', 'Computer: Managed Client'),
 		('computers/domaincontroller_backup', 'Computer: Domain Controller Backup'),
-		('computers/domaincontroller_master', 'Computer: Domain Controller Master'),
-		('computers/domaincontroller_slave', 'Computer: Domain Controller Slave'),
+		('computers/domaincontroller_main', 'Computer: Domain Controller Main'),
+		('computers/domaincontroller_subordinate', 'Computer: Domain Controller Subordinate'),
 		('computers/trustaccount', 'Computer: Domain Trust Account'),
 		('computers/ipmanagedclient', 'Computer: IP Managed Client'),
 		('computers/macos', 'Computer: Mac OS X Client'),
@@ -4257,10 +4257,10 @@ class univentionAdminModules(select):
 		('policies/ldapserver', 'Policy: LDAP Server'),
 		('policies/maintenance', 'Policy: Maintenance'),
 		('policies/managedclientpackages', 'Policy: Packages Managed Client'),
-		('policies/masterpackages', 'Policy: Packages Master'),
+		('policies/mainpackages', 'Policy: Packages Main'),
 		('policies/memberpackages', 'Policy: Packages Member'),
 		('policies/mobileclientpackages', 'Policy: Packages Mobile Client'),
-		('policies/slavepackages', 'Policy: Packages Slave'),
+		('policies/subordinatepackages', 'Policy: Packages Subordinate'),
 		('policies/pwhistory', 'Policy: Password Policy'),
 		('policies/print_quota', 'Policy: Print Quota'),
 		('policies/printserver', 'Policy: Print Server'),
@@ -5170,7 +5170,7 @@ class RadiusClientType(select):
 		('netserver', _('netserver')),
 		('pathras', _('pathras')),
 		('patton', _('patton')),
-		('portslave', _('portslave')),
+		('portsubordinate', _('portsubordinate')),
 		('tc', _('tc')),
 		('usrhiper', _('usrhiper')),
 	]

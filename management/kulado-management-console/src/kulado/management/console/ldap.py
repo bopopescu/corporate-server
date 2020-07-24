@@ -39,8 +39,8 @@ class LDAP(object):
 		self.__ldap_connections = {}
 
 	def user_connection(self, func=None, bind=None, write=True, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, **kwargs):
-		host = _ucr.get('ldap/master' if write else 'ldap/server/name')
-		port = int(_ucr.get('ldap/master/port' if write else 'ldap/server/port', '7389'))
+		host = _ucr.get('ldap/main' if write else 'ldap/server/name')
+		port = int(_ucr.get('ldap/main/port' if write else 'ldap/server/port', '7389'))
 		base = _ucr.get('ldap/base')
 		return self.connection(func, bind, host, port, base, loarg, poarg, **kwargs)
 
@@ -56,7 +56,7 @@ class LDAP(object):
 
 	def machine_connection(self, func=None, write=True, loarg=_LDAP_CONNECTION, poarg=_LDAP_POSITION, **kwargs):
 		hash_ = ('machine', bool(write), tuple(kwargs.items()))
-		kwargs.update({'ldap_master': write})
+		kwargs.update({'ldap_main': write})
 
 		def connection():
 			try:

@@ -38,7 +38,7 @@ from subprocess import check_call
 
 
 def handler(config_registry, changes):
-	if config_registry.get('server/role') != 'domaincontroller_master':
+	if config_registry.get('server/role') != 'domaincontroller_main':
 		return
 	ldap_base = config_registry.get('ldap/base')
 

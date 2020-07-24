@@ -64,9 +64,9 @@ class Server(Phase):
 		super(Server, self).check()
 		role = self.changeset.ucr.get("server/role")
 		if role not in (
-			"domaincontroller_master",
+			"domaincontroller_main",
 			"domaincontroller_backup",
-			"domaincontroller_slave",
+			"domaincontroller_subordinate",
 			"memberserver",
 		):
 			raise SkipPhase("Wrong server/role")
@@ -152,19 +152,19 @@ class Ldap(Phase):
 			self.available = True
 
 	def load_credentials(self):
-		if self.is_master_or_backup():
+		if self.is_main_or_backup():
 			self.load_admin_credentials()
 		else:
 			self.load_remote_credentials()
 
-	def is_master(self):
+	def is_main(self):
 		role = self.changeset.ucr.get("server/role")
-		return role == "domaincontroller_master"
+		return role == "domaincontroller_main"
 
-	def is_master_or_backup(self):
+	def is_main_or_backup(self):
 		role = self.changeset.ucr.get("server/role")
 		return role in (
-			"domaincontroller_master",
+			"domaincontroller_main",
 			"domaincontroller_backup",
 		)
 
@@ -185,7 +185,7 @@ class Ldap(Phase):
 
 	def lookup_user(self, username):
 		try:
-			ldap = getMachineConnection(ldap_master=True)
+			ldap = getMachineConnection(ldap_main=True)
 			ldap_filter = filter_format(
 				"(&(objectClass=person)(uid=%s))",
 				(username,)

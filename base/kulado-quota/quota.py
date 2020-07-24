@@ -116,7 +116,7 @@ def _is_container(new, old):
 
 def _get_ldap_connection():
 	try:
-		connection = univention.uldap.getMachineConnection(ldap_master=False)
+		connection = univention.uldap.getMachineConnection(ldap_main=False)
 	except ldap.SERVER_DOWN:
 		connection = univention.uldap.getMachineConnection()
 

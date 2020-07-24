@@ -99,7 +99,7 @@ class License(object):
 			custom_username('Administrator'),
 			'ucs-sso',
 			'join-backup',
-			'join-slave',
+			'join-subordinate',
 			'spam',
 			'oxadmin',
 			'krbtgt',

@@ -72,9 +72,9 @@ from ldap.filter import filter_format
 from .config import ucr
 from .log import ACL
 
-import univention.admin.handlers.computers.domaincontroller_master as dc_master
+import univention.admin.handlers.computers.domaincontroller_main as dc_main
 import univention.admin.handlers.computers.domaincontroller_backup as dc_backup
-import univention.admin.handlers.computers.domaincontroller_slave as dc_slave
+import univention.admin.handlers.computers.domaincontroller_subordinate as dc_subordinate
 import univention.admin.handlers.computers.memberserver as memberserver
 
 import univention.admin.uexceptions as udm_errors
@@ -128,7 +128,7 @@ class ACLs(object):
 	CACHE_DIR = '/var/cache/univention-management-console/acls'
 
 	#: list of all supported computer types for ACL rules
-	_systemroles = (dc_master, dc_backup, dc_slave, memberserver)
+	_systemroles = (dc_main, dc_backup, dc_subordinate, memberserver)
 
 	def __init__(self, ldap_base=None, acls=None):
 		self.__ldap_base = ldap_base

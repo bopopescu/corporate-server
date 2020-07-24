@@ -79,7 +79,7 @@ class ComputersDCModule(ComputersAllModule):
 	class Meta:
 		supported_api_versions = [1, 2]
 		default_positions_property = 'domaincontroller'
-		suitable_for = ['computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave']
+		suitable_for = ['computers/domaincontroller_main', 'computers/domaincontroller_backup', 'computers/domaincontroller_subordinate']
 
 
 class ComputersMemberModule(ComputersAllModule):

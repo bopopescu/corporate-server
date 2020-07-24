@@ -413,7 +413,7 @@ class ReplicationType(Enum):
 	DRS = 5
 
 
-def wait_for_replication_from_master_openldap_to_local_samba(replication_postrun=False, ldap_filter=None, verbose=True):
+def wait_for_replication_from_main_openldap_to_local_samba(replication_postrun=False, ldap_filter=None, verbose=True):
 	"""Wait for all kind of replications"""
 	# the order matters!
 	if replication_postrun:
@@ -424,7 +424,7 @@ def wait_for_replication_from_master_openldap_to_local_samba(replication_postrun
 	ucr.load()
 	if ucr.get('samba4/ldap/base'):
 		conditions.append((ReplicationType.S4C_FROM_UCS, ldap_filter))
-	if ucr.get('server/role') in ('domaincontroller_backup', 'domaincontroller_slave'):
+	if ucr.get('server/role') in ('domaincontroller_backup', 'domaincontroller_subordinate'):
 		conditions.append((ReplicationType.DRS, ldap_filter))
 	wait_for(conditions, verbose=True)
 
@@ -435,7 +435,7 @@ def wait_for_replication_from_local_samba_to_local_openldap(replication_postrun=
 	# the order matters!
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
-	if ucr.get('server/role') in ('domaincontroller_backup', 'domaincontroller_slave'):
+	if ucr.get('server/role') in ('domaincontroller_backup', 'domaincontroller_subordinate'):
 		conditions.append((ReplicationType.DRS, ldap_filter))
 	if ucr.get('samba4/ldap/base'):
 		conditions.append((ReplicationType.S4C_FROM_UCS, ldap_filter))

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Directory Listener
-"""Read the notifier id from the DC master"""
+"""Read the notifier id from the DC main"""
 from __future__ import print_function
 #
 # Copyright 2004-2019 Univention GmbH
@@ -38,12 +38,12 @@ import sys
 
 
 def parse_args():
-	usage = '%prog [options] [master]'
+	usage = '%prog [options] [main]'
 	desc = sys.modules[__name__].__doc__
 	parser = OptionParser(usage=usage, description=desc)
 	parser.add_option(
-		'-m', '--master',
-		dest='master',
+		'-m', '--main',
+		dest='main',
 		help='LDAP Server address')
 	parser.add_option(
 		'-s', '--shema',
@@ -54,20 +54,20 @@ def parse_args():
 		help='Fetch LDAP Schema ID')
 	(options, args) = parser.parse_args()
 
-	if not options.master:
+	if not options.main:
 		if args:
 			try:
-				options.master, = args
+				options.main, = args
 			except ValueError:
 				parser.error('incorrect number of arguments')
 		else:
 			from univention.config_registry import ConfigRegistry
 			configRegistry = ConfigRegistry()
 			configRegistry.load()
-			options.master = configRegistry.get('ldap/master')
+			options.main = configRegistry.get('ldap/main')
 
-	if not options.master:
-		parser.error('ldap/master or --master not set')
+	if not options.main:
+		parser.error('ldap/main or --main not set')
 
 	return options
 
@@ -76,7 +76,7 @@ def main():
 	"""Retrieve current Univention Directory Notifier transaction ID."""
 	options = parse_args()
 	try:
-		sock = socket.create_connection((options.master, 6669), 60.0)
+		sock = socket.create_connection((options.main, 6669), 60.0)
 
 		sock.send('Version: 3\nCapabilities: \n\n')
 		sock.recv(100)

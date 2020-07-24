@@ -54,7 +54,7 @@ strings = {
 	'partitioning_warning3': 'si vous continuez, les modifications',
 
 	'domain_setup': 'Veuillez sélectionner les réglages',
-	'setup_master': 'Créer un nouveau',
+	'setup_main': 'Créer un nouveau',
 	'account_info': 'Informations du compte',
 	'company': 'Univention',
 	'host_settings': 'Réglages de l\'hôte',

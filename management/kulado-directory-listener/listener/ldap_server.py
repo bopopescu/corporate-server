@@ -39,8 +39,8 @@ import univention.debug as ud
 import univention.misc
 
 name = 'ldap_server'
-description = 'Update ldap server master list'
-filter = '(&(objectClass=univentionDomainController)(|(univentionServerRole=master)(univentionServerRole=backup)))'
+description = 'Update ldap server main list'
+filter = '(&(objectClass=univentionDomainController)(|(univentionServerRole=main)(univentionServerRole=backup)))'
 attributes = []
 
 
@@ -49,7 +49,7 @@ def handler(dn, new, old):
 	ucr = univention.config_registry.ConfigRegistry()
 	ucr.load()
 
-	if ucr['server/role'] == 'domaincontroller_master':
+	if ucr['server/role'] == 'domaincontroller_main':
 		return
 
 	listener.setuid(0)
@@ -76,15 +76,15 @@ def add_ldap_server(ucr, name, domain, role):
 
 	server_name = "%s.%s" % (name, domain)
 
-	if role == 'master':
-		old_master = ucr.get('ldap/master')
+	if role == 'main':
+		old_main = ucr.get('ldap/main')
 
-		changes = ['ldap/master=%s' % server_name]
+		changes = ['ldap/main=%s' % server_name]
 
-		if ucr.get('kerberos/adminserver') == old_master:
+		if ucr.get('kerberos/adminserver') == old_main:
 			changes.append('kerberos/adminserver=%s' % server_name)
 
-		if ucr.get('ldap/server/name') == old_master:
+		if ucr.get('ldap/server/name') == old_main:
 			changes.append('ldap/server/name=%s' % server_name)
 
 		univention.config_registry.handler_set(changes)

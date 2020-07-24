@@ -2,7 +2,7 @@
 ## desc: Test detection of changing expired password failure reason
 ## exposure: dangerous
 ## packages: [univention-management-console-server]
-## roles: [domaincontroller_master]
+## roles: [domaincontroller_main]
 ## tags: [skip_admember]
 
 from __future__ import print_function

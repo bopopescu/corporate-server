@@ -63,7 +63,7 @@ def fix_machine_password(umc_instance):
 	configRegistry.load()
 
 	role = configRegistry.get('server/role')
-	valid_roles = ('domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver')
+	valid_roles = ('domaincontroller_main', 'domaincontroller_backup', 'domaincontroller_subordinate', 'memberserver')
 	if role in valid_roles:
 		restore_machine_password(role, umc_instance.get_user_ldap_connection())
 
@@ -94,9 +94,9 @@ actions = {
 }
 
 
-def check_machine_password(master=True):
+def check_machine_password(main=True):
 	try:
-		univention.uldap.getMachineConnection(ldap_master=master)
+		univention.uldap.getMachineConnection(ldap_main=main)
 	except ldap.INVALID_CREDENTIALS:
 		return False
 	return True
@@ -152,13 +152,13 @@ def run(_umc_instance, retest=False):
 		'label': _('Fix machine password'),
 	}]
 
-	is_master = configRegistry.get('server/role') == 'domaincontroller_master'
-	if not is_master and not check_machine_password(master=False):
+	is_main = configRegistry.get('server/role') == 'domaincontroller_main'
+	if not is_main and not check_machine_password(main=False):
 		error = _('Authentication against the local LDAP failed with the machine password.')
 		error_descriptions.append(error)
 
-	if not check_machine_password(master=True):
-		error = _('Authentication against the master LDAP failed with the machine password.')
+	if not check_machine_password(main=True):
+		error = _('Authentication against the main LDAP failed with the machine password.')
 		error_descriptions.append(error)
 
 	password_change = configRegistry.is_true('server/password/change', True)

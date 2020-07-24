@@ -236,10 +236,10 @@ class AppCache(_AppCache):
 			if _cmp_mtimes(cache_modified, archive_modified) == -1:
 				cache_logger.debug('Cannot load cache: mtimes of cache files do not match: %r < %r' % (cache_modified, archive_modified))
 				return None
-			for master_file in self._relevant_master_files():
-				master_file_modified = os.stat(master_file).st_mtime
-				if _cmp_mtimes(cache_modified, master_file_modified) == -1:
-					cache_logger.debug('Cannot load cache: %s is newer than cache' % master_file)
+			for main_file in self._relevant_main_files():
+				main_file_modified = os.stat(main_file).st_mtime
+				if _cmp_mtimes(cache_modified, main_file_modified) == -1:
+					cache_logger.debug('Cannot load cache: %s is newer than cache' % main_file)
 					return None
 			with open(cache_file, 'rb') as fd:
 				cache = load(fd)
@@ -274,7 +274,7 @@ class AppCache(_AppCache):
 			cache_logger.debug('Unable to get mtime for cache: %s' % exc)
 			return None
 
-	def _relevant_master_files(self):
+	def _relevant_main_files(self):
 		ret = set()
 		classes_visited = set()
 

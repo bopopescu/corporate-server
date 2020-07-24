@@ -73,7 +73,7 @@ from univention.management.console.modules.setup import util
 from univention.management.console.modules.setup.checks.ldap import check_if_uid_is_available
 from univention.management.console.modules.setup.checks.repositories import get_unreachable_repository_servers
 from univention.management.console.modules.setup.checks.univention_join import (
-	receive_domaincontroller_master_information, set_role_and_check_if_join_will_work, check_for_school_domain,
+	receive_domaincontroller_main_information, set_role_and_check_if_join_will_work, check_for_school_domain,
 )
 
 ucr = univention.config_registry.ConfigRegistry()
@@ -276,8 +276,8 @@ class Instance(Base, ProgressMixin):
 				# write the profile file and run setup scripts
 				util.auto_complete_values_for_join(values)
 
-				# on unjoined DC master the nameserver must be set to the external nameserver
-				if newrole == 'domaincontroller_master' and not orgValues.get('joined'):
+				# on unjoined DC main the nameserver must be set to the external nameserver
+				if newrole == 'domaincontroller_main' and not orgValues.get('joined'):
 					for i in range(1, 4):
 						# overwrite these values only if they are set, because the UMC module
 						# will save only changed values
@@ -287,7 +287,7 @@ class Instance(Base, ProgressMixin):
 				MODULE.info('saving profile values')
 				util.write_profile(values)
 
-				# unjoined DC master (that is not being converted to a basesystem) -> run the join script
+				# unjoined DC main (that is not being converted to a basesystem) -> run the join script
 				MODULE.info('runnning system setup join script')
 				util.run_joinscript(self._progressParser, values, username, password, dcname, lang=str(self.locale))
 
@@ -416,7 +416,7 @@ class Instance(Base, ProgressMixin):
 			if hostname == domainname.split('.')[0]:
 				_append('domainname', _("Hostname is equal to domain name."))
 		if is_wizard_mode and not util.is_system_joined():
-			if newrole == 'domaincontroller_master' and not values.get('domainname'):
+			if newrole == 'domaincontroller_main' and not values.get('domainname'):
 				_append('domainname', _("No fully qualified domain name has been specified for the system."))
 			elif not values.get('hostname'):
 				_append('hostname', _("No hostname has been specified for the system."))
@@ -478,7 +478,7 @@ class Instance(Base, ProgressMixin):
 						continue
 					_check(jkey, util.is_ipaddr, _('The specified IP address (%(name)s) is not valid: %(value)s') % {'name': iname, 'value': jval})
 
-		if is_wizard_mode and not util.is_system_joined() and (newrole not in ['domaincontroller_master', 'basesystem'] or ad_member):
+		if is_wizard_mode and not util.is_system_joined() and (newrole not in ['domaincontroller_main', 'basesystem'] or ad_member):
 			if all(nameserver in values and not values[nameserver] for nameserver in ('nameserver1', 'nameserver2', 'nameserver3')):
 				# 'nameserver1'-key exists → widget is displayed → = not in UCS/debian installer mode
 				if not any(interface.ip4dynamic or interface.ip6dynamic for interface in interfaces.values()):
@@ -769,22 +769,22 @@ class Instance(Base, ProgressMixin):
 					result['dc_name'] = dc
 					domain = ad_domain_info['Domain']
 					result['domain'] = domain
-					result['ucs_master'] = util.is_ucs_domain(nameserver, domain)
-					ucs_master_fqdn = util.resolve_domaincontroller_master_srv_record(nameserver, domain)
-					result['ucs_master_fqdn'] = ucs_master_fqdn
-					result['ucs_master_reachable'] = util.is_ssh_reachable(ucs_master_fqdn)
+					result['ucs_main'] = util.is_ucs_domain(nameserver, domain)
+					ucs_main_fqdn = util.resolve_domaincontroller_main_srv_record(nameserver, domain)
+					result['ucs_main_fqdn'] = ucs_main_fqdn
+					result['ucs_main_reachable'] = util.is_ssh_reachable(ucs_main_fqdn)
 			except (failedADConnect, connectionFailed) as exc:
 				MODULE.warn('ADDS DC lookup failed: %s' % (exc,))
-		elif role == 'nonmaster':
+		elif role == 'nonmain':
 			domain = util.get_ucs_domain(nameserver)
 			if domain:
-				fqdn = util.resolve_domaincontroller_master_srv_record(nameserver, domain)
+				fqdn = util.resolve_domaincontroller_main_srv_record(nameserver, domain)
 			else:
 				fqdn = util.get_fqdn(nameserver)
 			if fqdn:
 				result['dc_name'] = fqdn
 				domain = '.'.join(fqdn.split('.')[1:])
-				result['ucs_master'] = util.is_ucs_domain(nameserver, domain)
+				result['ucs_main'] = util.is_ucs_domain(nameserver, domain)
 		return result
 
 	@simple_response
@@ -793,18 +793,18 @@ class Instance(Base, ProgressMixin):
 		if domain_check_role == 'ad':
 			domain = util.check_credentials_ad(nameserver, address, username, password)
 			result['domain'] = domain
-			if dns:  # "dns" means we don't want to replace the existing DC Master
-				ucs_master_fqdn = util.resolve_domaincontroller_master_srv_record(nameserver, domain)
-				if ucs_master_fqdn:
-					# if we found a _domaincontroller_master._tcp SRV record the system will be a DC Backup/Slave/Member.
+			if dns:  # "dns" means we don't want to replace the existing DC Main
+				ucs_main_fqdn = util.resolve_domaincontroller_main_srv_record(nameserver, domain)
+				if ucs_main_fqdn:
+					# if we found a _domaincontroller_main._tcp SRV record the system will be a DC Backup/Subordinate/Member.
 					# We need to check the credentials of this system, too, so we ensure that the System is reachable via SSH.
 					# Otherwise the join will fail with strange error like "ping to ..." failed.
-					result.update(receive_domaincontroller_master_information(False, nameserver, ucs_master_fqdn, username, password))
-					set_role_and_check_if_join_will_work(role, ucs_master_fqdn, username, password)
-		elif domain_check_role == 'nonmaster':
-			result.update(receive_domaincontroller_master_information(dns, nameserver, address, username, password))
+					result.update(receive_domaincontroller_main_information(False, nameserver, ucs_main_fqdn, username, password))
+					set_role_and_check_if_join_will_work(role, ucs_main_fqdn, username, password)
+		elif domain_check_role == 'nonmain':
+			result.update(receive_domaincontroller_main_information(dns, nameserver, address, username, password))
 			set_role_and_check_if_join_will_work(role, address, username, password)
-		# master? basesystem? no domain check necessary
+		# main? basesystem? no domain check necessary
 		return result
 
 	@simple_response

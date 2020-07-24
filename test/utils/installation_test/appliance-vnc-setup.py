@@ -59,7 +59,7 @@ class UCSSetup(UCSInstallation):
 			self.connect()
 			self.client.waitForText('Domain and network', timeout=self.timeout)
 		self.screenshot('network-setup.png')
-		if self.args.role in ['admember', 'slave']:
+		if self.args.role in ['admember', 'subordinate']:
 			self.click('Preferred DNS')
 			self.client.enterText(self.args.dns)
 		self.next()
@@ -91,7 +91,7 @@ class UCSSetup(UCSInstallation):
 			text = 'Create a new UCS domain'
 		if role == 'admember':
 			text = 'Join into an existing Microsoft Active'
-		elif role in ['join', 'slave']:
+		elif role in ['join', 'subordinate']:
 			text = 'Join into an existing UCS domain'
 		elif role == 'fast':
 			text = 'Fast demo'
@@ -100,7 +100,7 @@ class UCSSetup(UCSInstallation):
 		self.screenshot('domain-setup.png')
 		self.next()
 		time.sleep(10)
-		if role == 'slave':
+		if role == 'subordinate':
 			self.client.keyPress('down')
 			self.next()
 			self.click('Username')
@@ -138,7 +138,7 @@ class UCSSetup(UCSInstallation):
 		time.sleep(3)
 		self.client.enterText(hostname)
 		self.client.keyPress('tab')
-		if self.args.role in ['admember', 'slave']:
+		if self.args.role in ['admember', 'subordinate']:
 			self.client.keyPress('tab')
 			self.client.enterText(self.args.password)
 			self.client.keyPress('tab')
@@ -183,7 +183,7 @@ class UCSSetup(UCSInstallation):
 			self.language('English')
 			self.network()
 			self.domain(self.args.role)
-			if self.args.role == 'master':
+			if self.args.role == 'main':
 				self.orga(self.args.organisation, self.args.password)
 			if not self.args.role == 'fast':
 				self.hostname(self.args.fqdn)
@@ -205,18 +205,18 @@ def main():
 	description = sys.modules[__name__].__doc__
 	parser = ArgumentParser(description=description)
 	parser.add_argument('--vnc')
-	parser.add_argument('--fqdn', default='master.ucs.local')
+	parser.add_argument('--fqdn', default='main.ucs.local')
 	parser.add_argument('--dns')
 	parser.add_argument('--join-user')
 	parser.add_argument('--join-password')
 	parser.add_argument('--password', default='univention')
 	parser.add_argument('--organisation', default='ucs')
 	parser.add_argument('--screenshot-dir', default='../screenshots')
-	parser.add_argument('--role', default='master', choices=['master', 'admember', 'fast', 'slave'])
+	parser.add_argument('--role', default='main', choices=['main', 'admember', 'fast', 'subordinate'])
 	parser.add_argument('--ucs', help='ucs appliance', action='store_true')
 	parser.add_argument('--components', default=[], choices=components.keys() + ['all'], action='append')
 	args = parser.parse_args()
-	if args.role in ['admember', 'slave']:
+	if args.role in ['admember', 'subordinate']:
 		assert args.dns is not None
 		assert args.join_user is not None
 		assert args.join_password is not None

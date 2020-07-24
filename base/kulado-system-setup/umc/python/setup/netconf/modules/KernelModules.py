@@ -11,7 +11,7 @@ class PhaseKernelModules(Executable):
 	module_option = (
 		("8021q", "vlan-raw-device"),
 		("bridge", "bridge_ports"),
-		("bonding", "bond-slaves"),
+		("bonding", "bond-subordinates"),
 	)
 	priority = 95
 	executable = "/sbin/modprobe"

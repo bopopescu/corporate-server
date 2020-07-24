@@ -61,7 +61,7 @@ module = 'policies/repositorysync'
 operations = ['add', 'edit', 'remove', 'search']
 
 policy_oc = 'univentionPolicyRepositorySync'
-policy_apply_to = ["computers/domaincontroller_master", "computers/domaincontroller_backup", "computers/domaincontroller_slave", "computers/memberserver"]
+policy_apply_to = ["computers/domaincontroller_main", "computers/domaincontroller_backup", "computers/domaincontroller_subordinate", "computers/memberserver"]
 policy_position_dn_prefix = "cn=repository,cn=update"
 
 childs = 0

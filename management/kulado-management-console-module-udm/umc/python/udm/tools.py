@@ -192,7 +192,7 @@ def urlopen(request):
 
 def dump_license():
 	try:
-		_lo, _pos = univention.admin.uldap.getMachineConnection(ldap_master=False)
+		_lo, _pos = univention.admin.uldap.getMachineConnection(ldap_main=False)
 		data = _lo.search('objectClass=univentionLicense')
 		del _lo
 		del _pos

@@ -59,10 +59,10 @@ def copy_out_logs():
 
 def remove_old_sshkeys():
 	ip = config.get('General', 'ip_address')
-	master_ip = config.get('General', 'master_ip')
+	main_ip = config.get('General', 'main_ip')
 	remove_old_sshkey(ip)
-	if master_ip:
-		remove_old_sshkey(master_ip)
+	if main_ip:
+		remove_old_sshkey(main_ip)
 
 
 @pytest.fixture
@@ -91,8 +91,8 @@ def role():
 
 
 @pytest.fixture
-def master_ip():
-	return config.get('General', 'master_ip')
+def main_ip():
+	return config.get('General', 'main_ip')
 
 
 @pytest.fixture

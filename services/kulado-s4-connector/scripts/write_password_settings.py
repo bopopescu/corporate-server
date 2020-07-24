@@ -52,10 +52,10 @@ def _connect_ucs(configRegistry, binddn, bindpwd):
 		if bindpw[-1] == '\n':
 			bindpw = bindpw[0:-1]
 
-	host = configRegistry.get('connector/ldap/server', configRegistry.get('ldap/master'))
+	host = configRegistry.get('connector/ldap/server', configRegistry.get('ldap/main'))
 
 	try:
-		port = int(configRegistry.get('connector/ldap/port', configRegistry.get('ldap/master/port')))
+		port = int(configRegistry.get('connector/ldap/port', configRegistry.get('ldap/main/port')))
 	except:
 		port = 7389
 

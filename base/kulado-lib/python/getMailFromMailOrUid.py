@@ -46,7 +46,7 @@ def main():
 	uidOrMail = ldap.filter.escape_filter_chars(sys.argv[1])
 	filterstr = FILTERSTR % (uidOrMail, uidOrMail)
 
-	conn = univention.uldap.getMachineConnection(ldap_master=False)
+	conn = univention.uldap.getMachineConnection(ldap_main=False)
 	try:
 		result = conn.search(filter=filterstr, attr=["mailPrimaryAddress"])
 		mail = result[0][1]["mailPrimaryAddress"][0]

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ## desc: Test UDM APIs LDAP connection initialization feature
 ## exposure: dangerous
-## roles: [domaincontroller_master]
+## roles: [domaincontroller_main]
 ## tags: [udm_api]
 ## packages: [python-univention-directory-manager]
 ## bugs: [47316]
@@ -24,7 +24,7 @@ class TestUdmAutoOpen(TestCase):
 
 		udm = UDM.admin().version(1)
 		obj = udm.obj_by_dn(ucr_test['ldap/hostdn'])
-		assert obj._udm_module == udm.get('computers/domaincontroller_master')
+		assert obj._udm_module == udm.get('computers/domaincontroller_main')
 		assert obj.props.name == ucr_test['hostname']
 
 	def test_non_existing_dn(self):

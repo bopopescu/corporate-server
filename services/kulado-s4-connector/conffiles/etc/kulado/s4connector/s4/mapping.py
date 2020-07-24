@@ -504,7 +504,7 @@ s4_mapping = {
 		ucs_default_dn='cn=dc,cn=computers,@%@ldap/base@%@',
 		con_default_dn='OU=Domain Controllers,@%@connector/s4/ldap/base@%@',
 		ucs_module='computers/windows_domaincontroller',
-		ucs_module_others=['computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave'],
+		ucs_module_others=['computers/domaincontroller_main', 'computers/domaincontroller_backup', 'computers/domaincontroller_subordinate'],
 		con_search_filter='(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=532480))',
 		position_mapping=[(',cn=dc,cn=computers,@%@ldap/base@%@', ',ou=Domain Controllers,@%@connector/s4/ldap/base@%@')],
 		match_filter='(|(&(objectClass=univentionDomainController)(univentionService=Samba 4))(objectClass=computer)(univentionServerRole=windows_domaincontroller))',

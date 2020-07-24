@@ -114,11 +114,11 @@ def __fetch_schema_from_uri(ldap_uri):
 		i += 1
 
 
-def fetch_schema_from_ldap_master():
+def fetch_schema_from_ldap_main():
 	ucr = ConfigRegistry()
 	ucr.load()
 
-	ldap_uri = 'ldap://%(ldap/master)s:%(ldap/master/port)s' % ucr
+	ldap_uri = 'ldap://%(ldap/main)s:%(ldap/main/port)s' % ucr
 	return __fetch_schema_from_uri(ldap_uri)
 
 
@@ -131,14 +131,14 @@ def fetch_schema_from_local_ldap():
 	return __fetch_schema_from_uri(ldap_uri)
 
 
-def get_ldap_master_connection(user_dn):
+def get_ldap_main_connection(user_dn):
 	ucr = ConfigRegistry()
 	ucr.load()
 
-	return univention.uldap.access(host=ucr.get('ldap/master'), port=int(ucr.get('ldap/master/port', '7389')), base=ucr.get('ldap/base'), binddn=user_dn, bindpw='univention')
+	return univention.uldap.access(host=ucr.get('ldap/main'), port=int(ucr.get('ldap/main/port', '7389')), base=ucr.get('ldap/base'), binddn=user_dn, bindpw='univention')
 
 
 def set_container_description(user_dn, container):
 	print 'set_container_description(%r, %r)' % (user_dn, container)
-	lo = get_ldap_master_connection(user_dn)
+	lo = get_ldap_main_connection(user_dn)
 	lo.modify(container, [('description', '', random_name())])

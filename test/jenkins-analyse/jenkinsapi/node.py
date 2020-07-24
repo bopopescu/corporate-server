@@ -20,8 +20,8 @@ log = logging.getLogger(__name__)
 class Node(JenkinsBase):
 
     """
-    Class to hold information on nodes that are attached as slaves
-    to the master jenkins instance
+    Class to hold information on nodes that are attached as subordinates
+    to the main jenkins instance
     """
 
     def __init__(self, jenkins_obj, baseurl, nodename, node_dict, poll=True):
@@ -59,8 +59,8 @@ class Node(JenkinsBase):
             'credential_description': str,
             'jvm_options': str,
             'java_path': str,
-            'prefix_start_slave_cmd': str,
-            'suffix_start_slave_cmd': str
+            'prefix_start_subordinate_cmd': str,
+            'suffix_start_subordinate_cmd': str
             'max_num_retries': int,
             'retry_wait_time': int,
             'retention': str ('Always' or 'OnDemand')
@@ -102,7 +102,7 @@ class Node(JenkinsBase):
         if not na.get('credential_description', False):
             # If credentials description is not present - we will create
             # JNLP node
-            launcher = {'stapler-class': 'hudson.slaves.JNLPLauncher'}
+            launcher = {'stapler-class': 'hudson.subordinates.JNLPLauncher'}
         else:
             try:
                 credential = self.jenkins.credentials[
@@ -116,27 +116,27 @@ class Node(JenkinsBase):
             retries = na['max_num_retries'] if 'max_num_retries' in na else ''
             re_wait = na['retry_wait_time'] if 'retry_wait_time' in na else ''
             launcher = {
-                'stapler-class': 'hudson.plugins.sshslaves.SSHLauncher',
-                '$class': 'hudson.plugins.sshslaves.SSHLauncher',
+                'stapler-class': 'hudson.plugins.sshsubordinates.SSHLauncher',
+                '$class': 'hudson.plugins.sshsubordinates.SSHLauncher',
                 'host': na['host'],
                 'port': na['port'],
                 'credentialsId': credential.credential_id,
                 'jvmOptions': na['jvm_options'],
                 'javaPath': na['java_path'],
-                'prefixStartSlaveCmd': na['prefix_start_slave_cmd'],
-                'suffixStartSlaveCmd': na['suffix_start_slave_cmd'],
+                'prefixStartSubordinateCmd': na['prefix_start_subordinate_cmd'],
+                'suffixStartSubordinateCmd': na['suffix_start_subordinate_cmd'],
                 'maxNumRetries': retries,
                 'retryWaitTime': re_wait
             }
 
         retention = {
-            'stapler-class': 'hudson.slaves.RetentionStrategy$Always',
-            '$class': 'hudson.slaves.RetentionStrategy$Always'
+            'stapler-class': 'hudson.subordinates.RetentionStrategy$Always',
+            '$class': 'hudson.subordinates.RetentionStrategy$Always'
         }
         if 'retention' in na and na['retention'].lower() == 'ondemand':
             retention = {
-                'stapler-class': 'hudson.slaves.RetentionStrategy$Demand',
-                '$class': 'hudson.slaves.RetentionStrategy$Demand',
+                'stapler-class': 'hudson.subordinates.RetentionStrategy$Demand',
+                '$class': 'hudson.subordinates.RetentionStrategy$Demand',
                 'inDemandDelay': na['ondemand_delay'],
                 'idleDelay': na['ondemand_idle_delay']
             }
@@ -144,7 +144,7 @@ class Node(JenkinsBase):
         if 'env' in na:
             node_props = {
                 'stapler-class-bag': 'true',
-                'hudson-slaves-EnvironmentVariablesNodeProperty': {
+                'hudson-subordinates-EnvironmentVariablesNodeProperty': {
                     'env': na['env']
                 }
             }
@@ -155,7 +155,7 @@ class Node(JenkinsBase):
 
         params = {
             'name': self.name,
-            'type': 'hudson.slaves.DumbSlave$DescriptorImpl',
+            'type': 'hudson.subordinates.DumbSubordinate$DescriptorImpl',
             'json': json.dumps({
                 'name': self.name,
                 'nodeDescription': na['node_description'],
@@ -164,7 +164,7 @@ class Node(JenkinsBase):
                 'labelString': na['labels'],
                 'mode': 'EXCLUSIVE' if na['exclusive'] else 'NORMAL',
                 'retentionStrategy': retention,
-                'type': 'hudson.slaves.DumbSlave',
+                'type': 'hudson.subordinates.DumbSubordinate',
                 'nodeProperties': node_props,
                 'launcher': launcher
             })

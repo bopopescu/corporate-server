@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ## desc: Test UDM APIs module.meta.auto_open feature
 ## exposure: dangerous
-## roles: [domaincontroller_master]
+## roles: [domaincontroller_main]
 ## tags: [udm_api, skip_admember]
 ## packages: [python-univention-directory-manager]
 ## bugs: [47316]

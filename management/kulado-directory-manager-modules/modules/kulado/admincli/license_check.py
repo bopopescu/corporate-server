@@ -193,8 +193,8 @@ def main(argv):
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 	baseDN = configRegistry['ldap/base']
-	master = configRegistry['ldap/master']
-	port = int(configRegistry.get('ldap/master/port', '7389'))
+	main = configRegistry['ldap/main']
+	port = int(configRegistry.get('ldap/main/port', '7389'))
 	binddn = options.get('binddn', 'cn=admin,%s' % baseDN)
 	bindpw = options.get('bindpw', None)
 	if bindpw is None:
@@ -203,7 +203,7 @@ def main(argv):
 		except IOError:
 			raise UsageError("Permission denied, try `--binddn' and `--bindpwd'")
 	try:
-		lo = univention.admin.uldap.access(host=master, port=port, base=baseDN, binddn=binddn, bindpw=bindpw)
+		lo = univention.admin.uldap.access(host=main, port=port, base=baseDN, binddn=binddn, bindpw=bindpw)
 	except uexceptions.authFail:
 		raise UsageError("Authentication failed, try `--bindpwd'")
 

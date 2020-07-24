@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ## desc: Test UDM API for users/user module
 ## exposure: dangerous
-## roles: [domaincontroller_master]
+## roles: [domaincontroller_main]
 ## tags: [udm_api]
 ## packages: [python-univention-directory-manager]
 ## bugs: [47316]
@@ -72,12 +72,12 @@ class TestUdmUsersBasic(TestCase):
 		assert ubuntu.position == 'cn=computers,%s' % self.ucr_test['ldap/base']
 		memberserver = self.udm.get('computers/memberserver').new()
 		assert memberserver.position == 'cn=memberserver,cn=computers,%s' % self.ucr_test['ldap/base']
-		slave = self.udm.get('computers/domaincontroller_slave').new()
-		assert slave.position == 'cn=dc,cn=computers,%s' % self.ucr_test['ldap/base']
+		subordinate = self.udm.get('computers/domaincontroller_subordinate').new()
+		assert subordinate.position == 'cn=dc,cn=computers,%s' % self.ucr_test['ldap/base']
 		backup = self.udm.get('computers/domaincontroller_backup').new()
 		assert backup.position == 'cn=dc,cn=computers,%s' % self.ucr_test['ldap/base']
-		master = self.udm.get('computers/domaincontroller_master').new()
-		assert master.position == 'cn=dc,cn=computers,%s' % self.ucr_test['ldap/base']
+		main = self.udm.get('computers/domaincontroller_main').new()
+		assert main.position == 'cn=dc,cn=computers,%s' % self.ucr_test['ldap/base']
 
 
 if __name__ == '__main__':

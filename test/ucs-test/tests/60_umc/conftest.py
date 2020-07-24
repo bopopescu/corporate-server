@@ -20,8 +20,8 @@ def ldap_base(ucr):
 
 
 @pytest.fixture(scope="module")
-def ldap_master(ucr):
-	return ucr.get('ldap/master')
+def ldap_main(ucr):
+	return ucr.get('ldap/main')
 
 
 @pytest.yield_fixture()

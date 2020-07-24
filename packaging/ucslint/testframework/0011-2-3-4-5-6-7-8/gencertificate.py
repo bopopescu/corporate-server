@@ -32,7 +32,7 @@ def initialize():
 def handler(dn, new, old):
 	set_privileges_cert(root=1)
 
-	if baseConfig['server/role'] != 'domaincontroller_master':
+	if baseConfig['server/role'] != 'domaincontroller_main':
 		set_privileges_cert(root=0)
 		return
 

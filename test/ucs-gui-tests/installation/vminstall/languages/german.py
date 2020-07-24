@@ -55,7 +55,7 @@ strings = {
 	'partitioning_warning3': 'Wenn Sie fortfahren, werden alle unten aufgeführten',
 
 	'domain_setup': 'Domäneneinstellungen',
-	'setup_master': 'Erstellen einer neuen UCS-Domäne',
+	'setup_main': 'Erstellen einer neuen UCS-Domäne',
 	'account_info': 'Kontoinformationen',
 	'company': 'Univention GmbH',
 	'host_settings': 'Rechnereinstellungen',

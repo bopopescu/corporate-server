@@ -74,7 +74,7 @@ def moreGroupware(license):
 # Examples:
 #	'computers/managedclient': Attributes( UCS ),
 #	'computers/ipmanagedclient': Attributes( UCS + [ 'OEM1'] ),
-#	'computers/domaincontroller_master': Attributes( UCS + ['OEM2'] ,options =
+#	'computers/domaincontroller_main': Attributes( UCS + ['OEM2'] ,options =
 #				{
 #					( UCS, ) : ( ( 'nagios', (False, False) ), ),
 #					( OEM2 ) : ( ( 'nagios', (True, False) ), ),

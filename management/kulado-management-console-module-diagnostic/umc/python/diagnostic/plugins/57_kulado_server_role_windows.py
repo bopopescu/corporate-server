@@ -77,7 +77,7 @@ def udm_objects_without_ServerRole(lo):
 
 
 def run(_umc_instance):
-	if ucr.get('server/role') != 'domaincontroller_master':
+	if ucr.get('server/role') != 'domaincontroller_main':
 		return
 
 	lo, pos = getAdminConnection()

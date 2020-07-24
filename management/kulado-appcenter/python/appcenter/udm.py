@@ -149,8 +149,8 @@ def get_admin_connection():
 
 
 def get_connection(userdn, password):
-	port = int(ucr_get('ldap/master/port', '7389'))
-	host = ucr_get('ldap/master')
+	port = int(ucr_get('ldap/main/port', '7389'))
+	host = ucr_get('ldap/main')
 	base = ucr_get('ldap/base')
 	lo = base_access(host=host, port=port, base=base, binddn=userdn, bindpw=password)
 	lo = access(lo=lo)
@@ -223,7 +223,7 @@ class ApplicationLDAPObject(object):
 			'conflictingApps': app.conflicted_apps,
 			'conflictingSystemPackages': app.conflicted_system_packages,
 			'defaultPackages': app.default_packages,
-			'defaultPackagesMaster': app.default_packages_master,
+			'defaultPackagesMain': app.default_packages_main,
 			'umcModuleName': app.umc_module_name,
 			'umcModuleFlavor': app.umc_module_flavor,
 			'serverRole': app.server_role,

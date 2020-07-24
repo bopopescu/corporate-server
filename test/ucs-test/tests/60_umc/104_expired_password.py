@@ -2,7 +2,7 @@
 ## desc: Test UMC authentication with expired accounts
 ## exposure: dangerous
 ## packages: [univention-management-console-server]
-## roles: [domaincontroller_master, domaincontroller_backup]
+## roles: [domaincontroller_main, domaincontroller_backup]
 ## tags: [skip_admember]
 
 from __future__ import print_function
@@ -86,8 +86,8 @@ class TestPwdChangeNextLogin(object):
 			utils.wait_for_connector_replication()
 			wait_for_drs_replication(filter_format('(&(sAMAccountName=%s)(!(pwdLastSet=0)))', [username]))
 			# fails on backup because the user account in the local ldap has still shadowMax=1
-			# we set the password via krb5 -> samba, now drs replication to the master, s4 connector
-			# on the master and LDAP replication to the backup, no way to wait for that
+			# we set the password via krb5 -> samba, now drs replication to the main, s4 connector
+			# on the main and LDAP replication to the backup, no way to wait for that
 			# best would be to check the local ldap backup for NOT shadowMax=1, but sleep also works for now
 			time.sleep(30)
 

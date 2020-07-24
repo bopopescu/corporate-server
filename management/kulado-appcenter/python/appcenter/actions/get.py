@@ -110,8 +110,8 @@ class Get(UniventionAppAction):
 		ret['is_installed'] = app.is_installed()
 		ret['is_current'] = app.without_repository or ucr_get('repository/online/component/%s' % app.component_id) == 'enabled'
 		ret['local_role'] = ucr_get('server/role')
-		ret['is_master'] = ret['local_role'] == 'domaincontroller_master'
-		ret['host_master'] = ucr_get('ldap/master')
+		ret['is_main'] = ret['local_role'] == 'domaincontroller_main'
+		ret['host_main'] = ucr_get('ldap/main')
 		ret['is_ucs_component'] = app.is_ucs_component()
 		ret.update(cls._candidate_dict(app))
 		return ret

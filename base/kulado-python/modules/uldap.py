@@ -94,7 +94,7 @@ def getRootDnConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 	ucr.load()
 	port = int(ucr.get('slapd/port', '7389').split(',')[0])
 	host = ucr['hostname'] + '.' + ucr['domainname']
-	if ucr.get('ldap/server/type', 'dummy') == 'master':
+	if ucr.get('ldap/server/type', 'dummy') == 'main':
 		bindpw = open('/etc/ldap.secret').read().rstrip('\n')
 		binddn = 'cn=admin,{0}'.format(ucr['ldap/base'])
 	else:
@@ -106,7 +106,7 @@ def getRootDnConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 def getAdminConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 	# type: (int, List[str], bool) -> access
 	"""
-	Open a LDAP connection to the Master LDAP server using the admin credentials.
+	Open a LDAP connection to the Main LDAP server using the admin credentials.
 
 	:param int start_tls: Negotiate TLS with server. If `2` is given, the command will require the operation to be successful.
 	:param decode_ignorelist: List of LDAP attribute names which shall be handled as binary attributes.
@@ -118,8 +118,8 @@ def getAdminConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 	ucr = ConfigRegistry()
 	ucr.load()
 	bindpw = open('/etc/ldap.secret').read().rstrip('\n')
-	port = int(ucr.get('ldap/master/port', '7389'))
-	return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=admin,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
+	port = int(ucr.get('ldap/main/port', '7389'))
+	return access(host=ucr['ldap/main'], port=port, base=ucr['ldap/base'], binddn='cn=admin,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 
 
 def getBackupConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
@@ -137,9 +137,9 @@ def getBackupConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 	ucr = ConfigRegistry()
 	ucr.load()
 	bindpw = open('/etc/ldap-backup.secret').read().rstrip('\n')
-	port = int(ucr.get('ldap/master/port', '7389'))
+	port = int(ucr.get('ldap/main/port', '7389'))
 	try:
-		return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
+		return access(host=ucr['ldap/main'], port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 	except ldap.SERVER_DOWN:
 		if not ucr['ldap/backup']:
 			raise
@@ -147,7 +147,7 @@ def getBackupConnection(start_tls=2, decode_ignorelist=[], reconnect=True):
 		return access(host=backup, port=port, base=ucr['ldap/base'], binddn='cn=backup,' + ucr['ldap/base'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 
 
-def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, secret_file="/etc/machine.secret", reconnect=True, random_server=False):
+def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_main=True, secret_file="/etc/machine.secret", reconnect=True, random_server=False):
 	# type: (int, List[str], bool, str, bool) -> access
 	"""
 	Open a LDAP connection using the machine credentials.
@@ -155,7 +155,7 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, se
 	:param int start_tls: Negotiate TLS with server. If `2` is given, the command will require the operation to be successful.
 	:param decode_ignorelist: List of LDAP attribute names which shall be handled as binary attributes.
 	:type decode_ignorelist: list[str]
-	:param bool ldap_master: Open a connection to the Master if True, to the preferred LDAP server otherwise.
+	:param bool ldap_main: Open a connection to the Main if True, to the preferred LDAP server otherwise.
 	:param str secret_file: The name of a file containing the password credentials.
 	:param bool reconnect: Automatically reconnect if the connection fails.
 	:param bool random_server: Choose a random LDAP server from ldap/server/name and ldap/server/addition.
@@ -167,10 +167,10 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, se
 
 	bindpw = open(secret_file).read().rstrip('\n')
 
-	if ldap_master:
-		# Connect to DC Master
-		port = int(ucr.get('ldap/master/port', '7389'))
-		return access(host=ucr['ldap/master'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
+	if ldap_main:
+		# Connect to DC Main
+		port = int(ucr.get('ldap/main/port', '7389'))
+		return access(host=ucr['ldap/main'], port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
 	else:
 		# Connect to ldap/server/name
 		port = int(ucr.get('ldap/server/port', '7389'))

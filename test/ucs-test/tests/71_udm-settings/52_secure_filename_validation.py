@@ -2,7 +2,7 @@
 ## desc: Creates Schema and ACL extensions in invalid paths
 ## bugs: [41780]
 ## roles:
-##  - domaincontroller_master
+##  - domaincontroller_main
 ## packages:
 ##   - univention-config
 ## exposure: dangerous

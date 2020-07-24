@@ -371,9 +371,9 @@ class AptScript(SetupScript):
 		self.package_manager.logger.addHandler(handler)
 
 		self.roles_package_map = {
-			'domaincontroller_master': 'univention-server-master',
+			'domaincontroller_main': 'univention-server-main',
 			'domaincontroller_backup': 'univention-server-backup',
-			'domaincontroller_slave': 'univention-server-slave',
+			'domaincontroller_subordinate': 'univention-server-subordinate',
 			'memberserver': 'univention-server-member',
 			'basesystem': 'univention-basesystem',
 		}

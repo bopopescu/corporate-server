@@ -310,7 +310,7 @@ if __name__ == '__main__':
 	auth = Request('AUTH')
 	auth.body['username'] = 'fasel'
 	auth.body['password'] = 'secret'
-	req = Request('COMMAND', arguments=['cups/list'], options=['slave.domain.tld'])
+	req = Request('COMMAND', arguments=['cups/list'], options=['subordinate.domain.tld'])
 	res = Response(req)
 
 	for msg in (req, res, auth):

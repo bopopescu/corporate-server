@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Admin Modules
-#  admin policy for the DC Slave packages
+#  admin policy for the DC Subordinate packages
 #
 # Copyright 2004-2019 Univention GmbH
 #
@@ -47,31 +47,31 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 
-class slavePackagesFixedAttributes(univention.admin.syntax.select):
-	name = 'slavePackagesFixedAttributes'
+class subordinatePackagesFixedAttributes(univention.admin.syntax.select):
+	name = 'subordinatePackagesFixedAttributes'
 	choices = [
-		('univentionSlavePackages', _('Package installation list')),
-		('univentionSlavePackagesRemove', _('Package removal list')),
+		('univentionSubordinatePackages', _('Package installation list')),
+		('univentionSubordinatePackagesRemove', _('Package removal list')),
 	]
 
 
-module = 'policies/slavepackages'
+module = 'policies/subordinatepackages'
 operations = ['add', 'edit', 'remove', 'search']
 
-policy_oc = 'univentionPolicyPackagesSlave'
-policy_apply_to = ["computers/domaincontroller_slave"]
+policy_oc = 'univentionPolicyPackagesSubordinate'
+policy_apply_to = ["computers/domaincontroller_subordinate"]
 policy_position_dn_prefix = "cn=packages,cn=update"
 
 childs = 0
-short_description = _('Policy: Slave packages')
-object_name = _('Slave packages policy')
-object_name_plural = _('Slave packages policies')
-policy_short_description = _('Slave packages')
+short_description = _('Policy: Subordinate packages')
+object_name = _('Subordinate packages policy')
+object_name_plural = _('Subordinate packages policies')
+policy_short_description = _('Subordinate packages')
 long_description = ''
 options = {
 	'default': univention.admin.option(
 		default=True,
-		objectClasses=['top', 'univentionPolicy', 'univentionPolicyPackagesSlave'],
+		objectClasses=['top', 'univentionPolicy', 'univentionPolicyPackagesSubordinate'],
 	),
 }
 property_descriptions = {
@@ -84,13 +84,13 @@ property_descriptions = {
 		may_change=False,
 		identifies=True,
 	),
-	'slavePackages': univention.admin.property(
+	'subordinatePackages': univention.admin.property(
 		short_description=_('Package installation list'),
 		long_description='',
 		syntax=univention.admin.syntax.Packages,
 		multivalue=True,
 	),
-	'slavePackagesRemove': univention.admin.property(
+	'subordinatePackagesRemove': univention.admin.property(
 		short_description=_('Package removal list'),
 		long_description='',
 		syntax=univention.admin.syntax.PackagesRemove,
@@ -101,17 +101,17 @@ property_descriptions = {
 property_descriptions.update(dict([
 	requiredObjectClassesProperty(),
 	prohibitedObjectClassesProperty(),
-	fixedAttributesProperty(syntax=slavePackagesFixedAttributes),
-	emptyAttributesProperty(syntax=slavePackagesFixedAttributes),
+	fixedAttributesProperty(syntax=subordinatePackagesFixedAttributes),
+	emptyAttributesProperty(syntax=subordinatePackagesFixedAttributes),
 	ldapFilterProperty(),
 ]))
 
 layout = [
 	Tab(_('General'), policy_short_description, layout=[
-		Group(_('General slave packages settings'), layout=[
+		Group(_('General subordinate packages settings'), layout=[
 			'name',
-			'slavePackages',
-			'slavePackagesRemove'
+			'subordinatePackages',
+			'subordinatePackagesRemove'
 		]),
 	]),
 	policy_object_tab()
@@ -119,8 +119,8 @@ layout = [
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('slavePackages', 'univentionSlavePackages')
-mapping.register('slavePackagesRemove', 'univentionSlavePackagesRemove')
+mapping.register('subordinatePackages', 'univentionSubordinatePackages')
+mapping.register('subordinatePackagesRemove', 'univentionSubordinatePackagesRemove')
 register_policy_mapping(mapping)
 
 

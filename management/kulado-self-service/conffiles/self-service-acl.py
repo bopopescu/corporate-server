@@ -45,8 +45,8 @@ ACL_FILE_PATH = os.path.join('/usr/share/univention-self-service/', '64selfservi
 
 
 def handler(configRegistry, changes):
-	if configRegistry.get('server/role', None) != "domaincontroller_master":
-		print('self-service-acl module can only run on role DC Master')
+	if configRegistry.get('server/role', None) != "domaincontroller_main":
+		print('self-service-acl module can only run on role DC Main')
 		return
 
 	params = {}

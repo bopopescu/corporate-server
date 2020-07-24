@@ -46,22 +46,22 @@ class InstallerTests(object):
 		self.args = args
 		self.i = 1
 		self.ip_address = ''
-		self.ip_master = ''
+		self.ip_main = ''
 		self.password = ''
 
 	def run(self):
 		# TODO: screen dumps is static currently
 		if not os.path.exists('screen_dumps'):
 			os.makedirs('screen_dumps')
-		if not os.path.exists('screen_dumps_master') and self.args.role not in ('master', 'basesystem'):
-			os.makedirs('screen_dumps_master')
+		if not os.path.exists('screen_dumps_main') and self.args.role not in ('main', 'basesystem'):
+			os.makedirs('screen_dumps_main')
 
 		vm_kwargs = {}
 		managers = []
-		if self.args.role not in ('master', 'basesystem'):
-			self.ip_master = self.get_ip_address()
-			vm_kwargs['dns_server'] = self.ip_master
-			managers.append(create_virtual_machine(self.args.language, 'master', 'regular', self.args.server, self.args.iso_image, self.ip_master, 'screen_dumps_master'))
+		if self.args.role not in ('main', 'basesystem'):
+			self.ip_main = self.get_ip_address()
+			vm_kwargs['dns_server'] = self.ip_main
+			managers.append(create_virtual_machine(self.args.language, 'main', 'regular', self.args.server, self.args.iso_image, self.ip_main, 'screen_dumps_main'))
 
 		self.ip_address = self.get_ip_address()
 		managers.append(create_virtual_machine(self.args.language, self.args.role, self.args.environment, self.args.server, self.args.iso_image, self.ip_address, 'screen_dumps', **vm_kwargs))
@@ -72,8 +72,8 @@ class InstallerTests(object):
 			subprocess.call(['py.test', '--junitxml', self.args.junitxml] + self.args.tests)
 
 		subprocess.call(['tar', '--remove-files', '-zcf', 'screen_dumps.tar.gz', 'screen_dumps'])
-		if self.args.role not in ('master', 'basesystem'):
-			subprocess.call(['tar', '--remove-files', '-zcf', 'screen_dumps_master.tar.gz', 'screen_dumps_master'])
+		if self.args.role not in ('main', 'basesystem'):
+			subprocess.call(['tar', '--remove-files', '-zcf', 'screen_dumps_main.tar.gz', 'screen_dumps_main'])
 
 	def get_ip_address(self):
 		self.i += 1
@@ -90,7 +90,7 @@ class InstallerTests(object):
 			'role': self.args.role,
 			'environment': self.args.environment,
 			'ip_address': self.ip_address,
-			'master_ip': self.ip_master,
+			'main_ip': self.ip_main,
 			'password': self.password,
 		}
 		for key, value in cfg.iteritems():

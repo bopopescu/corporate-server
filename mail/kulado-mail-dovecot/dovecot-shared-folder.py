@@ -50,8 +50,8 @@
 #   removed.
 # * sets ACLs according to UDM. Uses "$ doveadm acl ..." for public mb,
 #   imaplib.setacl() for private/shared mb.
-# * uses a master-user to login as another user via IMAP. Credentials are
-#   stored in clear text in /etc/dovecot/master-users.
+# * uses a main-user to login as another user via IMAP. Credentials are
+#   stored in clear text in /etc/dovecot/main-users.
 # * sets the quota for public folders in the configuration file
 #   /etc/dovecot/conf.d/10-mail.conf, the quota for private/shared mb is
 #   taken from LDAP. Info is in objectClass=univentionMailSharedFolder

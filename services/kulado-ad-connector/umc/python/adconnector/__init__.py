@@ -396,7 +396,7 @@ class Instance(Base, ProgressMixin):
 			admember.check_ad_account(ad_domain_info, username, password)
 		except admember.invalidUCSServerRole as exc:  # check_server_role()
 			MODULE.warn('Failure: %s' % exc)
-			raise UMC_Error(_('The AD member mode can only be configured on a DC master server.'))
+			raise UMC_Error(_('The AD member mode can only be configured on a DC main server.'))
 		except admember.failedADConnect as exc:  # lookup_adds_dc()
 			MODULE.warn('Failure: %s' % exc)
 			raise UMC_Error(_('Could not connect to AD Server %s. Please verify that the specified address is correct. (%s)') % (ad_server_address, 'check_domain: %s' % (exc,)))
@@ -526,7 +526,7 @@ class Instance(Base, ProgressMixin):
 
 		# error handling...
 		except admember.invalidUCSServerRole as exc:
-			_err(exc, _('The AD member mode can only be configured on a DC master server.'))
+			_err(exc, _('The AD member mode can only be configured on a DC main server.'))
 		except admember.failedADConnect as exc:
 			_err(exc, _('Could not connect to AD Server %s. Please verify that the specified address is correct. (%s)') % (ad_domain_info.get('DC DNS Name'), 'admember_join: %s' % (exc,)))
 		except admember.domainnameMismatch as exc:
@@ -594,13 +594,13 @@ class Instance(Base, ProgressMixin):
 		univention.config_registry.handler_set(['connector/ad/mapping/user/password/kinit=%s' % value])
 		return subprocess.call(['invoke-rc.d', 'univention-ad-connector', 'restart'])
 
-	def _check_dcmaster_srv_rec(self):
+	def _check_dcmain_srv_rec(self):
 		if admember.get_domaincontroller_srv_record(ucr.get('domainname')):
 			return True
 		else:
 			return False
 
 	@simple_response
-	def check_dcmaster_srv_rec(self):
-		result = self._check_dcmaster_srv_rec()
+	def check_dcmain_srv_rec(self):
+		result = self._check_dcmain_srv_rec()
 		return {'success': result}

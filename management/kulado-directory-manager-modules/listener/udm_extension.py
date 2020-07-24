@@ -214,8 +214,8 @@ def handler(dn, new, old):
 	listener.setuid(0)
 	try:
 		if new:
-			if not listener.configRegistry.get('server/role') == 'domaincontroller_master':
-				# Only set active flag on Master
+			if not listener.configRegistry.get('server/role') == 'domaincontroller_main':
+				# Only set active flag on Main
 				return
 
 			try:

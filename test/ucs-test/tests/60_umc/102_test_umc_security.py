@@ -20,7 +20,7 @@ class TestSecurityHeaders(object):
 		assert response.get_header("X-Frame-Options") == "SAMEORIGIN"
 		assert response.get_header("Content-Security-Policy") == "default-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.piwik.univention.de/ ;"
 
-		assert response.get_header("X-Permitted-Cross-Domain-Policies") == "master-only"
+		assert response.get_header("X-Permitted-Cross-Domain-Policies") == "main-only"
 		assert response.get_header("X-XSS-Protection") == "1; mode=block"
 		assert response.get_header("X-Content-Type-Options") == "nosniff"
 
@@ -32,7 +32,7 @@ class TestSecurityHeaders(object):
 	def test_univention(self, path, Client):
 		client = Client()
 		response = client.request('GET', path)
-		assert response.get_header("X-Permitted-Cross-Domain-Policies") == "master-only"
+		assert response.get_header("X-Permitted-Cross-Domain-Policies") == "main-only"
 		assert response.get_header("X-XSS-Protection") == "1; mode=block"
 		assert response.get_header("X-Content-Type-Options") == "nosniff"
 		assert response.get_header("X-Frame-Options") == "DENY"

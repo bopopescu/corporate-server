@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ## desc: Test UDM APIs module caching
 ## exposure: dangerous
-## roles: [domaincontroller_master]
+## roles: [domaincontroller_main]
 ## tags: [udm_api]
 ## packages: [python-univention-directory-manager]
 ## bugs: [47316]

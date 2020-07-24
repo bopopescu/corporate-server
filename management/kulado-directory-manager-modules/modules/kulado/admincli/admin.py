@@ -556,7 +556,7 @@ def _doit(arglist):
 	if binddn and bindpwd:
 		ud.debug(ud.ADMIN, ud.INFO, "using %s account" % binddn)
 		try:
-			lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, start_tls=tls, bindpw=bindpwd)
+			lo = univention.admin.uldap.access(host=configRegistry['ldap/main'], port=int(configRegistry.get('ldap/main/port', '7389')), base=baseDN, binddn=binddn, start_tls=tls, bindpw=bindpwd)
 		except Exception as e:
 			ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % str(e))
 			out.append('authentication error: %s' % str(e))
@@ -584,7 +584,7 @@ def _doit(arglist):
 		pwd = re.sub('\n', '', pwdLine)
 
 		try:
-			lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, bindpw=pwd, start_tls=tls)
+			lo = univention.admin.uldap.access(host=configRegistry['ldap/main'], port=int(configRegistry.get('ldap/main/port', '7389')), base=baseDN, binddn=binddn, bindpw=pwd, start_tls=tls)
 		except Exception as e:
 			ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % str(e))
 			out.append('authentication error: %s' % str(e))

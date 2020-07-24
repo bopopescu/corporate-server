@@ -247,7 +247,7 @@ class configdb:
 		for i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
-				cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='%s';" % section)
+				cur.execute("SELECT name FROM sqlite_main WHERE type='table' AND name='%s';" % section)
 				rows = cur.fetchone()
 				cur.close()
 				if rows:
@@ -534,10 +534,10 @@ class ucs:
 		if bindpw[-1] == '\n':
 			bindpw = bindpw[0:-1]
 
-		host = self.baseConfig.get('%s/ldap/server' % self.CONFIGBASENAME, self.baseConfig.get('ldap/master'))
+		host = self.baseConfig.get('%s/ldap/server' % self.CONFIGBASENAME, self.baseConfig.get('ldap/main'))
 
 		try:
-			port = int(self.baseConfig.get('%s/ldap/port' % self.CONFIGBASENAME, self.baseConfig.get('ldap/master/port')))
+			port = int(self.baseConfig.get('%s/ldap/port' % self.CONFIGBASENAME, self.baseConfig.get('ldap/main/port')))
 		except ValueError:
 			port = 7389
 
@@ -1375,7 +1375,7 @@ class ucs:
 		if property_type == 'windowscomputer':
 			# Special handling for windows computer:
 			#  In AD the computer is a windows computer in UCS the computer is a DC.
-			#  If Samba 4 will be installed on the Slave, Samba 4 deletes the object
+			#  If Samba 4 will be installed on the Subordinate, Samba 4 deletes the object
 			#  and this deletion must not be synced to OpenLDAP.
 			#  https://forge.univention.org/bugzilla/show_bug.cgi?id=35563
 			try:

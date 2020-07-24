@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ## desc: Test UDM cannot get broken by users with missing object classes
 ## exposure: dangerous
-## roles: [domaincontroller_master]
+## roles: [domaincontroller_main]
 ## packages: [python-univention-directory-manager]
 
 from __future__ import print_function

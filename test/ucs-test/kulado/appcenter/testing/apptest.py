@@ -369,7 +369,7 @@ else:
 		uri = os.environ.get('UCS_TEST_UDM_URI')
 		if not uri:
 			if config:
-				hostname = 'https://{}'.format(config.get('ldap/master'))
+				hostname = 'https://{}'.format(config.get('ldap/main'))
 			else:
 				logger.warning('$UCS_TEST_UDM_URI not set')
 			uri = '{}/univention/udm/'.format(hostname)

@@ -173,8 +173,8 @@ def load_values(lang=None):
 
 
 def auto_complete_values_for_join(newValues, current_locale=None):
-	# try to automatically determine the domain, except on a dcmaster and basesystem
-	if newValues['server/role'] != 'domaincontroller_master' and not newValues.get('domainname') and newValues['server/role'] != 'basesystem':
+	# try to automatically determine the domain, except on a dcmain and basesystem
+	if newValues['server/role'] != 'domaincontroller_main' and not newValues.get('domainname') and newValues['server/role'] != 'basesystem':
 		ucr.load()
 		for nameserver in ('nameserver1', 'nameserver2', 'nameserver3'):
 			if newValues.get('domainname'):
@@ -206,11 +206,11 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 
 	# make sure that AD connector package is installed if AD member mode is chosen
 	selectedComponents = set(newValues.get('components', []))
-	if isAdMember and newValues['server/role'] == 'domaincontroller_master':
+	if isAdMember and newValues['server/role'] == 'domaincontroller_main':
 		selectedComponents.add('univention-ad-connector')
 
-	# make sure to install the memberof overlay if it is installed on the DC Master
-	if newValues['server/role'] not in ('domaincontroller_master', 'basesystem', 'memberserver'):
+	# make sure to install the memberof overlay if it is installed on the DC Main
+	if newValues['server/role'] not in ('domaincontroller_main', 'basesystem', 'memberserver'):
 		if newValues.pop('install_memberof_overlay', None):
 			selectedComponents.add('univention-ldap-overlay-memberof')
 
@@ -219,13 +219,13 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 		currentComponents = set()
 		for iapp in get_apps():
 			if iapp['is_installed']:
-				for ipackages in (iapp['default_packages'], iapp['default_packages_master']):
+				for ipackages in (iapp['default_packages'], iapp['default_packages_main']):
 					currentComponents = currentComponents.union(ipackages)
 
 		# set of all available software packages
 		allComponents = set(['univention-ldap-overlay-memberof'])
 		for iapp in get_apps():
-			for ipackages in (iapp['default_packages'], iapp['default_packages_master']):
+			for ipackages in (iapp['default_packages'], iapp['default_packages_main']):
 				allComponents = allComponents.union(ipackages)
 
 		# get all packages that shall be removed
@@ -237,7 +237,7 @@ def auto_complete_values_for_join(newValues, current_locale=None):
 		newValues['packages_install'] = ' '.join(installComponents)
 
 	current_locale = Locale(ucr.get('locale/default', 'en_US.UTF-8:UTF-8'))
-	if newValues['server/role'] == 'domaincontroller_master':
+	if newValues['server/role'] == 'domaincontroller_main':
 		# add newValues for SSL UCR variables
 		default_locale = current_locale
 		if 'locale/default' in newValues:
@@ -945,10 +945,10 @@ def _get_dns_resolver(nameserver):
 
 
 def is_ucs_domain(nameserver, domain):
-	return bool(get_ucs_domaincontroller_master_query(nameserver, domain))
+	return bool(get_ucs_domaincontroller_main_query(nameserver, domain))
 
 
-def get_ucs_domaincontroller_master_query(nameserver, domain):
+def get_ucs_domaincontroller_main_query(nameserver, domain):
 	if not nameserver or not domain:
 		return
 
@@ -957,17 +957,17 @@ def get_ucs_domaincontroller_master_query(nameserver, domain):
 
 	# perform a SRV lookup
 	try:
-		return resolver.query('_domaincontroller_master._tcp.%s.' % domain, 'SRV')
+		return resolver.query('_domaincontroller_main._tcp.%s.' % domain, 'SRV')
 	except (dns.resolver.NXDOMAIN, dns.resolver.NoAnswer, dns.resolver.NoNameservers):
 		MODULE.warn('No valid UCS domain (%s) at nameserver %s!' % (domain, nameserver))
 	except dns.exception.Timeout as exc:
-		MODULE.warn('Lookup for DC master record at nameserver %s timed out: %s' % (nameserver, exc))
+		MODULE.warn('Lookup for DC main record at nameserver %s timed out: %s' % (nameserver, exc))
 	except dns.exception.DNSException as exc:
 		MODULE.error('DNS Exception: %s' % (traceback.format_exc()))
 
 
-def resolve_domaincontroller_master_srv_record(nameserver, domain):
-	query = get_ucs_domaincontroller_master_query(nameserver, domain)
+def resolve_domaincontroller_main_srv_record(nameserver, domain):
+	query = get_ucs_domaincontroller_main_query(nameserver, domain)
 	if not query:
 		return False
 	try:

@@ -133,7 +133,7 @@ class LdapChange(AddressChange, Ldap):
 		self.position = None
 
 	def open_ldap(self):
-		ldap_host = self.changeset.ucr["ldap/master"]
+		ldap_host = self.changeset.ucr["ldap/main"]
 		ldap_base = self.changeset.ucr["ldap/base"]
 		self.ldap = uldap.access(
 			host=ldap_host,

@@ -19,7 +19,7 @@ def run(*args,**kwargs):
 		sys.excepthook(*sys.exc_info())
 threading.Thread.run=run
 def process_task(tsk):
-	m=tsk.master
+	m=tsk.main
 	if m.stop:
 		m.out.put(tsk)
 		return
@@ -151,7 +151,7 @@ class Parallel(object):
 			else:
 				tsk.position=(self.processed,self.total)
 				self.count+=1
-				tsk.master=self
+				tsk.main=self
 				self.processed+=1
 				if self.numjobs==1:
 					process_task(tsk)

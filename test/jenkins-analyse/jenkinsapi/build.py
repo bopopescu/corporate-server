@@ -80,7 +80,7 @@ class Build(JenkinsBase):
     def get_status(self):
         return self._data["result"]
 
-    def get_slave(self):
+    def get_subordinate(self):
         return self._data["builtOn"]
 
     def get_revision(self):
@@ -219,9 +219,9 @@ class Build(JenkinsBase):
         else:
             return None
 
-    def get_master_job_name(self):
+    def get_main_job_name(self):
         """
-        Get the master job name if it exist, None otherwise
+        Get the main job name if it exist, None otherwise
         :return: String or None
         """
         try:
@@ -229,43 +229,43 @@ class Build(JenkinsBase):
         except KeyError:
             return None
 
-    def get_master_job(self):
+    def get_main_job(self):
         """
-        Get the master job object if it exist, None otherwise
+        Get the main job object if it exist, None otherwise
         :return: Job or None
         """
         warnings.warn(
             "This untested function may soon be removed from Jenkinsapi "
-            "(get_master_job).")
-        if self.get_master_job_name():
-            return self.get_jenkins_obj().get_job(self.get_master_job_name())
+            "(get_main_job).")
+        if self.get_main_job_name():
+            return self.get_jenkins_obj().get_job(self.get_main_job_name())
         else:
             return None
 
-    def get_master_build_number(self):
+    def get_main_build_number(self):
         """
-        Get the master build number if it exist, None otherwise
+        Get the main build number if it exist, None otherwise
         :return: int or None
         """
         warnings.warn(
             "This untested function may soon be removed from Jenkinsapi "
-            "(get_master_build_number).")
+            "(get_main_build_number).")
         try:
             return int(self.get_actions()['parameters'][1]['value'])
         except KeyError:
             return None
 
-    def get_master_build(self):
+    def get_main_build(self):
         """
-        Get the master build if it exist, None otherwise
+        Get the main build if it exist, None otherwise
         :return Build or None
         """
         warnings.warn(
             "This untested function may soon be removed from Jenkinsapi "
-            "(get_master_build).")
-        master_job = self.get_master_job()
-        if master_job:
-            return master_job.get_build(self.get_master_build_number())
+            "(get_main_build).")
+        main_job = self.get_main_job()
+        if main_job:
+            return main_job.get_build(self.get_main_build_number())
         else:
             return None
 

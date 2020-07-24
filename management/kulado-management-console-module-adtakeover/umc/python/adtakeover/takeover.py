@@ -576,8 +576,8 @@ class UCS_License_detection(object):
 
 		try:
 			lo = univention.admin.uldap.access(
-				host=self.ucr['ldap/master'],
-				port=int(self.ucr.get('ldap/master/port', '7389')),
+				host=self.ucr['ldap/main'],
+				port=int(self.ucr.get('ldap/main/port', '7389')),
 				base=self.ucr['ldap/base'],
 				binddn=binddn,
 				bindpw=bindpw
@@ -1833,7 +1833,7 @@ class AD_Takeover_Finalize(object):
 
 		# Claim FSMO roles
 		log.info("Claiming FSMO roles")
-		takeover_hasMasterNCs(self.ucr, self.samdb, self.sitename, self.partitions)
+		takeover_hasMainNCs(self.ucr, self.samdb, self.sitename, self.partitions)
 		for fsmo_role in ('pdc', 'rid', 'infrastructure', 'schema', 'naming', 'domaindns', 'forestdns'):
 			for attempt in range(3):
 				if attempt > 0:
@@ -2363,10 +2363,10 @@ def _connect_ucs(ucr, binddn=None, bindpwd=None):
 		if bindpw[-1] == '\n':
 			bindpw = bindpw[0:-1]
 
-	host = ucr.get('connector/ldap/server', ucr.get('ldap/master'))
+	host = ucr.get('connector/ldap/server', ucr.get('ldap/main'))
 
 	try:
-		port = int(ucr.get('connector/ldap/port', ucr.get('ldap/master/port')))
+		port = int(ucr.get('connector/ldap/port', ucr.get('ldap/main/port')))
 	except:
 		port = 7389
 
@@ -2396,7 +2396,7 @@ def takeover_DC_Behavior_Version(ucr, remote_samdb, samdb, ad_server_name, siten
 	msg = remote_samdb.search(
 		base="CN=NTDS Settings,CN=%s,CN=Servers,CN=%s,CN=Sites,CN=Configuration,%s" % (escape_dn_chars(ad_server_name), escape_dn_chars(sitename), samdb.domain_dn()),
 		scope=samba.ldb.SCOPE_BASE,
-		attrs=["msDS-HasMasterNCs", "msDS-HasInstantiatedNCs", "msDS-Behavior-Version"]
+		attrs=["msDS-HasMainNCs", "msDS-HasInstantiatedNCs", "msDS-Behavior-Version"]
 	)
 	if msg:
 		obj = msg[0]
@@ -2413,7 +2413,7 @@ def takeover_hasInstantiatedNCs(ucr, samdb, ad_server_name, sitename):
 		msg = samdb.search(
 			base="CN=NTDS Settings,CN=%s,CN=Servers,CN=%s,CN=Sites,CN=Configuration,%s" % (escape_dn_chars(ad_server_name), escape_dn_chars(sitename), samdb.domain_dn()),
 			scope=samba.ldb.SCOPE_BASE,
-			attrs=["msDS-hasMasterNCs", "msDS-HasInstantiatedNCs"])
+			attrs=["msDS-hasMainNCs", "msDS-HasInstantiatedNCs"])
 	except ldb.LdbError as ex:
 		log.debug(ex.args[1])
 		return partitions
@@ -2428,15 +2428,15 @@ def takeover_hasInstantiatedNCs(ucr, samdb, ad_server_name, sitename):
 		if "msDS-HasInstantiatedNCs" in delta:
 			samdb.modify(delta)
 
-		# and note the msDS-hasMasterNCs values for fsmo takeover
-		if "msDS-hasMasterNCs" in obj:
-			for partitionDN in obj["msDS-hasMasterNCs"]:
+		# and note the msDS-hasMainNCs values for fsmo takeover
+		if "msDS-hasMainNCs" in obj:
+			for partitionDN in obj["msDS-hasMainNCs"]:
 				partitions.append(partitionDN)
 	return partitions
 
 
-def takeover_hasMasterNCs(ucr, samdb, sitename, partitions):
-	msg = samdb.search(base="CN=NTDS Settings,CN=%s,CN=Servers,CN=%s,CN=Sites,CN=Configuration,%s" % (escape_dn_chars(ucr["hostname"]), escape_dn_chars(sitename), samdb.domain_dn()), scope=samba.ldb.SCOPE_BASE, attrs=["hasPartialReplicaNCs", "msDS-hasMasterNCs"])
+def takeover_hasMainNCs(ucr, samdb, sitename, partitions):
+	msg = samdb.search(base="CN=NTDS Settings,CN=%s,CN=Servers,CN=%s,CN=Sites,CN=Configuration,%s" % (escape_dn_chars(ucr["hostname"]), escape_dn_chars(sitename), samdb.domain_dn()), scope=samba.ldb.SCOPE_BASE, attrs=["hasPartialReplicaNCs", "msDS-hasMainNCs"])
 	if msg:
 		obj = msg[0]
 		for partition in partitions:
@@ -2451,16 +2451,16 @@ def takeover_hasMasterNCs(ucr, samdb, sitename, partitions):
 					log.debug("Failed to remove hasPartialReplicaNCs %s from %s" % (partition, ucr["hostname"]))
 					log.debug("Current NTDS object: %s" % obj)
 
-			if "msDS-hasMasterNCs" in obj and partition in obj["msDS-hasMasterNCs"]:
-				log.debug("Naming context %s already registered in msDS-hasMasterNCs for %s" % (partition, ucr["hostname"]))
+			if "msDS-hasMainNCs" in obj and partition in obj["msDS-hasMainNCs"]:
+				log.debug("Naming context %s already registered in msDS-hasMainNCs for %s" % (partition, ucr["hostname"]))
 			else:
 				delta = ldb.Message()
 				delta.dn = obj.dn
-				delta[partition] = ldb.MessageElement(partition, ldb.FLAG_MOD_ADD, "msDS-hasMasterNCs")
+				delta[partition] = ldb.MessageElement(partition, ldb.FLAG_MOD_ADD, "msDS-hasMainNCs")
 				try:
 					samdb.modify(delta)
 				except:
-					log.debug("Failed to add msDS-hasMasterNCs %s to %s" % (partition, ucr["hostname"]))
+					log.debug("Failed to add msDS-hasMainNCs %s to %s" % (partition, ucr["hostname"]))
 					log.debug("Current NTDS object: %s" % obj)
 
 
@@ -2587,7 +2587,7 @@ def run_phaseI(ucr, lp, opts, args, parser, creds, always_answer_with=None):
 
 def run_phaseIII(ucr, lp, ad_server_ip, ad_server_fqdn, ad_server_name):
 
-	# Phase III: Promote to FSMO master and DNS server
+	# Phase III: Promote to FSMO main and DNS server
 	# Restart Samba and make sure the rapid restart did not leave the main process blocking
 	# 1. Determine Site of local server, important for locale-dependend names like "Standardname-des-ersten-Standorts"
 	# properly register partitions

@@ -29,13 +29,13 @@ with test:
 	test.click_button("Install")
 	test.wait_for_text("Performing software tests")
 
-	# Wird eine Nachfrage mit zu installierenden Paketen angezeigt? Auch für sich in der Domäne befindlichen Master und Backupsystemen (falls MasterPackages eingetragen sind)?
+	# Wird eine Nachfrage mit zu installierenden Paketen angezeigt? Auch für sich in der Domäne befindlichen Main und Backupsystemen (falls MainPackages eingetragen sind)?
 	test.wait_for_text("Installation of Self Service")
 	test.click_text("More information")
 	test.wait_for_text("univention-self-service-passwordreset-umc", timeout=3)
-	#test.wait_for_text("univention-self-service-master", timeout=3)  # Bug https://forge.univention.org/bugzilla/show_bug.cgi?id=49183
+	#test.wait_for_text("univention-self-service-main", timeout=3)  # Bug https://forge.univention.org/bugzilla/show_bug.cgi?id=49183
 	try:
-		# Werden wichtige System-Pakete deinstalliert (z.B. univention-server-master)?
+		# Werden wichtige System-Pakete deinstalliert (z.B. univention-server-main)?
 		test.wait_for_text("univention-server-", timeout=1)
 	except TimeoutException:
 		pass
@@ -102,7 +102,7 @@ with test:
 		if ucr_get(key) != value:
 			raise ValueError('%s: %r' % (key, ucr_get(key)))
 	try:
-		# Werden wichtige System-Pakete deinstalliert (z.B. univention-server-master)?
+		# Werden wichtige System-Pakete deinstalliert (z.B. univention-server-main)?
 		test.wait_for_text("univention-server-", timeout=1)
 	except TimeoutException:
 		pass
@@ -110,6 +110,6 @@ with test:
 		raise ValueError("I *DID* find a dangerous package")
 
 	# Bei Deinstallation einer App mit LDAP-Schema-Erweiterungen sollten die Schema-Pakete nicht deinstalliert werden.
-	output = subprocess.check_output(['dpkg -s univention-self-service-master | grep Status'], shell=True)
+	output = subprocess.check_output(['dpkg -s univention-self-service-main | grep Status'], shell=True)
 	if output != 'Status: install ok installed\n':
-		raise ValueError('Master package removed!')
+		raise ValueError('Main package removed!')

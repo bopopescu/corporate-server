@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ## desc: Test various things in users/user
 ## exposure: dangerous
-## roles: [domaincontroller_master]
+## roles: [domaincontroller_main]
 ## packages: [python-univention-directory-manager]
 ## timeout: 0
 

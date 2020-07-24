@@ -101,7 +101,7 @@ def handler(dn, new, old, command=''):
 	:param old: Previous LDAP attribute values.
 	:param command: LDAp transaction type.
 	"""
-	if configRegistry['server/role'] != 'domaincontroller_master':
+	if configRegistry['server/role'] != 'domaincontroller_main':
 		return
 
 	setuid(0)

@@ -61,7 +61,7 @@ module = 'policies/maintenance'
 operations = ['add', 'edit', 'remove', 'search']
 
 policy_oc = 'univentionPolicyInstallationTime'
-policy_apply_to = ["computers/domaincontroller_master", "computers/domaincontroller_backup", "computers/domaincontroller_slave", "computers/memberserver", "computers/managedclient", "computers/mobileclient"]
+policy_apply_to = ["computers/domaincontroller_main", "computers/domaincontroller_backup", "computers/domaincontroller_subordinate", "computers/memberserver", "computers/managedclient", "computers/mobileclient"]
 policy_position_dn_prefix = "cn=installation,cn=update"
 
 childs = 0

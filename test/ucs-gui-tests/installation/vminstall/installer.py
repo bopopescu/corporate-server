@@ -46,7 +46,7 @@ from vminstall.vmconfig import Config as VmConfig
 
 class Installer(object):
 
-	def __init__(self, args=None, role='master', language='en'):
+	def __init__(self, args=None, role='main', language='en'):
 		init_logger('info')
 		self.args = self.parse_args(args)
 		self.ocr_config = self.__get_ocr_config()
@@ -202,11 +202,11 @@ class Installer(object):
 		self.confirm_config(expect_login_screen)
 
 	def choose_system_role(self):
-		if self.vm_config.role == "master":
-			self.client.mouseClickOnText(self.locale_strings['setup_master'])
+		if self.vm_config.role == "main":
+			self.client.mouseClickOnText(self.locale_strings['setup_main'])
 			self.client.mouseClickOnText(self.locale_strings['next'])
 			self.client.waitForText(self.locale_strings['account_info'], timeout=30)
-		elif self.vm_config.role == "backup" or self.vm_config.role == "slave" or self.vm_config.role == "member":
+		elif self.vm_config.role == "backup" or self.vm_config.role == "subordinate" or self.vm_config.role == "member":
 			self.client.mouseClickOnText(self.locale_strings['join_ucs'])
 			self.client.mouseClickOnText(self.locale_strings['next'])
 			self.client.waitForText(self.locale_strings['system_role'], timeout=30)
@@ -217,7 +217,7 @@ class Installer(object):
 
 		if self.vm_config.role == "backup":
 			self.client.mouseClickOnText(self.locale_strings['next'])
-		if self.vm_config.role == "slave":
+		if self.vm_config.role == "subordinate":
 			self.client.keyPress('down')
 			self.client.mouseClickOnText(self.locale_strings['next'])
 		if self.vm_config.role == "member":
@@ -226,7 +226,7 @@ class Installer(object):
 			self.client.mouseClickOnText(self.locale_strings['next'])
 
 	def set_domain_settings(self):
-		if self.vm_config.role == "master":
+		if self.vm_config.role == "main":
 			self.client.enterText(self.locale_strings['company'])
 			self.client.mouseClickOnText(self.locale_strings['next'])
 			self.client.waitForText(self.locale_strings['host_settings'], timeout=30)
@@ -236,7 +236,7 @@ class Installer(object):
 			self.client.mouseClickOnText(self.locale_strings['next'])
 			self.client.waitForText(self.locale_strings['software_config'], timeout=30)
 
-		elif self.vm_config.role == "backup" or self.vm_config.role == "slave" or self.vm_config.role == "member":
+		elif self.vm_config.role == "backup" or self.vm_config.role == "subordinate" or self.vm_config.role == "member":
 			self.client.waitForText(self.locale_strings['domain_join'], timeout=30)
 			self.client.mouseClickOnText(self.locale_strings['password_field'])
 			self.client.enterText(self.vm_config.password)

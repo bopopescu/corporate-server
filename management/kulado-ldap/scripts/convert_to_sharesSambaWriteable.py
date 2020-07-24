@@ -54,7 +54,7 @@ pwd = re.sub('\n', '', pwdLine)
 tls = 2
 
 try:
-	lo = univention.admin.uldap.access(host=baseConfig['ldap/master'], base=baseDN, binddn='cn=admin,' + baseDN, bindpw=pwd, start_tls=tls)
+	lo = univention.admin.uldap.access(host=baseConfig['ldap/main'], base=baseDN, binddn='cn=admin,' + baseDN, bindpw=pwd, start_tls=tls)
 except Exception as e:
 	univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
 	print 'authentication error: %s' % str(e)

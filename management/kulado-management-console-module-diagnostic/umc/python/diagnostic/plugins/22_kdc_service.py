@@ -326,7 +326,7 @@ def run(_umc_instance, retest=False):
 		error_descriptions.append(error.format(', '.join(unreach_string)))
 
 	if not reachable_kdc:
-		is_dc = configRegistry.get('server/role') == 'domaincontroller_master'
+		is_dc = configRegistry.get('server/role') == 'domaincontroller_main'
 		is_s4_dc = is_dc and util.is_service_active('Samba 4')
 		if is_s4_dc and configRegistry.is_true('samba/interfaces/bindonly', False):
 			local_included = False

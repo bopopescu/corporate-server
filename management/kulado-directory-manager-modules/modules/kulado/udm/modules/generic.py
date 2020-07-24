@@ -490,7 +490,7 @@ class GenericModule(BaseModule):
 
 	3.  Search and load existing objects::
 
-	        dc_slaves = dc_slave_mod.search(filter_s='cn=s10*')
+	        dc_subordinates = dc_subordinate_mod.search(filter_s='cn=s10*')
 	        campus_groups = group_mod.search(base='ou=campus,dc=example,dc=com')
 	"""  # noqa: E101
 	__metaclass__ = GenericModuleMeta

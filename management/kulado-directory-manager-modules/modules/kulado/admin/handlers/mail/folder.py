@@ -205,7 +205,7 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_modlist(self):
 		# we get a list of modifications to be done (called 'ml' down below)
 		# this lists looks like this:
-		# [('univentionMailHomeServer', [u'ugs-master.hosts.invalid'], u'ugs-master.hosts.invalid'), ('univentionMailUserQuota', u'100', u'101')]
+		# [('univentionMailHomeServer', [u'ugs-main.hosts.invalid'], u'ugs-main.hosts.invalid'), ('univentionMailUserQuota', u'100', u'101')]
 		# we can modify those entries to conform to the LDAP schema
 
 		ml = univention.admin.handlers.simpleLdap._ldap_modlist(self)

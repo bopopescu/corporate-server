@@ -36,7 +36,7 @@ def run(_umc_instance):
 	logger.setLevel(logging.CRITICAL)
 
 	try:
-		lo, position = uldap.getMachineConnection(ldap_master=False)
+		lo, position = uldap.getMachineConnection(ldap_main=False)
 	except Exception as err:
 		raise Warning(str(err))
 
@@ -44,8 +44,8 @@ def run(_umc_instance):
 	ucs_hosts = []
 	roles = [
 		'computers/domaincontroller_backup',
-		'computers/domaincontroller_master',
-		'computers/domaincontroller_slave',
+		'computers/domaincontroller_main',
+		'computers/domaincontroller_subordinate',
 		'computers/memberserver']
 	for role in roles:
 		udm_obj = modules.get(role)

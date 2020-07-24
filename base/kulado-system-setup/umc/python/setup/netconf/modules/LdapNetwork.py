@@ -23,7 +23,7 @@ class PhaseLdapNetwork(LdapChange):
 
 	def _check_role(self):
 		role = self.changeset.ucr.get("server/role")
-		if role != "domaincontroller_master":
+		if role != "domaincontroller_main":
 			raise SkipPhase("Wrong server/role")
 
 	def _check_network(self):

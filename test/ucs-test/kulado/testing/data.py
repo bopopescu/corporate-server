@@ -305,9 +305,9 @@ class CheckRoles(Check):
 	"""
 
 	ROLES = frozenset((
-		'domaincontroller_master',
+		'domaincontroller_main',
 		'domaincontroller_backup',
-		'domaincontroller_slave',
+		'domaincontroller_subordinate',
 		'memberserver',
 		'basesystem',
 		'mobileclient',

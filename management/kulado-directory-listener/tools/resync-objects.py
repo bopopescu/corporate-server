@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Directory Listener
-"""Resync objects from master to local LDAP database"""
+"""Resync objects from main to local LDAP database"""
 #
 # Copyright 2004-2019 Univention GmbH
 #
@@ -43,7 +43,7 @@ import optparse
 def main():
 	usage = "usage: %prog [options]"
 	parser = optparse.OptionParser(usage=usage, description=__doc__)
-	parser.add_option("-f", "--filter", help="resync objects from master found by this filter. Default: (uid=<hostname>$)")
+	parser.add_option("-f", "--filter", help="resync objects from main found by this filter. Default: (uid=<hostname>$)")
 	parser.add_option("-r", "--remove", action="store_true", help="remove objects in local database before resync")
 	parser.add_option("-s", "--simulate", action="store_true", help="dry run, do not remove or add")
 	parser.add_option("-u", "--update", action="store_true", help="update/modify existing objects")
@@ -53,22 +53,22 @@ def main():
 	ucr.load()
 	base = ucr.get("ldap/base")
 	server_role = ucr.get("server/role", "")
-	if server_role == 'domaincontroller_master':
-		print('local ldap is master server, nothing todo')
+	if server_role == 'domaincontroller_main':
+		print('local ldap is main server, nothing todo')
 		return
-	if server_role not in ['domaincontroller_backup', 'domaincontroller_slave']:
+	if server_role not in ['domaincontroller_backup', 'domaincontroller_subordinate']:
 		print('server role ("{}") has no ldap, nothing todo'.format(server_role))
 		return
 
 	if not opts.filter:
 		opts.filter = '(uid=%s$)' % ucr['hostname']
 
-	# get local and master connection
+	# get local and main connection
 	local = uldap.getRootDnConnection()
 	if server_role == "domaincontroller_backup":
-		master = uldap.getAdminConnection()
+		main = uldap.getAdminConnection()
 	else:
-		master = uldap.getMachineConnection(ldap_master=True)
+		main = uldap.getMachineConnection(ldap_main=True)
 
 	# delete local
 	if opts.remove:
@@ -80,12 +80,12 @@ def main():
 			if not opts.simulate:
 				local.delete(dn)
 
-	# resync from master
-	res = master.search(base=base, filter=opts.filter)
+	# resync from main
+	res = main.search(base=base, filter=opts.filter)
 	if not res:
-		print('object does not exist on master')
+		print('object does not exist on main')
 	for dn, data in res:
-		print("resync from master: %s" % (dn,))
+		print("resync from main: %s" % (dn,))
 		try:
 			local_res = local.search(base=dn)
 		except ldap.NO_SUCH_OBJECT:

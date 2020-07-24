@@ -63,7 +63,7 @@ TOKEN_VALIDITY_TIME = 3600
 MEMCACHED_SOCKET = "/var/lib/univention-self-service-passwordreset-umc/memcached.socket"
 MEMCACHED_MAX_KEY = 250
 
-SELFSERVICE_MASTER = ucr.get("self-service/backend-server", ucr.get("ldap/master"))
+SELFSERVICE_MASTER = ucr.get("self-service/backend-server", ucr.get("ldap/main"))
 IS_SELFSERVICE_MASTER = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname')) == SELFSERVICE_MASTER
 
 if IS_SELFSERVICE_MASTER:
@@ -75,7 +75,7 @@ if IS_SELFSERVICE_MASTER:
 		widget = None
 
 
-def forward_to_master(func):
+def forward_to_main(func):
 	@wraps(func)
 	def _decorator(self, request, *args, **kwargs):
 		if not IS_SELFSERVICE_MASTER:
@@ -259,7 +259,7 @@ class Instance(Base):
 				univention.admin.modules.init(lo, po, self._usersmod)
 		return self._usersmod
 
-	@forward_to_master
+	@forward_to_main
 	@prevent_denial_of_service
 	@sanitize(
 		username=StringSanitizer(required=True, minimum=1),
@@ -285,7 +285,7 @@ class Instance(Base):
 			"value": user[p.udm_property]
 		} for p in self.send_plugins.values() if p.udm_property in user]
 
-	@forward_to_master
+	@forward_to_main
 	@sanitize(
 		username=StringSanitizer(required=True, minimum=1),
 		password=StringSanitizer(required=True, minimum=1))
@@ -311,7 +311,7 @@ class Instance(Base):
 			'layout': layout,
 		}
 
-	@forward_to_master
+	@forward_to_main
 	@simple_response
 	def get_user_attributes_descriptions(self):
 		return self._get_user_attributes_descriptions()
@@ -348,7 +348,7 @@ class Instance(Base):
 			widget_descriptions.append(widget_description)
 		return widget_descriptions
 
-	@forward_to_master
+	@forward_to_main
 	@sanitize(
 		username=StringSanitizer(required=True, minimum=1),
 		password=StringSanitizer(required=True, minimum=1))
@@ -397,7 +397,7 @@ class Instance(Base):
 			}
 		return res
 
-	@forward_to_master
+	@forward_to_main
 	@sanitize(
 		username=StringSanitizer(required=True, minimum=1),
 		password=StringSanitizer(required=True, minimum=1))
@@ -421,7 +421,7 @@ class Instance(Base):
 			raise UMC_Error(_('The attributes could not be saved: %s') % (UDM_Error(exc)))
 		return _("Successfully changed your profile data.")
 
-	@forward_to_master
+	@forward_to_main
 	@prevent_denial_of_service
 	@sanitize(
 		username=StringSanitizer(required=True),
@@ -438,7 +438,7 @@ class Instance(Base):
 			raise UMC_Error(_("Successfully changed your contact data."), status=200)
 		raise UMC_Error(_('Changing contact data failed.'), status=500)
 
-	@forward_to_master
+	@forward_to_main
 	@prevent_denial_of_service
 	@sanitize(
 		username=StringSanitizer(required=True),
@@ -490,7 +490,7 @@ class Instance(Base):
 		# no contact info
 		raise MissingContactInformation()
 
-	@forward_to_master
+	@forward_to_main
 	@prevent_denial_of_service
 	@sanitize(
 		token=StringSanitizer(required=True),
@@ -534,7 +534,7 @@ class Instance(Base):
 			raise UMC_Error(_("Successfully changed your password."), status=200)
 		raise UMC_Error(_('Failed to change password.'), status=500)
 
-	@forward_to_master
+	@forward_to_main
 	@prevent_denial_of_service
 	@sanitize(username=StringSanitizer(required=True, minimum=1))
 	@simple_response

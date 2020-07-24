@@ -63,7 +63,7 @@ from univention.appcenter.exceptions import Abort, NetworkError, AppCenterError
 from univention.appcenter.packages import reload_package_manager, get_package_manager, package_lock, LOCK_FILE
 from univention.appcenter.app_cache import Apps, AppCenterCache, default_server
 from univention.appcenter.udm import _update_modules
-from univention.appcenter.utils import docker_is_running, call_process, docker_bridge_network_conflict, send_information, app_is_running, find_hosts_for_master_packages, get_local_fqdn
+from univention.appcenter.utils import docker_is_running, call_process, docker_bridge_network_conflict, send_information, app_is_running, find_hosts_for_main_packages, get_local_fqdn
 from univention.appcenter.log import get_base_logger, log_to_logfile
 from univention.appcenter.ucr import ucr_instance, ucr_save
 from univention.appcenter.settings import FileSetting, PasswordFileSetting
@@ -536,8 +536,8 @@ class Instance(umcm.Base, ProgressMixin):
 		values = request.options.get('values')
 		only_dry_run = request.options.get('only_dry_run')
 		dont_remote_install = request.options.get('dont_remote_install')
-		only_master_packages = send_as.endswith('schema')
-		MODULE.process('Try to %s (%s) %s on %s. Force? %r. Only master packages? %r. Prevent installation on other systems? %r. Only dry run? %r.' % (function, send_as, app_id, host, force, only_master_packages, dont_remote_install, only_dry_run))
+		only_main_packages = send_as.endswith('schema')
+		MODULE.process('Try to %s (%s) %s on %s. Force? %r. Only main packages? %r. Prevent installation on other systems? %r. Only dry run? %r.' % (function, send_as, app_id, host, force, only_main_packages, dont_remote_install, only_dry_run))
 
 		# REMOTE invocation!
 		if host and host != self.ucr.get('hostname'):
@@ -548,7 +548,7 @@ class Instance(umcm.Base, ProgressMixin):
 				MODULE.error('Error during remote appcenter/invoke: %s' % (exc,))
 				result = {
 					'unreachable': [host],
-					'master_unreachable': True,
+					'main_unreachable': True,
 					'serious_problems': True,
 					'software_changes_computed': True,  # not really...
 				}
@@ -568,7 +568,7 @@ class Instance(umcm.Base, ProgressMixin):
 
 		# make sure that the application can be installed/updated
 		action = get_action(function)()
-		args = action._build_namespace(app=app, username=self.username, password=self.password, noninteractive=True, skip_checks=['shall_have_enough_ram', 'shall_only_be_installed_in_ad_env_with_password_service', 'must_not_have_concurrent_operation'], send_info=not only_master_packages, set_vars=values, dry_run=True, install_master_packages_remotely=False, only_master_packages=only_master_packages)
+		args = action._build_namespace(app=app, username=self.username, password=self.password, noninteractive=True, skip_checks=['shall_have_enough_ram', 'shall_only_be_installed_in_ad_env_with_password_service', 'must_not_have_concurrent_operation'], send_info=not only_main_packages, set_vars=values, dry_run=True, install_main_packages_remotely=False, only_main_packages=only_main_packages)
 
 		can_continue = True
 		delayed_can_continue = True
@@ -578,7 +578,7 @@ class Instance(umcm.Base, ProgressMixin):
 			'remove': [],
 			'broken': [],
 			'unreachable': [],
-			'master_unreachable': False,
+			'main_unreachable': False,
 			'serious_problems': False,
 			'hosts_info': {},
 			'problems_with_hosts': False,
@@ -590,7 +590,7 @@ class Instance(umcm.Base, ProgressMixin):
 		if not app:
 			MODULE.process('Application not found: %s' % app_id)
 			can_continue = False
-		if can_continue and not only_master_packages:
+		if can_continue and not only_main_packages:
 			if function == 'upgrade':
 				app = Apps().find_candidate(app)
 			if app is None:
@@ -615,7 +615,7 @@ class Instance(umcm.Base, ProgressMixin):
 			with self.locked():
 				if can_continue and function in ('install', 'upgrade'):
 					result.update(self._install_dry_run_remote(app, function, dont_remote_install, force))
-					serious_problems = bool(result['master_unreachable'] or result['serious_problems_with_hosts'])
+					serious_problems = bool(result['main_unreachable'] or result['serious_problems_with_hosts'])
 					if serious_problems:
 						args.dry_run = True
 					result.update(action.dry_run(app, args))
@@ -635,11 +635,11 @@ class Instance(umcm.Base, ProgressMixin):
 					def _thread(module, app, function):
 						with module.is_working():
 							if not dont_remote_install and function != 'remove':
-								self._install_master_packages_on_hosts(app, function)
+								self._install_main_packages_on_hosts(app, function)
 							with module.package_manager.no_umc_restart(exclude_apache=True):
 								try:
 									args.dry_run = False
-									args.install_master_packages_remotely = False
+									args.install_main_packages_remotely = False
 									return action.call_with_namespace(args)
 								except AppCenterError as exc:
 									raise umcm.UMC_Error(str(exc), result=dict(
@@ -653,42 +653,42 @@ class Instance(umcm.Base, ProgressMixin):
 					thread.run()
 		self.finished(request.id, result)
 
-	def _install_master_packages_on_hosts(self, app, function):
+	def _install_main_packages_on_hosts(self, app, function):
 		if function.startswith('upgrade'):
 			remote_function = 'update-schema'
 		else:
 			remote_function = 'install-schema'
-		master_packages = app.default_packages_master
-		if not master_packages:
+		main_packages = app.default_packages_main
+		if not main_packages:
 			return
-		hosts = find_hosts_for_master_packages()
+		hosts = find_hosts_for_main_packages()
 		all_hosts_count = len(hosts)
 		package_manager = get_package_manager()
 		package_manager.set_max_steps(all_hosts_count * 200)  # up to 50% if all hosts are installed
-		# maybe we already installed local packages (on master)
-		if self.ucr.get('server/role') == 'domaincontroller_master':
+		# maybe we already installed local packages (on main)
+		if self.ucr.get('server/role') == 'domaincontroller_main':
 			# TODO: set_max_steps should reset _start_steps. need function like set_start_steps()
 			package_manager.progress_state._start_steps = all_hosts_count * 100
-		for host, host_is_master in hosts:
+		for host, host_is_main in hosts:
 			package_manager.progress_state.info(_('Installing LDAP packages on %s') % host)
 			try:
-				if not self._install_master_packages_on_host(app, remote_function, host):
-					error_message = 'Unable to install %r on %s. Check /var/log/univention/management-console-module-appcenter.log on the host and this server. All errata updates have been installed on %s?' % (master_packages, host, host)
+				if not self._install_main_packages_on_host(app, remote_function, host):
+					error_message = 'Unable to install %r on %s. Check /var/log/univention/management-console-module-appcenter.log on the host and this server. All errata updates have been installed on %s?' % (main_packages, host, host)
 					raise Exception(error_message)
 			except Exception as e:
 				MODULE.error('%s: %s' % (host, e))
-				if host_is_master:
-					role = 'DC Master'
+				if host_is_main:
+					role = 'DC Main'
 				else:
 					role = 'DC Backup'
 				# ATTENTION: This message is not localised. It is parsed by the frontend to markup this message! If you change this message, be sure to do the same in AppCenterPage.js
 				package_manager.progress_state.error('Installing extension of LDAP schema for %s seems to have failed on %s %s' % (app.component_id, role, host))
-				if host_is_master:
-					raise  # only if host_is_master!
+				if host_is_main:
+					raise  # only if host_is_main!
 			finally:
 				package_manager.add_hundred_percent()
 
-	def _install_master_packages_on_host(self, app, function, host):
+	def _install_main_packages_on_host(self, app, function, host):
 		client = Client(host, self.username, self.password)
 		result = client.umc_command('appcenter/invoke', {'function': function, 'application': app.id, 'force': True, 'dont_remote_install': True}).result
 		if result['can_continue']:
@@ -706,24 +706,24 @@ class Instance(umcm.Base, ProgressMixin):
 		else:
 			remote_function = 'install-schema'
 
-		master_packages = app.default_packages_master
+		main_packages = app.default_packages_main
 
-		# connect to master/backups
+		# connect to main/backups
 		unreachable = []
 		hosts_info = {}
 		remote_info = {
-			'master_unreachable': False,
+			'main_unreachable': False,
 			'problems_with_hosts': False,
 			'serious_problems_with_hosts': False,
 		}
 		dry_run_threads = []
 		info = get_action('info')
-		if master_packages and not dont_remote_install:
-			hosts = find_hosts_for_master_packages()
+		if main_packages and not dont_remote_install:
+			hosts = find_hosts_for_main_packages()
 			# checking remote host is I/O heavy, so use threads
 			#   "global" variables: unreachable, hosts_info, remote_info
 
-			def _check_remote_host(app_id, host, host_is_master, username, password, force, remote_function):
+			def _check_remote_host(app_id, host, host_is_main, username, password, force, remote_function):
 				MODULE.process('Starting dry_run for %s on %s' % (app_id, host))
 				MODULE.process('%s: Connecting...' % host)
 				try:
@@ -731,8 +731,8 @@ class Instance(umcm.Base, ProgressMixin):
 				except (ConnectionError, HTTPError) as exc:
 					MODULE.warn('_check_remote_host: %s: %s' % (host, exc))
 					unreachable.append(host)
-					if host_is_master:
-						remote_info['master_unreachable'] = True
+					if host_is_main:
+						remote_info['main_unreachable'] = True
 				else:
 					MODULE.process('%s: ... done' % host)
 					host_info = {}
@@ -774,8 +774,8 @@ class Instance(umcm.Base, ProgressMixin):
 					hosts_info[host] = host_info
 				MODULE.process('Finished dry_run for %s on %s' % (app_id, host))
 
-			for host, host_is_master in hosts:
-				thread = Thread(target=_check_remote_host, args=(app.id, host, host_is_master, self.username, self.password, force, remote_function))
+			for host, host_is_main in hosts:
+				thread = Thread(target=_check_remote_host, args=(app.id, host, host_is_main, self.username, self.password, force, remote_function))
 				thread.start()
 				dry_run_threads.append(thread)
 

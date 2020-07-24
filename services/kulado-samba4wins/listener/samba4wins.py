@@ -116,8 +116,8 @@ def handler(dn, new, old):
 				if configRegistry.get('samba4wins/interface'):
 					samba4wins_interface = configRegistry['samba4wins/interface']
 
-				# reactivate "wins support" in Samba3 in case we are on a master
-				if configRegistry.get('server/role') == 'domaincontroller_master':
+				# reactivate "wins support" in Samba3 in case we are on a main
+				if configRegistry.get('server/role') == 'domaincontroller_main':
 					listener.run('/usr/sbin/univention-config-registry', ['univention-config-registry', 'set', 'wins/wins-support=yes'], uid=0)
 
 				# deactivate samba4wins variables

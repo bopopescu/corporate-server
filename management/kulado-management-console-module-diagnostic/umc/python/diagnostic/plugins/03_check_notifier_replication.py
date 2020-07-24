@@ -48,8 +48,8 @@ links = [{
 }]
 
 
-def get_id(master, cmd='GET_ID'):
-	sock = socket.create_connection((master, 6669), 60.0)
+def get_id(main, cmd='GET_ID'):
+	sock = socket.create_connection((main, 6669), 60.0)
 
 	sock.send('Version: 3\nCapabilities: \n\n')
 	sock.recv(100)
@@ -66,7 +66,7 @@ def run(_umc_instance):
 	configRegistry.load()
 
 	try:
-		notifier_id = get_id(configRegistry.get('ldap/master'))
+		notifier_id = get_id(configRegistry.get('ldap/main'))
 	except socket.error:
 		MODULE.error('Error retrieving notifier ID from the UDN.')
 		raise Warning(_('Error retrieving notifier ID from the UDN.'))

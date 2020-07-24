@@ -19,7 +19,7 @@ This library can help you:
  * Install artefacts to custom-specified directory structures
  * username/password auth support for jenkins instances with auth turned on
  * Ability to search for builds by subversion revision
- * Ability to add/remove/query jenkins slaves
+ * Ability to add/remove/query jenkins subordinates
 
 Installing JenkinsAPI
 =====================

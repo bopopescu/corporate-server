@@ -123,7 +123,7 @@ class ComputerObject(univention.admin.handlers.simpleComputer, nagios.Support):
 				al.append(('krb5KDCFlags', '126'))
 				krb_key_version = str(int(self.oldattr.get('krb5KeyVersionNumber', ['0'])[0]) + 1)
 				al.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version))
-			elif self.SERVER_ROLE not in ('master', 'windows_domaincontroller'):
+			elif self.SERVER_ROLE not in ('main', 'windows_domaincontroller'):
 				# can't do kerberos
 				self._remove_option('kerberos')
 		if 'posix' in self.options:

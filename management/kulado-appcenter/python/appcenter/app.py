@@ -644,19 +644,19 @@ class App(object):
 		default_packages: List of debian package names that shall be
 			installed (probably living in the App Center server's
 			repository).
-		default_packages_master: List of package names that shall be
-			installed on Domaincontroller Master and Backup
+		default_packages_main: List of package names that shall be
+			installed on Domaincontroller Main and Backup
 			systems while this App is installed. Deprecated. Not
 			supported for Docker Apps.
-		additional_packages_master: List of package names that shall be
+		additional_packages_main: List of package names that shall be
 			installed along with *default_packages* when installed
-			on a DC Master. Not supported for Docker Apps.
+			on a DC Main. Not supported for Docker Apps.
 		additional_packages_backup: List of package names that shall be
 			installed along with *default_packages* when installed
 			on a DC Backup. Not supported for Docker Apps.
-		additional_packages_slave: List of package names that shall be
+		additional_packages_subordinate: List of package names that shall be
 			installed along with *default_packages* when installed
-			on a DC Slave. Not supported for Docker Apps.
+			on a DC Subordinate. Not supported for Docker Apps.
 		additional_packages_member: List of package names that shall be
 			installed along with *default_packages* when installed
 			on a Memberserver. Not supported for Docker Apps.
@@ -880,10 +880,10 @@ class App(object):
 
 	without_repository = AppBooleanAttribute()
 	default_packages = AppListAttribute()
-	default_packages_master = AppListAttribute()
-	additional_packages_master = AppListAttribute()
+	default_packages_main = AppListAttribute()
+	additional_packages_main = AppListAttribute()
 	additional_packages_backup = AppListAttribute()
-	additional_packages_slave = AppListAttribute()
+	additional_packages_subordinate = AppListAttribute()
 	additional_packages_member = AppListAttribute()
 
 	settings = AppFromFileAttribute(Setting)
@@ -904,7 +904,7 @@ class App(object):
 	ports_redirection = AppListAttribute(regex='^\d+:\d+$')
 	ports_redirection_udp = AppListAttribute(regex='^\d+:\d+$')
 
-	server_role = AppListAttribute(default=['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'], choices=['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'])
+	server_role = AppListAttribute(default=['domaincontroller_main', 'domaincontroller_backup', 'domaincontroller_subordinate', 'memberserver'], choices=['domaincontroller_main', 'domaincontroller_backup', 'domaincontroller_subordinate', 'memberserver'])
 	supported_architectures = AppListAttribute(default=['amd64', 'i386'], choices=['amd64', 'i386'])
 	min_physical_ram = AppIntAttribute(default=0)
 	min_free_disk_space = AppIntAttribute(default=None)
@@ -927,7 +927,7 @@ class App(object):
 	docker_allowed_images = AppListAttribute()
 	docker_shell_command = AppAttribute(default='/bin/bash')
 	docker_volumes = AppListAttribute()
-	docker_server_role = AppAttribute(default='memberserver', choices=['memberserver', 'domaincontroller_slave'])
+	docker_server_role = AppAttribute(default='memberserver', choices=['memberserver', 'domaincontroller_subordinate'])
 	docker_script_init = AppAttribute()
 	docker_script_setup = AppDockerScriptAttribute()
 	docker_script_store_data = AppDockerScriptAttribute()
@@ -1121,12 +1121,12 @@ class App(object):
 		packages.extend(self.default_packages)
 		if additional:
 			role = ucr_get('server/role')
-			if role == 'domaincontroller_master':
-				packages.extend(self.additional_packages_master)
+			if role == 'domaincontroller_main':
+				packages.extend(self.additional_packages_main)
 			elif role == 'domaincontroller_backup':
 				packages.extend(self.additional_packages_backup)
-			elif role == 'domaincontroller_slave':
-				packages.extend(self.additional_packages_slave)
+			elif role == 'domaincontroller_subordinate':
+				packages.extend(self.additional_packages_subordinate)
 			elif role == 'memberserver':
 				packages.extend(self.additional_packages_member)
 		return packages
@@ -1407,10 +1407,10 @@ class App(object):
 		return True
 
 	@hard_requirement('install', 'upgrade')
-	def must_be_joined_if_master_packages(self):
+	def must_be_joined_if_main_packages(self):
 		'''This application requires an extension of the LDAP schema'''
 		is_joined = os.path.exists('/var/univention-join/joined')
-		return bool(is_joined or not self.default_packages_master)
+		return bool(is_joined or not self.default_packages_main)
 
 	@hard_requirement('install', 'upgrade', 'remove')
 	def must_not_have_concurrent_operation(self, package_manager):
@@ -1699,9 +1699,9 @@ class AppManager(object):
 		if cache_file:
 			try:
 				cache_modified = os.stat(cache_file).st_mtime
-				for master_file in cls._relevant_master_files():
-					master_file_modified = os.stat(master_file).st_mtime
-					if cache_modified < master_file_modified:
+				for main_file in cls._relevant_main_files():
+					main_file_modified = os.stat(main_file).st_mtime
+					if cache_modified < main_file_modified:
 						return None
 				with open(cache_file, 'rb') as fd:
 					json = fd.read()
@@ -1720,7 +1720,7 @@ class AppManager(object):
 					return [cls._build_app_from_attrs(attrs) for attrs in cache]
 
 	@classmethod
-	def _relevant_master_files(cls):
+	def _relevant_main_files(cls):
 		ret = set()
 		ret.add(os.path.join(CACHE_DIR, '.all.tar'))
 		classes_visited = set()

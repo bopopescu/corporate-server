@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Admin Modules
-#  admin module for the DC Master hosts
+#  admin module for the DC Main hosts
 #
 # Copyright 2004-2019 Univention GmbH
 #
@@ -40,17 +40,17 @@ from univention.admin.handlers.computers.__base import ComputerObject
 translation = univention.admin.localization.translation('univention.admin.handlers.computers')
 _ = translation.translate
 
-module = 'computers/domaincontroller_master'
+module = 'computers/domaincontroller_main'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 docleanup = 1
 childs = 0
-short_description = _('Computer: Domain Controller Master')
-object_name = _('DC Master')
-object_name_plural = _('DC Masters')
+short_description = _('Computer: Domain Controller Main')
+object_name = _('DC Main')
+object_name_plural = _('DC Mains')
 long_description = ''
 options = {
 	'default': univention.admin.option(
-		short_description=_('Computer: Domain Controller Master'),
+		short_description=_('Computer: Domain Controller Main'),
 		default=True,
 		objectClasses=('top', 'person', 'univentionHost', 'univentionDomainController'),
 	),
@@ -301,9 +301,9 @@ nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, opti
 
 class object(ComputerObject):
 	module = module
-	CONFIG_NAME = 'univentionDefaultDomainControllerMasterGroup'
+	CONFIG_NAME = 'univentionDefaultDomainControllerMainGroup'
 	SAMBA_ACCOUNT_FLAG = 'S'
-	SERVER_ROLE = 'master'
+	SERVER_ROLE = 'main'
 
 
 rewrite = object.rewrite_filter

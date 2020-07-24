@@ -76,7 +76,7 @@ def doit(arglist):
 
 	ud.debug(ud.ADMIN, ud.WARN, 'binddn: %s; bindpwd: *************' % (binddn))
 	try:
-		lo = univention.admin.uldap.access(host=configRegistry['ldap/master'], port=int(configRegistry.get('ldap/master/port', '7389')), base=baseDN, binddn=binddn, bindpw=bindpw, start_tls=2)
+		lo = univention.admin.uldap.access(host=configRegistry['ldap/main'], port=int(configRegistry.get('ldap/main/port', '7389')), base=baseDN, binddn=binddn, bindpw=bindpw, start_tls=2)
 	except Exception as e:
 		ud.debug(ud.ADMIN, ud.WARN, 'authentication error: %s' % str(e))
 		out.append('authentication error: %s' % e)
@@ -126,7 +126,7 @@ def doit(arglist):
 	try:
 		# check for local ldap server connection
 		if configRegistry.is_true('ldap/replication/preferredpassword'):
-			if configRegistry.get('ldap/server/type') == 'slave':
+			if configRegistry.get('ldap/server/type') == 'subordinate':
 				if os.path.exists('/etc/ldap/rootpw.conf'):
 					bindpw = open('/etc/ldap/rootpw.conf').read()
 					bindpw = bindpw.split(' ')[1].strip('\n\r"')

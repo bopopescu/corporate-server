@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Admin Modules
-#  admin module for the DC Slave hosts
+#  admin module for the DC Subordinate hosts
 #
 # Copyright 2004-2019 Univention GmbH
 #
@@ -40,17 +40,17 @@ from univention.admin.handlers.computers.__base import ComputerObject
 translation = univention.admin.localization.translation('univention.admin.handlers.computers')
 _ = translation.translate
 
-module = 'computers/domaincontroller_slave'
+module = 'computers/domaincontroller_subordinate'
 operations = ['add', 'edit', 'remove', 'search', 'move']
 docleanup = 1
 childs = 0
-short_description = _('Computer: Domain Controller Slave')
-object_name = _('DC Slave')
-object_name_plural = _('DC Slaves')
+short_description = _('Computer: Domain Controller Subordinate')
+object_name = _('DC Subordinate')
+object_name_plural = _('DC Subordinates')
 long_description = ''
 options = {
 	'default': univention.admin.option(
-		short_description=_('Computer: Domain Controller Slave'),
+		short_description=_('Computer: Domain Controller Subordinate'),
 		default=True,
 		objectClasses=('top', 'person', 'univentionHost', 'univentionDomainController'),
 	),
@@ -303,7 +303,7 @@ class object(ComputerObject):
 	module = module
 	CONFIG_NAME = 'univentionDefaultDomainControllerGroup'
 	SAMBA_ACCOUNT_FLAG = 'S'
-	SERVER_ROLE = 'slave'
+	SERVER_ROLE = 'subordinate'
 
 
 rewrite = object.rewrite_filter

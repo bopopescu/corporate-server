@@ -55,7 +55,7 @@ def handler(dn, new, old):
 	if not new.get('krb5Key'):
 		return
 
-	if server_role == 'domaincontroller_master':
+	if server_role == 'domaincontroller_main':
 		listener.setuid(0)
 		try:
 			if old:

@@ -48,9 +48,9 @@ from univention.management.console.log import MODULE
 import univention.management.console as umc
 import univention.config_registry
 from univention.config_registry.frontend import ucr_update
-from univention.admin.handlers.computers import domaincontroller_master
+from univention.admin.handlers.computers import domaincontroller_main
 from univention.admin.handlers.computers import domaincontroller_backup
-from univention.admin.handlers.computers import domaincontroller_slave
+from univention.admin.handlers.computers import domaincontroller_subordinate
 from univention.admin.handlers.computers import memberserver
 
 # local application
@@ -103,9 +103,9 @@ def get_hosts(module, lo, ucr=None):
 	return hosts
 
 
-def get_master(lo):
-	MODULE.process('Searching DC Master')
-	return get_hosts(domaincontroller_master, lo)[0].info['fqdn']
+def get_main(lo):
+	MODULE.process('Searching DC Main')
+	return get_hosts(domaincontroller_main, lo)[0].info['fqdn']
 
 
 def get_all_backups(lo, ucr=None):
@@ -118,9 +118,9 @@ def get_all_hosts(lo=None, ucr=None):
 		lo = get_machine_connection(write=False)[0]
 		if lo is None:
 			return []
-	return get_hosts(domaincontroller_master, lo, ucr) + \
+	return get_hosts(domaincontroller_main, lo, ucr) + \
 		get_hosts(domaincontroller_backup, lo, ucr) + \
-		get_hosts(domaincontroller_slave, lo, ucr) + \
+		get_hosts(domaincontroller_subordinate, lo, ucr) + \
 		get_hosts(memberserver, lo, ucr)
 
 

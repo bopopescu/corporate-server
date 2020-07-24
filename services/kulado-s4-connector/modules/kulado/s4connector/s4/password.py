@@ -565,7 +565,7 @@ def password_sync_ucs_to_s4(s4connector, key, object):
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs_to_s4: NT Hash S4: %s NT Hash UCS: %s" % (s4NThash, ucsNThash))
 		# Now if ucsNThash is empty there should at least some timestamp in UCS,
 		# otherwise it's probably not a good idea to remove the unicodePwd.
-		# Usecase: LDB module on ucs_3.0-0-ucsschool slaves creates XP computers/windows in UDM without password
+		# Usecase: LDB module on ucs_3.0-0-ucsschool subordinates creates XP computers/windows in UDM without password
 		if ucsNThash or sambaPwdLastSet:
 			pwd_set = True
 			unicodePwd_new = None
@@ -690,8 +690,8 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 		ucs_object_attributes = s4connector.lo.get(ucs_object['dn'], ['sambaPwdMustChange', 'sambaPwdLastSet', 'sambaNTPassword', 'sambaLMPassword', 'krb5PrincipalName', 'krb5Key', 'krb5KeyVersionNumber', 'userPassword', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd', 'univentionService'])
 
 		services = ucs_object_attributes.get('univentionService', [])
-		if 'S4 SlavePDC' in services:
-			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: %s is a S4 SlavePDC server, skip password sync" % ucs_object['dn'])
+		if 'S4 SubordinatePDC' in services:
+			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: %s is a S4 SubordinatePDC server, skip password sync" % ucs_object['dn'])
 			return
 
 		if 'sambaNTPassword' in ucs_object_attributes:

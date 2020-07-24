@@ -15,7 +15,7 @@ UCR.load()
 _ = Translation('univention-management-console-module-setup').translate
 
 
-def set_role_and_check_if_join_will_work(role, master_fqdn, admin_username, admin_password):
+def set_role_and_check_if_join_will_work(role, main_fqdn, admin_username, admin_password):
 	orig_role = UCR.get('server/role')
 	try:
 		univention.config_registry.handler_set(['server/role=%s' % (role,)])
@@ -23,7 +23,7 @@ def set_role_and_check_if_join_will_work(role, master_fqdn, admin_username, admi
 		with _temporary_password_file(admin_password) as password_file:
 			p1 = subprocess.Popen([
 				'univention-join',
-				'-dcname', master_fqdn,
+				'-dcname', main_fqdn,
 				'-dcaccount', admin_username,
 				'-dcpwd', password_file,
 				'-checkPrerequisites'
@@ -42,26 +42,26 @@ def set_role_and_check_if_join_will_work(role, master_fqdn, admin_username, admi
 			univention.config_registry.handler_unset(['server/role'])
 
 
-def receive_domaincontroller_master_information(dns, nameserver, address, username, password):
+def receive_domaincontroller_main_information(dns, nameserver, address, username, password):
 	result = {}
-	result['domain'] = check_credentials_nonmaster(dns, nameserver, address, username, password)
+	result['domain'] = check_credentials_nonmain(dns, nameserver, address, username, password)
 	check_domain_has_activated_license(address, username, password)
 	check_domain_is_higher_or_equal_version(address, username, password)
 	result['install_memberof_overlay'] = check_memberof_overlay_is_installed(address, username, password)
 	return result
 
 
-def check_credentials_nonmaster(dns, nameserver, address, username, password):
+def check_credentials_nonmain(dns, nameserver, address, username, password):
 	if dns:
 		domain = get_ucs_domain(nameserver)
 	else:
 		domain = '.'.join(address.split('.')[1:])
 	if not domain:
 		# Not checked... no UCS domain!
-		raise UMC_Error(_('No UCS DC Master could be found at the address.'))
+		raise UMC_Error(_('No UCS DC Main could be found at the address.'))
 	with _temporary_password_file(password) as password_file:
 		if subprocess.call(['univention-ssh', password_file, '%s@%s' % (username, address), '/bin/true']):
-			raise UMC_Error(_('The connection to the UCS DC Master was refused. Please recheck the password.'))
+			raise UMC_Error(_('The connection to the UCS DC Main was refused. Please recheck the password.'))
 		return domain
 
 
@@ -91,7 +91,7 @@ def check_domain_has_activated_license(address, username, password):
 
 	if not valid_license:
 		raise UMC_Error(
-			_('To install the {appliance_name} appliance it is necessary to have an activated UCS license on the master domain controller.').format(appliance_name=appliance_name) + ' ' +
+			_('To install the {appliance_name} appliance it is necessary to have an activated UCS license on the main domain controller.').format(appliance_name=appliance_name) + ' ' +
 			_('During the check of the license status the following error occurred:\n{error}''').format(error=error)
 		)
 
@@ -99,13 +99,13 @@ def check_domain_has_activated_license(address, username, password):
 def check_domain_is_higher_or_equal_version(address, username, password):
 	with _temporary_password_file(password) as password_file:
 		try:
-			master_ucs_version = subprocess.check_output(['univention-ssh', password_file, '%s@%s' % (username, address), 'echo $(/usr/sbin/ucr get version/version)-$(/usr/sbin/ucr get version/patchlevel)'], stderr=subprocess.STDOUT).rstrip()
+			main_ucs_version = subprocess.check_output(['univention-ssh', password_file, '%s@%s' % (username, address), 'echo $(/usr/sbin/ucr get version/version)-$(/usr/sbin/ucr get version/patchlevel)'], stderr=subprocess.STDOUT).rstrip()
 		except subprocess.CalledProcessError:
 			MODULE.error('Failed to retrieve UCS version: %s' % (traceback.format_exc()))
 			return
-		nonmaster_ucs_version = '{}-{}'.format(UCR.get('version/version'), UCR.get('version/patchlevel'))
-		if LooseVersion(nonmaster_ucs_version) > LooseVersion(master_ucs_version):
-			raise UMC_Error(_('The UCS version of the domain you are trying to join ({}) is lower than the local one ({}). This constellation is not supported.').format(master_ucs_version, nonmaster_ucs_version))
+		nonmain_ucs_version = '{}-{}'.format(UCR.get('version/version'), UCR.get('version/patchlevel'))
+		if LooseVersion(nonmain_ucs_version) > LooseVersion(main_ucs_version):
+			raise UMC_Error(_('The UCS version of the domain you are trying to join ({}) is lower than the local one ({}). This constellation is not supported.').format(main_ucs_version, nonmain_ucs_version))
 
 
 def check_memberof_overlay_is_installed(address, username, password):
@@ -120,7 +120,7 @@ def check_memberof_overlay_is_installed(address, username, password):
 				'ldap/overlay/memberof'
 			]).strip())
 		except subprocess.CalledProcessError as exc:
-			MODULE.error('Could not query DC Master for memberof overlay: %s' % (exc,))
+			MODULE.error('Could not query DC Main for memberof overlay: %s' % (exc,))
 	return False
 
 
@@ -140,7 +140,7 @@ def check_is_school_multiserver_domain(address, username, password):
 	is_school_multiserver_domain = False
 	with _temporary_password_file(password) as password_file:
 		try:
-			master_hostdn = subprocess.check_output([
+			main_hostdn = subprocess.check_output([
 				'univention-ssh',
 				password_file,
 				'%s@%s' % (username, address),
@@ -163,11 +163,11 @@ def check_is_school_multiserver_domain(address, username, password):
 				'-y',
 				'/etc/ldap.secret',
 				'-b',
-				'{}'.format(master_hostdn),
-				'(&(ucsschoolRole=dc_master:school:-)(!(ucsschoolRole=single_master:school:-))(univentionService=UCS@school))',
+				'{}'.format(main_hostdn),
+				'(&(ucsschoolRole=dc_main:school:-)(!(ucsschoolRole=single_main:school:-))(univentionService=UCS@school))',
 				'dn',
 			])
-			is_school_multiserver_domain = 'dn: {}'.format(master_hostdn) in subprocess.check_output([
+			is_school_multiserver_domain = 'dn: {}'.format(main_hostdn) in subprocess.check_output([
 				'univention-ssh',
 				'--no-split',
 				password_file,
@@ -175,7 +175,7 @@ def check_is_school_multiserver_domain(address, username, password):
 				remote_cmd,
 			]).strip().splitlines()
 		except subprocess.CalledProcessError as exc:
-			MODULE.error('univention-join:school: Could not query DC Master if the domain is a multiserver school domain: %s' % (exc,))
+			MODULE.error('univention-join:school: Could not query DC Main if the domain is a multiserver school domain: %s' % (exc,))
 	MODULE.process('univention-join:school: check_is_school_multiserver_domain = %r' % (is_school_multiserver_domain, ))
 	return is_school_multiserver_domain
 
@@ -212,6 +212,6 @@ def get_server_school_roles(hostname, address, username, password):
 			]).strip().splitlines()[1:]
 			school_roles = [role.split()[-1] for role in school_roles]
 		except (subprocess.CalledProcessError, IndexError) as exc:
-			MODULE.error('univention-join:school: Could not query DC Master for ucsschoolRole: %s' % (exc,))
+			MODULE.error('univention-join:school: Could not query DC Main for ucsschoolRole: %s' % (exc,))
 	MODULE.process('univention-join:school: get_server_school_roles = %r' % (school_roles, ))
 	return school_roles

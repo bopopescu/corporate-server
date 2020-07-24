@@ -224,7 +224,7 @@ class UDMModule(UMCBase):
 		'domainusers': "Domain Users",
 		'windowshosts': "Windows Hosts",
 		'dcbackuphosts': "DC Backup Hosts",
-		'dcslavehosts': "DC Slave Hosts",
+		'dcsubordinatehosts': "DC Subordinate Hosts",
 		'computers': "Computers",
 		'printoperators': "Printer-Admins",
 		'administrator': "Administrator"

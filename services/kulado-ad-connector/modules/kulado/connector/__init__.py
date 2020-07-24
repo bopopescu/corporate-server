@@ -213,7 +213,7 @@ class configdb:
 		for i in [1, 2]:
 			try:
 				cur = self._dbcon.cursor()
-				cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='%s';" % section)
+				cur.execute("SELECT name FROM sqlite_main WHERE type='table' AND name='%s';" % section)
 				self._dbcon.commit()
 				rows = cur.fetchone()
 				cur.close()
@@ -463,10 +463,10 @@ class ucs:
 		if bindpw[-1] == '\n':
 			bindpw = bindpw[0:-1]
 
-		host = self.baseConfig.get('%s/ldap/server' % self.CONFIGBASENAME, self.baseConfig.get('ldap/master'))
+		host = self.baseConfig.get('%s/ldap/server' % self.CONFIGBASENAME, self.baseConfig.get('ldap/main'))
 
 		try:
-			port = int(self.baseConfig.get('%s/ldap/port' % self.CONFIGBASENAME, self.baseConfig.get('ldap/master/port')))
+			port = int(self.baseConfig.get('%s/ldap/port' % self.CONFIGBASENAME, self.baseConfig.get('ldap/main/port')))
 		except:
 			port = 7389
 

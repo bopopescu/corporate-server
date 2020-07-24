@@ -188,7 +188,7 @@ def is_domain_in_admember_mode(ucr=None):
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 	lo = univention.uldap.getMachineConnection()
-	res = lo.search(base=ucr.get('ldap/base'), filter='(&(univentionServerRole=master)(univentionService=AD Member))')
+	res = lo.search(base=ucr.get('ldap/base'), filter='(&(univentionServerRole=main)(univentionService=AD Member))')
 	if res:
 		return True
 	return False
@@ -920,8 +920,8 @@ def check_server_role(ucr=None):
 	if not ucr:
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
-	if ucr.get("server/role") != "domaincontroller_master":
-		raise invalidUCSServerRole("The function become_ad_member can only be run on an UCS DC Master")
+	if ucr.get("server/role") != "domaincontroller_main":
+		raise invalidUCSServerRole("The function become_ad_member can only be run on an UCS DC Main")
 
 
 def check_domain(ad_domain_info, ucr=None):
@@ -1366,19 +1366,19 @@ def get_domaincontroller_srv_record(domain, nameserver=None):
 
 	# perform a SRV lookup
 	try:
-		response = resolver.query('_domaincontroller_master._tcp.%s.' % domain, 'SRV')
+		response = resolver.query('_domaincontroller_main._tcp.%s.' % domain, 'SRV')
 		if len(response) != 1:
 			ud.debug(ud.MODULE, ud.ERROR, 'Non-unique SRV record: %s!' % (response.rrset,))
 			return None
 		return str(response[0].target)
 	except dns.resolver.NoAnswer:
-		ud.debug(ud.MODULE, ud.WARN, 'Received no answer to query for _domaincontroller_master._tcp.%s. SRV record.' % (domain,))
+		ud.debug(ud.MODULE, ud.WARN, 'Received no answer to query for _domaincontroller_main._tcp.%s. SRV record.' % (domain,))
 	except dns.resolver.NXDOMAIN:
 		ud.debug(ud.MODULE, ud.WARN, 'Domain (%s) not resolvable!' % (domain,))
 	except dns.resolver.NoNameservers:
 		ud.debug(ud.MODULE, ud.WARN, 'No name servers in domain (%s) available to answer the query.' % (domain,))
 	except dns.exception.Timeout as exc:
-		ud.debug(ud.MODULE, ud.WARN, 'Lookup for DC master record timed out: %s' % (exc,))
+		ud.debug(ud.MODULE, ud.WARN, 'Lookup for DC main record timed out: %s' % (exc,))
 	return None
 
 
@@ -1387,18 +1387,18 @@ def add_domaincontroller_srv_record_in_ad(ad_ip, username, password, ucr=None):
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
 
-	ud.debug(ud.MODULE, ud.PROCESS, "Create _domaincontroller_master SRV record on %s" % ad_ip)
+	ud.debug(ud.MODULE, ud.PROCESS, "Create _domaincontroller_main SRV record on %s" % ad_ip)
 	hostname = ucr.get('hostname')
 	domainname = ucr.get('domainname')
 	fqdn_with_trailing_dot = "%s.%s." % (hostname, domainname)
-	srv_record = "_domaincontroller_master._tcp.%s" % (domainname,)
+	srv_record = "_domaincontroller_main._tcp.%s" % (domainname,)
 	current_record = get_domaincontroller_srv_record(domainname)
 	if current_record == fqdn_with_trailing_dot:
 		ud.debug(ud.MODULE, ud.PROCESS, "Ok, SRV record %s already points to this server" % (srv_record,))
 		return True
 
 	if current_record:
-		# remove the existing SRV record. Important when replacing an existing DC Master system!
+		# remove the existing SRV record. Important when replacing an existing DC Main system!
 		# we need Administrator permissions to do this.
 		ud.debug(ud.MODULE, ud.PROCESS, "Removing previous SRV record %s" % (current_record,))
 		with tempfile.NamedTemporaryFile() as fd, tempfile.NamedTemporaryFile() as fd2:
@@ -1459,7 +1459,7 @@ def get_ucr_variable_from_ucs(host, server, var):
 	return stdout.strip()
 
 
-def set_nameserver_from_ucs_master(ucr=None):
+def set_nameserver_from_ucs_main(ucr=None):
 	if not ucr:
 		ucr = univention.config_registry.ConfigRegistry()
 		ucr.load()
@@ -1467,7 +1467,7 @@ def set_nameserver_from_ucs_master(ucr=None):
 	ud.debug(ud.MODULE, ud.PROCESS, "Set nameservers")
 
 	for var in ['nameserver1', 'nameserver2', 'nameserver3']:
-		value = get_ucr_variable_from_ucs(ucr.get('hostname'), ucr.get('ldap/master'), var)
+		value = get_ucr_variable_from_ucs(ucr.get('hostname'), ucr.get('ldap/main'), var)
 		if value:
 			ud.debug(ud.MODULE, ud.PROCESS, "Setting %s=%s" % (var, value))
 			univention.config_registry.handler_set([u'%s=%s' % (var, value)])
@@ -1521,21 +1521,21 @@ def configure_ad_member(ad_server_ip, username, password):
 
 def configure_backup_as_ad_member():
 	# TODO something else?
-	set_nameserver_from_ucs_master()
+	set_nameserver_from_ucs_main()
 	remove_install_univention_samba()
 	prepare_ucr_settings()
 
 
-def configure_slave_as_ad_member():
+def configure_subordinate_as_ad_member():
 	# TODO something else?
-	set_nameserver_from_ucs_master()
+	set_nameserver_from_ucs_main()
 	remove_install_univention_samba()
 	prepare_ucr_settings()
 
 
 def configure_member_as_ad_member():
 	# TODO something else?
-	set_nameserver_from_ucs_master()
+	set_nameserver_from_ucs_main()
 	remove_install_univention_samba()
 	prepare_ucr_settings()
 
@@ -1550,7 +1550,7 @@ def revert_backup_ad_member():
 	revert_ucr_settings()
 
 
-def revert_slave_ad_member():
+def revert_subordinate_ad_member():
 	# TODO something else?
 	remove_install_univention_samba(install=False)
 	revert_ucr_settings()

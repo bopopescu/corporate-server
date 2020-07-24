@@ -41,24 +41,24 @@ def run(_umc_instance):
 	ldap_server_name = ucr.get('ldap/server/name')
 	domainname = ucr.get('domainname')
 	lo = univention.uldap.getMachineConnection()
-	master = lo.search(base=ucr.get('ldap/base'), filter='(univentionServerRole=master)', attr=['cn'])
+	main = lo.search(base=ucr.get('ldap/base'), filter='(univentionServerRole=main)', attr=['cn'])
 	try:
-		master_cn = master[0][1].get('cn')[0]
+		main_cn = main[0][1].get('cn')[0]
 	except IndexError:
-		raise Critical('Could not find a master DC%s' % (master,))
+		raise Critical('Could not find a main DC%s' % (main,))
 
-	master_fqdn = '.'.join([master_cn, domainname])
+	main_fqdn = '.'.join([main_cn, domainname])
 
-	if master_fqdn == ldap_server_name:
+	if main_fqdn == ldap_server_name:
 		res = lo.search(base=ucr.get('ldap/base'), filter='univentionServerRole=backup', attr=['cn'])
 
-		# Case: ldap/server/name is the domain master and there are DC Backups available.
+		# Case: ldap/server/name is the domain main and there are DC Backups available.
 		if res:
 			button = [{
 				'action': 'deactivate_test',
 				'label': _('Deactivate test'),
 			}]
-			warn = (_('The primary LDAP Server of this System (UCS ldap/server/name) is set to the DC Master of this UCS domain (%s).\nSince this environment provides further LDAP Servers, we recommend a different configuration to reduce the load of the DC Master.\nPlease see {sdb} for further information.') % (master_fqdn,))
+			warn = (_('The primary LDAP Server of this System (UCS ldap/server/name) is set to the DC Main of this UCS domain (%s).\nSince this environment provides further LDAP Servers, we recommend a different configuration to reduce the load of the DC Main.\nPlease see {sdb} for further information.') % (main_fqdn,))
 			raise Warning(warn, buttons=button)
 
 

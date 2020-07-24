@@ -60,8 +60,8 @@ class Upgrade(Install):
 
 	def setup_parser(self, parser):
 		super(Install, self).setup_parser(parser)
-		parser.add_argument('--only-master-packages', action='store_true', help='Install only master packages')
-		parser.add_argument('--do-not-install-master-packages-remotely', action='store_false', dest='install_master_packages_remotely', help='Do not install master packages on DC master and DC backup systems')
+		parser.add_argument('--only-main-packages', action='store_true', help='Install only main packages')
+		parser.add_argument('--do-not-install-main-packages-remotely', action='store_false', dest='install_main_packages_remotely', help='Do not install main packages on DC main and DC backup systems')
 
 	def _app_too_old(self, current_app, specified_app):
 		if current_app >= specified_app:
@@ -74,7 +74,7 @@ class Upgrade(Install):
 		self.original_app = self.old_app = Apps().find(app.id)
 		if app == self.old_app:
 			app = Apps().find_candidate(app) or app
-		if not args.only_master_packages:  # always allow only_master_packages
+		if not args.only_main_packages:  # always allow only_main_packages
 			if self._app_too_old(self.old_app, app):
 				return
 		args.app = app

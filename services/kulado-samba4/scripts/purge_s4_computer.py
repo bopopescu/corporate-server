@@ -55,7 +55,7 @@ SAMBA_PRIVATE_DIR = os.path.join(SAMBA_DIR, 'private')
 def purge_s4_dns_records(ucr, binddn, bindpw, computername, NTDS_objectGUID, Domain_GUID, site_list=None):
 
 	try:
-		uldap_access = univention.admin.uldap.access(host=ucr["ldap/master"], base=ucr["ldap/base"], binddn=binddn, bindpw=bindpw, start_tls=2)
+		uldap_access = univention.admin.uldap.access(host=ucr["ldap/main"], base=ucr["ldap/base"], binddn=binddn, bindpw=bindpw, start_tls=2)
 	except Exception as e:
 		print 'authentication error: %s' % str(e)
 		sys.exit(1)
@@ -162,7 +162,7 @@ def purge_s4_dns_records(ucr, binddn, bindpw, computername, NTDS_objectGUID, Dom
 def purge_udm_computer(ucr, binddn, bindpw, computername):
 
 	try:
-		uldap_access = univention.admin.uldap.access(host=ucr["ldap/master"], base=ucr["ldap/base"], binddn=binddn, bindpw=bindpw, start_tls=2)
+		uldap_access = univention.admin.uldap.access(host=ucr["ldap/main"], base=ucr["ldap/base"], binddn=binddn, bindpw=bindpw, start_tls=2)
 	except Exception as e:
 		print 'authentication error: %s' % str(e)
 		sys.exit(1)

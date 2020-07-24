@@ -310,7 +310,7 @@ class InstallRemoveUpgrade(Register):
 			shutil.copy2(joinscript, dest)
 			# change to UCS umask + +x:      -rwxr-xr-x
 			os.chmod(dest, 0o755)
-		if ucr_get('server/role') == 'domaincontroller_master' and getuser() == 'root':
+		if ucr_get('server/role') == 'domaincontroller_main' and getuser() == 'root':
 			ret = self._call_script('/usr/sbin/univention-run-join-scripts')
 		else:
 			with self._get_password_file(args) as password_file:

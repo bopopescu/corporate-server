@@ -1703,7 +1703,7 @@ class simpleLdap(object):
 		base = cls.module.split('/', 1)[0]
 		if cls.module in ('shares/print', 'shares/printer', 'shares/printergroup'):
 			base = 'printers'
-		elif cls.module in ('computers/domaincontroller_master', 'computers/domaincontroller_backup', 'computers/domaincontroller_slave', 'computers/windows_domaincontroller'):
+		elif cls.module in ('computers/domaincontroller_main', 'computers/domaincontroller_backup', 'computers/domaincontroller_subordinate', 'computers/windows_domaincontroller'):
 			base = 'domaincontroller'
 
 		containers.extend(default_containers.info.get(base, []))

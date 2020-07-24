@@ -47,7 +47,7 @@ from univention.management.console.modules.diagnostic import Critical, Warning, 
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
-run_descr = ['This can be checked by running: ucr get server/role and ucr get ldap/master']
+run_descr = ['This can be checked by running: ucr get server/role and ucr get ldap/main']
 title = _('Check validity of SSL certificates')
 description = _('All SSL certificates valid.')
 links = [{
@@ -259,9 +259,9 @@ def verify_local(all_certificates):
 				yield error
 
 
-def verify_from_master(master, all_certificates):
-	root_ca_uri = 'http://{}/ucs-root-ca.crt'.format(master)
-	crl_uri = 'http://{}/ucsCA.crl'.format(master)
+def verify_from_main(main, all_certificates):
+	root_ca_uri = 'http://{}/ucs-root-ca.crt'.format(main)
+	crl_uri = 'http://{}/ucsCA.crl'.format(main)
 	with download_tempfile(root_ca_uri) as root_ca, download_tempfile(crl_uri) as crl:
 		with convert_crl_to_pem(crl) as crl_pem:
 			verifier = CertificateVerifier(root_ca, crl_pem)
@@ -278,12 +278,12 @@ def run(_umc_instance):
 
 	all_certificates = certificates(configRegistry)
 	is_local_check = configRegistry.get('server/role') in \
-		('domaincontroller_master', 'domaincontroller_backup')
+		('domaincontroller_main', 'domaincontroller_backup')
 
 	if is_local_check:
 		cert_verify = list(verify_local(all_certificates))
 	else:
-		cert_verify = list(verify_from_master(configRegistry.get('ldap/master'), all_certificates))
+		cert_verify = list(verify_from_main(configRegistry.get('ldap/main'), all_certificates))
 
 	error_descriptions = [str(error) for error in cert_verify if isinstance(error, CertificateWarning)]
 

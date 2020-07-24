@@ -206,7 +206,7 @@ class Device(object):
 			elif device.options:
 				if any(opt.startswith('bridge_ports') for opt in device.options):
 					cls = Bridge
-				elif any(opt.startswith('bond-slaves') for opt in device.options):
+				elif any(opt.startswith('bond-subordinates') for opt in device.options):
 					cls = Bond
 				elif any(opt.startswith('vlan-raw-device') for opt in device.options):
 					cls = VLAN
@@ -658,7 +658,7 @@ class Bond(Device):
 		super(Bond, self).clear()
 		self.bond_miimon = None
 		self.bond_primary = []
-		self.bond_slaves = []
+		self.bond_subordinates = []
 		self.bond_mode = 0
 
 		# TODO: arp_interval arp_ip_target downdelay lacp_rate max_bonds primary updelay use_carrier xmit_hash_policy
@@ -681,11 +681,11 @@ class Bond(Device):
 		self.validate_bond_mode()
 
 		# at least one interface must exists in a bonding
-		# FIXME: must bond_slaves contain at least 2 interfaces?
-		if not self.bond_slaves:
-			raise DeviceError(_('Missing device for bond-slaves'), self.name)
+		# FIXME: must bond_subordinates contain at least 2 interfaces?
+		if not self.bond_subordinates:
+			raise DeviceError(_('Missing device for bond-subordinates'), self.name)
 
-		for name in set(self.bond_slaves + self.bond_primary):
+		for name in set(self.bond_subordinates + self.bond_primary):
 			# all interfaces must exists
 			if name not in self.interfaces:
 				raise DeviceError(_('Missing device: %r') % (name), self.name)
@@ -699,9 +699,9 @@ class Bond(Device):
 			if interface.ip4 or interface.ip6:
 				raise DeviceError(_('Cannot use device %s: Device must be unconfigured') % (name), self.name)
 
-		# all bond-primaries must exists as bond-slaves
-		if not set(self.bond_primary).issubset(set(self.bond_slaves)):
-			raise DeviceError(_('Bond-primary must exist in bond-slaves'))
+		# all bond-primaries must exists as bond-subordinates
+		if not set(self.bond_primary).issubset(set(self.bond_subordinates)):
+			raise DeviceError(_('Bond-primary must exist in bond-subordinates'))
 
 		self.check_unique_interface_usage()
 
@@ -715,7 +715,7 @@ class Bond(Device):
 
 	@property
 	def subdevice_names(self):
-		return set(self.bond_slaves)
+		return set(self.bond_subordinates)
 
 	def parse_ucr(self):
 		super(Bond, self).parse_ucr()
@@ -728,8 +728,8 @@ class Bond(Device):
 
 			if name == 'bond-primary':
 				self.bond_primary = value.split()
-			elif name == 'bond-slaves':
-				self.bond_slaves = value.split()
+			elif name == 'bond-subordinates':
+				self.bond_subordinates = value.split()
 			elif name == 'bond-mode':
 				try:
 					self.bond_mode = int(value)
@@ -750,7 +750,7 @@ class Bond(Device):
 	def get_options(self):
 		options = super(Bond, self).get_options()
 		options += [
-			'bond-slaves %s' % (' '.join(self.bond_slaves),),
+			'bond-subordinates %s' % (' '.join(self.bond_subordinates),),
 			'bond-mode %s' % (self.bond_mode,),
 		]
 		if int(self.bond_mode) == 1 and self.bond_primary:

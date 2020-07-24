@@ -104,7 +104,7 @@ class UMCError(UMC_Error):
 
 	def __init__(self, **kwargs):
 		ucr.load()
-		self._is_master = ucr.get('server/role') == 'domaincontroller_master'
+		self._is_main = ucr.get('server/role') == 'domaincontroller_main'
 		self._updates_available = ucr.is_true('update/available')
 		self._fqdn = '%s.%s' % (ucr.get('hostname'), ucr.get('domainname'))
 		super(UMCError, self).__init__('\n'.join(self._error_msg()), **kwargs)
@@ -266,7 +266,7 @@ class UserWithoutDN(UMCError):
 		yield _('The following steps can help to solve this problem:')
 		yield ' * ' + _('Ensure that the LDAP server on this system is running and responsive')
 		yield ' * ' + _('Make sure the DNS settings of this server are correctly set up and the DNS server is responsive')
-		if not self._is_master:
+		if not self._is_main:
 			yield ' * ' + _('Check the join status of this system by using the domain join UMC module')
 		yield ' * ' + _('Make sure all join scripts were successfully executed')
 		if self._updates_available:

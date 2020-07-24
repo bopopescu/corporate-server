@@ -35,7 +35,7 @@ class TaskConsumer(object):
 	consumers = 1
 
 def process(tsk):
-	m = tsk.master
+	m = tsk.main
 	if m.stop:
 		m.out.put(tsk)
 		return
@@ -200,7 +200,7 @@ class Parallel(object):
 				tsk.position = (self.processed, self.total)
 				self.count += 1
 				self.processed += 1
-				tsk.master = self
+				tsk.main = self
 
 				process(tsk)
 

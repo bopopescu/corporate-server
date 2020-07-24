@@ -49,7 +49,7 @@ strings = {
 	'ad_account_information': 'Active Directory-Kontoinformationen',
 	'host_settings': 'Rechnereinstellungen',
 	'software_configuration': 'Software-Konfiguration',
-	'software_configuration_non_master': 'Wählen Sie UCS-Software',
+	'software_configuration_non_main': 'Wählen Sie UCS-Software',
 	'confirm_config': 'Bestätigen der Einstellungen',
 	'confirm_config_non_maste': 'Bitte bestätigen Sie',
 	'setup_successful': 'UCS-Einrichtung erfolgreich',

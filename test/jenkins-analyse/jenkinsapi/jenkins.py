@@ -292,30 +292,30 @@ class Jenkins(JenkinsBase):
 
     def delete_node(self, nodename):
         """
-        Remove a node from the managed slave list
-        Please note that you cannot remove the master node
+        Remove a node from the managed subordinate list
+        Please note that you cannot remove the main node
 
         :param nodename: string holding a hostname
         :return: None
         """
         assert self.has_node(nodename), \
-            "This node: %s is not registered as a slave" % nodename
-        assert nodename != "master", "you cannot delete the master node"
+            "This node: %s is not registered as a subordinate" % nodename
+        assert nodename != "main", "you cannot delete the main node"
         del self.nodes[nodename]
 
     def create_node(self, name, num_executors=2, node_description=None,
                     remote_fs='/var/lib/jenkins',
                     labels=None, exclusive=False):
         """
-        Create a new JNLP slave node by name.
+        Create a new JNLP subordinate node by name.
 
         To create SSH node, please see description in Node class
 
-        :param name: fqdn of slave, str
+        :param name: fqdn of subordinate, str
         :param num_executors: number of executors, int
         :param node_description: a freetext field describing the node
         :param remote_fs: jenkins path, str
-        :param labels: labels to associate with slave, str
+        :param labels: labels to associate with subordinate, str
         :param exclusive: tied to specific job, boolean
         :return: node obj
         """
@@ -372,7 +372,7 @@ class Jenkins(JenkinsBase):
         url = '%s/computer/%s' % (self.baseurl, nodename)
         return Executors(url, nodename, self)
 
-    def get_master_data(self):
+    def get_main_data(self):
         url = '%s/computer/api/python' % self.baseurl
         return self.get_data(url)
 

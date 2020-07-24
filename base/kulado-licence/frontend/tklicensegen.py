@@ -42,19 +42,19 @@ from tkMessageBox import showinfo, showerror
 
 class tkLicenseGen:
 
-	def __init__(self, master):
-		master.title('Univention Lizenz Generator')
-		self.master = master
-		self.logoframe = Frame(self.master, bg='red')
+	def __init__(self, main):
+		main.title('Univention Lizenz Generator')
+		self.main = main
+		self.logoframe = Frame(self.main, bg='red')
 		self.logoframe.pack(side=TOP, fill=X, expand=YES)
-		self.lftopframes = LabelFrame(self.master)
+		self.lftopframes = LabelFrame(self.main)
 		self.lftopframes.pack(side=TOP, fill=X, expand=YES)
 		self.lframe = Frame(self.lftopframes)
 		self.rframe = Frame(self.lftopframes)
 		self.lframe.pack(side=LEFT, fill=X, expand=YES)
 		self.rframe.pack(side=RIGHT, fill=X, expand=YES)
 
-		self.bframe = Frame(self.master)
+		self.bframe = Frame(self.main)
 		self.bframe.pack(fill=X)
 
 		self.kname = StringVar()
@@ -256,7 +256,7 @@ class tkLicenseGen:
 		pass
 
 	def quit(self, event=None):
-		self.master.quit()
+		self.main.quit()
 
 
 if __name__ == '__main__':

@@ -135,9 +135,9 @@ class UCSTestUDM(object):
 		'computers/linux',
 		'computers/windows',
 		'computers/windows_domaincontroller',
-		'computers/domaincontroller_master',
+		'computers/domaincontroller_main',
 		'computers/domaincontroller_backup',
-		'computers/domaincontroller_slave',
+		'computers/domaincontroller_subordinate',
 		'computers/memberserver',
 		'computers/macos',
 		'computers/ipmanagedclient')
@@ -480,7 +480,7 @@ class UCSTestUDM(object):
 			if not wait_for_replication:
 				conditions.append((utils.ReplicationType.LISTENER, wait_for_replication))
 
-			if self._ucr.get('server/role') in ('domaincontroller_backup', 'domaincontroller_slave'):
+			if self._ucr.get('server/role') in ('domaincontroller_backup', 'domaincontroller_subordinate'):
 				conditions.append((utils.ReplicationType.DRS, drs_replication))
 
 		return utils.wait_for(conditions, verbose=False)

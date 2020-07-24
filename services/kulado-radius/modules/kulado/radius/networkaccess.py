@@ -79,9 +79,9 @@ def parse_username(username):
 def get_ldapConnection():
 	try:
 		# try ldap/server/name, then each of ldap/server/addition
-		ldapConnection = univention.uldap.getMachineConnection(ldap_master=False, reconnect=False)
+		ldapConnection = univention.uldap.getMachineConnection(ldap_main=False, reconnect=False)
 	except SERVER_DOWN:
-		# then master dc
+		# then main dc
 		ldapConnection = univention.uldap.getMachineConnection()
 	return ldapConnection
 

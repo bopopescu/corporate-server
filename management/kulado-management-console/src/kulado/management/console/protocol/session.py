@@ -736,7 +736,7 @@ class Processor(ProcessorBase):
 	META_UCR_VARS = [
 		'domainname',
 		'hostname',
-		'ldap/master',
+		'ldap/main',
 		'license/base',
 		'server/role',
 		'ssl/validity/host',

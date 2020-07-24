@@ -37,10 +37,10 @@ from univention.admindiary.events import APP_INSTALL_START, APP_INSTALL_SUCCESS,
 
 from univention.appcenter.app_cache import Apps
 from univention.appcenter.actions import get_action
-from univention.appcenter.exceptions import Abort, InstallMasterPackagesPasswordError, InstallMasterPackagesNoninteractiveError, InstallFailed, InstallNonDockerVersionError, InstallWithoutPermissionError
+from univention.appcenter.exceptions import Abort, InstallMainPackagesPasswordError, InstallMainPackagesNoninteractiveError, InstallFailed, InstallNonDockerVersionError, InstallWithoutPermissionError
 from univention.appcenter.actions.install_base import InstallRemoveUpgrade
 from univention.appcenter.ucr import ucr_get, ucr_save
-from univention.appcenter.utils import find_hosts_for_master_packages
+from univention.appcenter.utils import find_hosts_for_main_packages
 from univention.appcenter.packages import update_packages, install_packages_dry_run, install_packages, dist_upgrade_dry_run
 
 
@@ -60,8 +60,8 @@ class Install(InstallRemoveUpgrade):
 	def setup_parser(self, parser):
 		super(Install, self).setup_parser(parser)
 		parser.add_argument('--do-not-revert', action='store_false', dest='revert', help='Do not revert the installation when it fails. May leave the system in an undesired state')
-		parser.add_argument('--only-master-packages', action='store_true', help='Install only master packages')
-		parser.add_argument('--do-not-install-master-packages-remotely', action='store_false', dest='install_master_packages_remotely', help='Do not install master packages on DC master and DC backup systems')
+		parser.add_argument('--only-main-packages', action='store_true', help='Install only main packages')
+		parser.add_argument('--do-not-install-main-packages-remotely', action='store_false', dest='install_main_packages_remotely', help='Do not install main packages on DC main and DC backup systems')
 
 	def main(self, args):
 		app = args.app
@@ -92,12 +92,12 @@ class Install(InstallRemoveUpgrade):
 	def _write_fail_event(self, app, context_id, status, args):
 		return write_event(APP_INSTALL_FAILURE, {'name': app.name, 'version': app.version, 'error_code': str(status)}, username=self._get_username(args), context_id=context_id)
 
-	def _install_only_master_packages(self, args):
-		return args.only_master_packages
+	def _install_only_main_packages(self, args):
+		return args.only_main_packages
 
 	def _do_it(self, app, args):
-		if self._install_only_master_packages(args):
-			self._install_master_packages(app, unregister_if_uninstalled=True)
+		if self._install_only_main_packages(args):
+			self._install_main_packages(app, unregister_if_uninstalled=True)
 		else:
 			self._register_files(app)
 			self.percentage = 5
@@ -121,12 +121,12 @@ class Install(InstallRemoveUpgrade):
 	def _install_packages(self, packages):
 		return install_packages(packages)
 
-	def _install_master_packages(self, app, unregister_if_uninstalled=False):
+	def _install_main_packages(self, app, unregister_if_uninstalled=False):
 		old_app = Apps().find(app.id)
 		was_installed = old_app.is_installed()
 		if self._register_component(app):
 			update_packages()
-		ret = self._install_packages(app.default_packages_master)
+		ret = self._install_packages(app.default_packages_main)
 		if was_installed:
 			if old_app != app:
 				self.log('Re-registering component for %s' % old_app)
@@ -138,42 +138,42 @@ class Install(InstallRemoveUpgrade):
 				update_packages()
 		return ret
 
-	def _install_only_master_packages_remotely(self, app, host, is_master, args):
-		if args.install_master_packages_remotely:
+	def _install_only_main_packages_remotely(self, app, host, is_main, args):
+		if args.install_main_packages_remotely:
 			self.log('Installing some packages of %s on %s' % (app.id, host))
 		else:
-			self.warn('Not installing packages on %s. Please make sure that these packages are installed by calling "univention-app install "%s=%s" --only-master-packages" on the host' % (host, app.id, app.version))
+			self.warn('Not installing packages on %s. Please make sure that these packages are installed by calling "univention-app install "%s=%s" --only-main-packages" on the host' % (host, app.id, app.version))
 			return
 		username = 'root@%s' % host
 		try:
 			if args.noninteractive:
-				raise InstallMasterPackagesNoninteractiveError()
+				raise InstallMainPackagesNoninteractiveError()
 			password = self._get_password_for(username)
 			with self._get_password_file(password=password) as password_file:
 				if not password_file:
-					raise InstallMasterPackagesPasswordError()
+					raise InstallMainPackagesPasswordError()
 				# TODO: fallback if univention-app is not installed
-				process = self._subprocess(['/usr/sbin/univention-ssh', password_file, username, 'univention-app', 'install', '%s=%s' % (app.id, app.version), '--only-master-packages', '--noninteractive', '--do-not-send-info'])
+				process = self._subprocess(['/usr/sbin/univention-ssh', password_file, username, 'univention-app', 'install', '%s=%s' % (app.id, app.version), '--only-main-packages', '--noninteractive', '--do-not-send-info'])
 				if process.returncode != 0:
-					self.warn('Installing master packages for %s on %s failed!' % (app.id, host))
+					self.warn('Installing main packages for %s on %s failed!' % (app.id, host))
 		except Abort:
-			if is_master:
-				self.fatal('This is the DC master. Cannot continue!')
+			if is_main:
+				self.fatal('This is the DC main. Cannot continue!')
 				raise
 			else:
-				self.warn('This is a DC backup. Continuing anyway, please rerun univention-app install %s --only-master-packages there later!' % (app.id))
+				self.warn('This is a DC backup. Continuing anyway, please rerun univention-app install %s --only-main-packages there later!' % (app.id))
 
 	def _install_app(self, app, args):
 		if self._register_component(app):
 			update_packages()
-		if app.default_packages_master:
-			if ucr_get('server/role') == 'domaincontroller_master':
-				self._install_master_packages(app)
+		if app.default_packages_main:
+			if ucr_get('server/role') == 'domaincontroller_main':
+				self._install_main_packages(app)
 				self.percentage = 30
-			for host, is_master in find_hosts_for_master_packages():
-				self._install_only_master_packages_remotely(app, host, is_master, args)
+			for host, is_main in find_hosts_for_main_packages():
+				self._install_only_main_packages_remotely(app, host, is_main, args)
 			if ucr_get('server/role') == 'domaincontroller_backup':
-				self._install_master_packages(app)
+				self._install_main_packages(app)
 				self.percentage = 30
 		ret = self._install_packages(app.get_packages())
 		self.percentage = 80
@@ -211,7 +211,7 @@ class Install(InstallRemoveUpgrade):
 			ret['install'] = sorted(set(ret['install']).union(set(upgrade_ret['install'])))
 			ret['remove'] = sorted(set(ret['remove']).union(set(upgrade_ret['remove'])))
 			ret['broken'] = sorted(set(ret['broken']).union(set(upgrade_ret['broken'])))
-		if args.install_master_packages_remotely:
+		if args.install_main_packages_remotely:
 			# TODO: should test remotely
 			self.log('Not testing package changes of remote packages!')
 			pass
@@ -229,7 +229,7 @@ class Install(InstallRemoveUpgrade):
 		return ret
 
 	def _get_packages_for_dry_run(self, app, args):
-		if args.only_master_packages:
-			return app.default_packages_master
+		if args.only_main_packages:
+			return app.default_packages_main
 		else:
 			return app.get_packages(additional=True)

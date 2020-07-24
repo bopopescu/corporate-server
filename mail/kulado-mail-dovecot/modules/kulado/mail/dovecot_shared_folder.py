@@ -166,10 +166,10 @@ class DovecotSharedFolderListener(DovecotListener):
 			# Even if there are no ACL entries, we must still _change_ at
 			# least one entry through IMAP, so the shared mailbox list
 			# dictionary is updated. Lets remove the (afterwards) unnecessary
-			# master-user entry.
+			# main-user entry.
 			acls.append("dovecotadmin none")
 			try:
-				# give master-user admin rights on mailbox
+				# give main-user admin rights on mailbox
 				self.doveadm_set_mailbox_acls("shared/%s" % new_mailbox, ["dovecotadmin all"])
 				# use IMAP to set actual ACLs, so the shared mailbox list dictionary is updated
 				self.imap_set_mailbox_acls(new_mailbox, "INBOX", acls)
@@ -284,10 +284,10 @@ class DovecotSharedFolderListener(DovecotListener):
 			# Even if there are no ACL entries, we must still _change_ at
 			# least one entry through IMAP, so the shared mailbox list
 			# dictionary is updated. Lets remove the (afterwards) unnecessary
-			# master-user entry.
+			# main-user entry.
 			acls.append("dovecotadmin none")
 			try:
-				# give master-user admin rights on mailbox, so it can change its ACL
+				# give main-user admin rights on mailbox, so it can change its ACL
 				self.doveadm_set_mailbox_acls("shared/%s" % new_mailbox, ["dovecotadmin all"])
 				# use IMAP to set actual ACLs, so the shared mailbox list dictionary is updated
 				self.imap_set_mailbox_acls(new_mailbox, "INBOX", acls)
@@ -407,11 +407,11 @@ class DovecotSharedFolderListener(DovecotListener):
 		return
 
 	def imap_set_mailbox_acls(self, mb_owner, mailbox, acls):  # type: (str, str, List[str]) -> None
-		master_name, master_pw = self.get_masteruser_credentials()
+		main_name, main_pw = self.get_mainuser_credentials()
 		imap = None
 		try:
 			imap = imaplib.IMAP4("localhost")
-			imap.login("%s*%s" % (mb_owner, master_name), master_pw)
+			imap.login("%s*%s" % (mb_owner, main_name), main_pw)
 			for acl in acls:
 				identifier, right = self._split_udm_imap_acl_imap(acl)
 				if right == "none":

@@ -49,7 +49,7 @@ class Nodes(JenkinsBase):
     def iteritems(self):
         for item in self._data['computer']:
             nodename = item['displayName']
-            if nodename.lower() == 'master':
+            if nodename.lower() == 'main':
                 nodeurl = '%s/(%s)' % (self.baseurl, nodename)
             else:
                 nodeurl = '%s/%s' % (self.baseurl, nodename)
@@ -70,7 +70,7 @@ class Nodes(JenkinsBase):
         return len(self.keys())
 
     def __delitem__(self, item):
-        if item in self and item != 'master':
+        if item in self and item != 'main':
             url = "%s/doDelete" % self[item].baseurl
             try:
                 self.jenkins.requester.get_and_confirm_status(url)
@@ -79,7 +79,7 @@ class Nodes(JenkinsBase):
                 self.jenkins.requester.post_and_confirm_status(url, data={})
             self.poll()
         else:
-            if item != 'master':
+            if item != 'main':
                 raise KeyError('Node %s does not exist' % item)
 
     def __setitem__(self, name, node_dict):
@@ -91,9 +91,9 @@ class Nodes(JenkinsBase):
 
     def create_node(self, name, node_dict):
         """
-        Create a new slave node
+        Create a new subordinate node
 
-        :param str name: name of slave
+        :param str name: name of subordinate
         :param dict node_dict: node dict (See Node class)
         :return: node obj
         """

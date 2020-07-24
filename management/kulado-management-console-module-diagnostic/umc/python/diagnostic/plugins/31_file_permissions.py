@@ -121,7 +121,7 @@ def file_and_permission_checks():
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 
-	is_primary = configRegistry.get('server/role') in ('domaincontroller_master', 'domaincontroller_backup')
+	is_primary = configRegistry.get('server/role') in ('domaincontroller_main', 'domaincontroller_backup')
 	is_dc = configRegistry.get('server/role').startswith('domaincontroller_')
 	(host, domain) = (configRegistry.get('hostname'), configRegistry.get('domainname'))
 

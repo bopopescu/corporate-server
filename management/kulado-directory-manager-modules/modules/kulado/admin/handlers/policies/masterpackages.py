@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Admin Modules
-#  admin policy for the DC Master/DC Backup packages
+#  admin policy for the DC Main/DC Backup packages
 #
 # Copyright 2004-2019 Univention GmbH
 #
@@ -47,31 +47,31 @@ translation = univention.admin.localization.translation('univention.admin.handle
 _ = translation.translate
 
 
-class masterPackagesFixedAttributes(univention.admin.syntax.select):
-	name = 'masterPackagesFixedAttributes'
+class mainPackagesFixedAttributes(univention.admin.syntax.select):
+	name = 'mainPackagesFixedAttributes'
 	choices = [
-		('univentionMasterPackages', _('Package installation list')),
-		('univentionMasterPackagesRemove', _('Package removal list')),
+		('univentionMainPackages', _('Package installation list')),
+		('univentionMainPackagesRemove', _('Package removal list')),
 	]
 
 
-module = 'policies/masterpackages'
+module = 'policies/mainpackages'
 operations = ['add', 'edit', 'remove', 'search']
 
-policy_oc = 'univentionPolicyPackagesMaster'
-policy_apply_to = ["computers/domaincontroller_master", "computers/domaincontroller_backup"]
+policy_oc = 'univentionPolicyPackagesMain'
+policy_apply_to = ["computers/domaincontroller_main", "computers/domaincontroller_backup"]
 policy_position_dn_prefix = "cn=packages,cn=update"
 
 childs = 0
-short_description = _('Policy: Master packages')
-object_name = _('Master packages policy')
-object_name_plural = _('Master packages policies')
-policy_short_description = _('Master packages')
+short_description = _('Policy: Main packages')
+object_name = _('Main packages policy')
+object_name_plural = _('Main packages policies')
+policy_short_description = _('Main packages')
 long_description = ''
 options = {
 	'default': univention.admin.option(
 		default=True,
-		objectClasses=['top', 'univentionPolicy', 'univentionPolicyPackagesMaster'],
+		objectClasses=['top', 'univentionPolicy', 'univentionPolicyPackagesMain'],
 	),
 }
 property_descriptions = {
@@ -84,13 +84,13 @@ property_descriptions = {
 		may_change=False,
 		identifies=True,
 	),
-	'masterPackages': univention.admin.property(
+	'mainPackages': univention.admin.property(
 		short_description=_('Package installation list'),
 		long_description='',
 		syntax=univention.admin.syntax.Packages,
 		multivalue=True,
 	),
-	'masterPackagesRemove': univention.admin.property(
+	'mainPackagesRemove': univention.admin.property(
 		short_description=_('Package removal list'),
 		long_description='',
 		syntax=univention.admin.syntax.PackagesRemove,
@@ -101,17 +101,17 @@ property_descriptions = {
 property_descriptions.update(dict([
 	requiredObjectClassesProperty(),
 	prohibitedObjectClassesProperty(),
-	fixedAttributesProperty(syntax=masterPackagesFixedAttributes),
-	emptyAttributesProperty(syntax=masterPackagesFixedAttributes),
+	fixedAttributesProperty(syntax=mainPackagesFixedAttributes),
+	emptyAttributesProperty(syntax=mainPackagesFixedAttributes),
 	ldapFilterProperty(),
 ]))
 
 layout = [
 	Tab(_('General'), policy_short_description, layout=[
-		Group(_('General master packages settings'), layout=[
+		Group(_('General main packages settings'), layout=[
 			'name',
-			'masterPackages',
-			'masterPackagesRemove'
+			'mainPackages',
+			'mainPackagesRemove'
 		]),
 	]),
 	policy_object_tab()
@@ -119,8 +119,8 @@ layout = [
 
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('masterPackages', 'univentionMasterPackages')
-mapping.register('masterPackagesRemove', 'univentionMasterPackagesRemove')
+mapping.register('mainPackages', 'univentionMainPackages')
+mapping.register('mainPackagesRemove', 'univentionMainPackagesRemove')
 register_policy_mapping(mapping)
 
 

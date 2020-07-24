@@ -63,7 +63,7 @@ usage = '''convert_univentionMailSharedFolderDeliveryAddress.py
 
 This script converts LDAP attribute univentionMailSharedFolderDeliveryAddress of
 all shared folder LDAP objects to lower case. This script should be called on
-UCS domain controller master only.'''
+UCS domain controller main only.'''
 
 parser = optparse.OptionParser(usage=usage)
 (options, args) = parser.parse_args()

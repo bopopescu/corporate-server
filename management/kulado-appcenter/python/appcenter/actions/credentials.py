@@ -152,7 +152,7 @@ class CredentialsAction(UniventionAppAction):
 
 	def _get_ldap_connection(self, args, allow_machine_connection=False, allow_admin_connection=True):
 		if allow_admin_connection:
-			if ucr_get('server/role') == 'domaincontroller_master' and getuser() == 'root':
+			if ucr_get('server/role') == 'domaincontroller_main' and getuser() == 'root':
 				try:
 					return self._get_admin_connection()
 				except ConnectionFailed:

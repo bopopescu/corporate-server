@@ -107,20 +107,20 @@ __exthostinfo_mapping = {
 		'vrml_image': 'univention/memberserver.gif',
 		'statusmap_image': 'univention/memberserver.gd2'
 	},
-	'domaincontroller_master': {
-		'icon_image': 'univention/domaincontroller_master.gif',
-		'vrml_image': 'univention/domaincontroller_master.gif',
-		'statusmap_image': 'univention/domaincontroller_master.gd2'
+	'domaincontroller_main': {
+		'icon_image': 'univention/domaincontroller_main.gif',
+		'vrml_image': 'univention/domaincontroller_main.gif',
+		'statusmap_image': 'univention/domaincontroller_main.gd2'
 	},
 	'domaincontroller_backup': {
 		'icon_image': 'univention/domaincontroller_backup.gif',
 		'vrml_image': 'univention/domaincontroller_backup.gif',
 		'statusmap_image': 'univention/domaincontroller_backup.gd2'
 	},
-	'domaincontroller_slave': {
-		'icon_image': 'univention/domaincontroller_slave.gif',
-		'vrml_image': 'univention/domaincontroller_slave.gif',
-		'statusmap_image': 'univention/domaincontroller_slave.gd2'
+	'domaincontroller_subordinate': {
+		'icon_image': 'univention/domaincontroller_subordinate.gif',
+		'vrml_image': 'univention/domaincontroller_subordinate.gif',
+		'statusmap_image': 'univention/domaincontroller_subordinate.gd2'
 	},
 }
 
@@ -488,7 +488,7 @@ def getUniventionComputerType(new):
 			return 'memberserver'
 		elif 'univentionDomainController' in new['objectClass']:
 			if 'univentionServerRole' in new:
-				for role in ['master', 'backup', 'slave']:
+				for role in ['main', 'backup', 'subordinate']:
 					if role in new['univentionServerRole']:
 						return 'domaincontroller_%s' % role
 	return 'unknown'

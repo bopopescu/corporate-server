@@ -45,7 +45,7 @@ strings = {
 	'ad_account_information': 'Active Directory join information',
 	'host_settings': 'Host settings',
 	'software_configuration': 'Software configuration',
-	'software_configuration_non_master': 'Select UCS software',
+	'software_configuration_non_main': 'Select UCS software',
 	'confirm_config': 'Confirm configuration',
 	'confirm_config_non_maste': 'Please confirm the',
 	'setup_successful': 'UCS setup successful',

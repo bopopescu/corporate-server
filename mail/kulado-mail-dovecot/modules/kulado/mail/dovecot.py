@@ -186,22 +186,22 @@ class DovecotListener(object):
 
 	def upload_activate_sieve_script(self, email, file):
 		try:
-			master_name, master_pw = self.get_masteruser_credentials()
+			main_name, main_pw = self.get_mainuser_credentials()
 			ca_file = self.listener.configRegistry.get("mail/dovecot/sieve/client/cafile", "/etc/univention/ssl/ucsCA/CAcert.pem")
 			fqdn = "%s.%s" % (self.listener.configRegistry['hostname'], self.listener.configRegistry['domainname'])
 			fqdn = self.listener.configRegistry.get("mail/dovecot/sieve/client/server", fqdn)
 			_cmd = [
-				"sieve-connect", "--user", "%s*%s" % (email, master_name),
+				"sieve-connect", "--user", "%s*%s" % (email, main_name),
 				"--server", fqdn,
 				"--noclearauth", "--noclearchan",
 				"--tlscafile", ca_file,
 				"--remotesieve", "default"]
 			cmd_upload = list(_cmd)
 			cmd_upload.extend(["--localsieve", file, "--upload"])
-			self.read_from_ext_proc_as_root(cmd_upload, stdin=subprocess.PIPE, stdin_input=master_pw)
+			self.read_from_ext_proc_as_root(cmd_upload, stdin=subprocess.PIPE, stdin_input=main_pw)
 			cmd_activate = list(_cmd)
 			cmd_activate.extend(["--activate"])
-			self.read_from_ext_proc_as_root(cmd_activate, stdin=subprocess.PIPE, stdin_input=master_pw)
+			self.read_from_ext_proc_as_root(cmd_activate, stdin=subprocess.PIPE, stdin_input=main_pw)
 		except:
 			self.log_e("upload_activate_sieve_script(): Could not upload sieve script '%s' to mailbox '%s'. Exception:\n%s" % (file, email, traceback.format_exc()))
 			raise
@@ -213,12 +213,12 @@ class DovecotListener(object):
 			self.log_e("Failed to get mail home for user '%s'.\n%s" % (username, traceback.format_exc()))
 			raise
 
-	def get_masteruser_credentials(self):
+	def get_mainuser_credentials(self):
 		try:
 			self.listener.setuid(0)
-			return re.findall("(\S+):{PLAIN}(\S+)::::::", open("/etc/dovecot/master-users").read())[0]
+			return re.findall("(\S+):{PLAIN}(\S+)::::::", open("/etc/dovecot/main-users").read())[0]
 		except:
-			self.log_e("Failed to get masteruser password.\n%s" % traceback.format_exc())
+			self.log_e("Failed to get mainuser password.\n%s" % traceback.format_exc())
 			raise
 		finally:
 			self.listener.unsetuid()

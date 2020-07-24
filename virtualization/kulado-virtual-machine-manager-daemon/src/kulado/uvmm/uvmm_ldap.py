@@ -143,7 +143,7 @@ def ldap_uris(ldap_uri=None):
 	# ensure that we should manage the host
 	filter = '(&%s(|(!(univentionVirtualMachineManageableBy=*))(univentionVirtualMachineManageableBy=%s)))' % (filter, HOST_FQDN)
 	logger.debug('Find servers to manage "%s"' % filter)
-	lo, position = univention.admin.uldap.getMachineConnection(ldap_master=False)
+	lo, position = univention.admin.uldap.getMachineConnection(ldap_main=False)
 	try:
 		nodes = []
 		res = lo.search(filter)
@@ -162,7 +162,7 @@ def ldap_uris(ldap_uri=None):
 def ldap_annotation(uuid):
 	"""Load annotations for domain from LDAP."""
 	try:
-		lo, position = univention.admin.uldap.getMachineConnection(ldap_master=False)
+		lo, position = univention.admin.uldap.getMachineConnection(ldap_main=False)
 		base = "%s,%s" % (LDAP_INFO_RDN, position.getDn())
 	except (SERVER_DOWN, EnvironmentError):
 		raise LdapConnectionError(_('Could not open LDAP-Machine connection'))
@@ -181,7 +181,7 @@ def ldap_annotation(uuid):
 def ldap_modify(uuid):
 	"""Modify annotations for domain from LDAP."""
 	try:
-		lo, position = univention.admin.uldap.getMachineConnection(ldap_master=True)
+		lo, position = univention.admin.uldap.getMachineConnection(ldap_main=True)
 		base = "%s,%s" % (LDAP_INFO_RDN, position.getDn())
 	except (SERVER_DOWN, EnvironmentError):
 		raise LdapConnectionError(_('Could not open LDAP-Admin connection'))
@@ -210,7 +210,7 @@ def ldap_cloud_connections():
 	filt = '(objectClass=univentionVirtualMachineCloudConnection)'
 	# ensure that we should manage the host
 	filt = '(&%s(|(!(univentionVirtualMachineManageableBy=*))(univentionVirtualMachineManageableBy=%s)))' % (filt, HOST_FQDN)
-	lo, position = univention.admin.uldap.getMachineConnection(ldap_master=False)
+	lo, position = univention.admin.uldap.getMachineConnection(ldap_main=False)
 	try:
 		cloudconnections = []
 		res = lo.search(filt)
@@ -280,7 +280,7 @@ def ldap_cloud_connection_add(cloudtype, name, parameter, ucs_images="1", search
 def ldap_cloud_types():
 	""" Return a list of all cloud types."""
 	filt = '(objectClass=univentionVirtualMachineCloudType)'
-	lo, position = univention.admin.uldap.getMachineConnection(ldap_master=False)
+	lo, position = univention.admin.uldap.getMachineConnection(ldap_main=False)
 	try:
 		cloudtypes = []
 		res = lo.search(filt)

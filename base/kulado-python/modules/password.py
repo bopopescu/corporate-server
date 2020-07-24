@@ -58,7 +58,7 @@ class Check:
 		elif os.path.exists('/etc/machine.secret'):
 			self.lo = univention.uldap.getMachineConnection(start_tls=2)
 		else:
-			self.lo = univention.uldap.access(host=self.ConfigRegistry.get('ldap/master'), base=self.ConfigRegistry.get('ldap/base'), start_tls=2)
+			self.lo = univention.uldap.access(host=self.ConfigRegistry.get('ldap/main'), base=self.ConfigRegistry.get('ldap/base'), start_tls=2)
 
 	def _systemPolicy(self):
 		if self.ConfigRegistry.get('password/quality/credit/digits', '0'):
